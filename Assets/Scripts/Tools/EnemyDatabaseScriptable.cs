@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyScriptableClass : MonoBehaviour
+public class EnemyDatabaseScriptable : MonoBehaviour
 {
     [CreateAssetMenu(fileName = "EnemyDatabase", menuName = "Game/EnemyDatabase")]
     public class EnemyDatabase : ScriptableObject

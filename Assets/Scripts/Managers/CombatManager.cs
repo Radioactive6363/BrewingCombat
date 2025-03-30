@@ -8,7 +8,7 @@ public class CombatManager : MonoBehaviour
     private static CombatManager Instance;
     [SerializeField] private Image abilityTimerBar;
     [SerializeField] private GameObject enemySpawn;
-    public EnemyScriptableClass.EnemyDatabase availableEnemies;
+    public EnemyDatabaseScriptable.EnemyDatabase availableEnemies;
     private EnemyClass currentEnemy;
     private AbilityStruct currentAbility;
     
