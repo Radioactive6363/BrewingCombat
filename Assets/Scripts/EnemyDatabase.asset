@@ -11,7 +11,6 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
   m_Name: EnemyDatabase
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyScriptableClass/EnemyDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyDatabaseScriptable/EnemyDatabase
   enemies:
-  - {fileID: 8688803186435683820, guid: fd02805ee801de64a828e8190cac7784, type: 3}
-  - {fileID: 1705849404070370923, guid: 3af956640595c6e4cb9436f0f4545ffd, type: 3}
+  - {fileID: 4188893541072567773, guid: 8aa91469301d76441a2c90e2611d71a3, type: 3}
