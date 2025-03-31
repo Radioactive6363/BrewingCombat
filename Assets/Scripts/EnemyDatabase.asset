@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: EnemyDatabase
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDatabaseScriptable/EnemyDatabase
   enemies:
-  - {fileID: 4188893541072567773, guid: 8aa91469301d76441a2c90e2611d71a3, type: 3}
+  - {fileID: 6108920251892645867, guid: 429e7038be6664843b1628fc23cae4b0, type: 3}
+  - {fileID: 5179176490447106852, guid: ea1e07ce1de7c084c8002eb650f025bb, type: 3}

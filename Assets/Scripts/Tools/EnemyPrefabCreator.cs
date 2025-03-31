@@ -110,7 +110,6 @@ public class EnemyPrefabCreator : EditorWindow
         {
             meshRenderer.materials = mats.ToArray();
         }
-
         
         // Assign data BEFORE the creation of a prefab
         enemyComponent.enemyData = data;

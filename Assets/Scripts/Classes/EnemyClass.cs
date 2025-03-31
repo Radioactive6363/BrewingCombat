@@ -7,7 +7,7 @@ public class EnemyClass : MonoBehaviour
 {
     public EnemyData enemyData;
     [SerializeField] private List<AbilityStruct> Abilities;
-    private int currentHealth;
+    private int _currentHealth;
 
     public void Initialize(EnemyData data)
     {
@@ -26,7 +26,7 @@ public class EnemyClass : MonoBehaviour
         if (enemyData != null)
         {
             gameObject.name = enemyData.Name;
-            currentHealth = enemyData.Health;
+            _currentHealth = enemyData.Health;
             Debug.Log("Initialize Enemy");
         }
     }
