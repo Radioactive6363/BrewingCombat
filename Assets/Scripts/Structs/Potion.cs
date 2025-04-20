@@ -1,11 +1,10 @@
-using System;
 using UnityEngine;
 
-[Serializable]
-public struct Ingredient : IObject
+[System.Serializable]
+public struct Potion : IObject
 {
     public Sprite sprite { get; set; }
     public string name { get; set; }
     public ObjectType type { get; set; }
-    public string id;
+    public string resultId;
 }
