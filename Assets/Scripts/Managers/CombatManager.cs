@@ -38,7 +38,7 @@ public class CombatManager : MonoBehaviour
         }
         
         // Select a random enemy prefab 
-        int randomIndex = UnityEngine.Random.Range(0, availableEnemies.enemies.Length);
+        int randomIndex = UnityEngine.Random.Range(0,availableEnemies.enemies.Length);
         GameObject enemyPrefab = availableEnemies.enemies[randomIndex];
         
         // Instantiate the enemy prefab in the scene
