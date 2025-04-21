@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -61,11 +62,21 @@ public class InventorySystem
         }
     }
 
-    // Returns all items of a certain ObjectType, multiple ObjectTypes can be entered at once to get the items of two or more ObjectTypes.
+    // Returns all items of a certain ObjectType, multiple ObjectTypes can be entered at once to get the items of two or more ObjectTypes. If no objectTypes are provided, we simply get all of them.
     public Dictionary<IObject, int> GetItemsOfType(params ObjectType[] objectTypes)
     {
         Dictionary<IObject, int> itemsOfType = new Dictionary<IObject, int>();
-        HashSet<ObjectType> typesToFind = new HashSet<ObjectType>(objectTypes);
+        HashSet<ObjectType> typesToFind;
+
+        // If no objectTypes are provided, default to all possible ObjectTypes
+        if (objectTypes == null || objectTypes.Length == 0)
+        {
+            typesToFind = new HashSet<ObjectType>((ObjectType[])Enum.GetValues(typeof(ObjectType)));
+        }
+        else
+        {
+            typesToFind = new HashSet<ObjectType>(objectTypes);
+        }
 
         foreach (KeyValuePair<IObject, int> entry in inventory)
         {
@@ -83,11 +94,5 @@ public class InventorySystem
         }
 
         return itemsOfType;
-    }
-
-    // Returns the inventory.
-    public Dictionary<IObject, int> GetInventory()
-    {
-        return inventory;
     }
 }
