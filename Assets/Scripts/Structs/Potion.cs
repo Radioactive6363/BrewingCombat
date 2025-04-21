@@ -7,4 +7,5 @@ public struct Potion : IObject
     public string name { get; set; }
     public ObjectType type { get; set; }
     public int id { get; set; }
+    public int count { get; set; }
 }

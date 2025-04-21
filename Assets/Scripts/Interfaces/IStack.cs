@@ -11,5 +11,4 @@ public interface IStack
     public int Unstack();
     public bool EmptyStack();
     public int Top();
-
 }

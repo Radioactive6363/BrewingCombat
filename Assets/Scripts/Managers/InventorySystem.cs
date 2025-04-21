@@ -1,31 +1,33 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class InventorySystem
 {
-    private Dictionary<IObject, int> inventory = new Dictionary<IObject, int>();
+    private List<IObject> inventory = new List<IObject>();
 
     // Adds item to inventory, item is an IObject
     public void AddItem(IObject item)
     {
-        if (inventory.ContainsKey(item))
+        if (inventory.Contains(item))
         {
-            inventory[item]++;
+            item.count++;
         }
         else
         {
-            inventory.Add(item, 1);
+            inventory.Add(item);
+            item.count++;
         }
     }
 
     // Removes item from inventory, item is an IObject
     public void RemoveItem(IObject item)
     {
-        if (inventory.ContainsKey(item))
+        if (inventory.Contains(item))
         {
-            inventory[item]--;
-            if (inventory[item] <= 0)
+            item.count--;
+            if (item.count <= 0)
             {
                 inventory.Remove(item);
             }
@@ -39,8 +41,9 @@ public class InventorySystem
     // Removes all instances of one item from the inventory, items are IObjects
     public void CompletelyRemoveItem(IObject itemToRemove)
     {
-        if (inventory.ContainsKey(itemToRemove))
+        if (inventory.Contains(itemToRemove))
         {
+            itemToRemove.count = 0;
             inventory.Remove(itemToRemove);
         }
         else
@@ -52,9 +55,9 @@ public class InventorySystem
     // Gets the count of a certain item in the inventory
     public int GetItemCount(IObject item)
     {
-        if (inventory.ContainsKey(item))
+        if (inventory.Contains(item))
         {
-            return inventory[item];
+            return item.count;
         }
         else
         {
@@ -63,9 +66,8 @@ public class InventorySystem
     }
 
     // Returns all items of a certain ObjectType, multiple ObjectTypes can be entered at once to get the items of two or more ObjectTypes. If no objectTypes are provided, we simply get all of them.
-    public Dictionary<IObject, int> GetItemsOfType(params ObjectType[] objectTypes)
+    public List<IObject> GetItemsOfType(params ObjectType[] objectTypes)
     {
-        Dictionary<IObject, int> itemsOfType = new Dictionary<IObject, int>();
         HashSet<ObjectType> typesToFind;
 
         // If no objectTypes are provided, default to all possible ObjectTypes
@@ -78,21 +80,7 @@ public class InventorySystem
             typesToFind = new HashSet<ObjectType>(objectTypes);
         }
 
-        foreach (KeyValuePair<IObject, int> entry in inventory)
-        {
-            if (typesToFind.Contains(entry.Key.type))
-            {
-                if (itemsOfType.ContainsKey(entry.Key))
-                {
-                    itemsOfType[entry.Key] += entry.Value;
-                }
-                else
-                {
-                    itemsOfType.Add(entry.Key, entry.Value);
-                }
-            }
-        }
-
-        return itemsOfType;
+        // Use LINQ to efficiently filter the inventory based on the types to find
+        return inventory.Where(item => typesToFind.Contains(item.type)).ToList();
     }
 }

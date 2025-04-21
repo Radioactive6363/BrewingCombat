@@ -1173,7 +1173,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 458726801}
         m_TargetAssemblyTypeName: BattleUI, Assembly-CSharp
-        m_MethodName: ShowConsumablePanel
+        m_MethodName: ShowUsePanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
