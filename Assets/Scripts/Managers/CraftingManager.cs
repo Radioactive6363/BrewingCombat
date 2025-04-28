@@ -1,29 +1,30 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CraftingManager : MonoBehaviour
 {
     [Header("Recetas disponibles")]
-    public List<RecetaSO> todasLasRecetas;
-
-    // Desde la pila
-    public PotionSO IntentarCraftearDesdePila(PilaTI pila)
-    {
-        List<IngredientSO> ingredientesEnPila = new List<IngredientSO>();
-
-        for (int i = 0; i < pila.ObtenerCantidad(); i++)
-        {
-            ingredientesEnPila.Add(pila.ObtenerElemento(i));
-        }
-        return IntentarCraftear(ingredientesEnPila);
-    }
-
+    public RecipeDatabaseSO AllRecipes;
     
-    public PotionSO IntentarCraftear(List<IngredientSO> ingredientesEnPila)
+    // Desde la pila
+    public PotionSO TryToCraftWithStack(IStack ingredientStack)
+    {
+        List<IngredientSO> stackIngredients = new List<IngredientSO>();
+        int tempStackQuantity = ingredientStack.ObtainQuantity();
+        for (int i = 0; i < tempStackQuantity; i++)
+        {
+            IngredientSO ingredient = ingredientStack.UnstackIngredients();
+            Debug.Log(ingredient);
+            stackIngredients.Add(ingredient);
+        }
+        return TryToCraft(stackIngredients);
+    }
+    
+    public PotionSO TryToCraft(List<IngredientSO> stackIngredients)
     {
         Debug.Log("Intentando craftear. Ingredientes en pila:");
-
-        foreach (var ing in ingredientesEnPila)
+        foreach (var ing in stackIngredients)
         {
             if (ing == null)
             {
@@ -33,60 +34,61 @@ public class CraftingManager : MonoBehaviour
             Debug.Log($"- {ing.name} (Tipo: {ing.Type}, ID: {ing.Id})");
         }
 
-        foreach (var receta in todasLasRecetas)
+        foreach (var recipe in AllRecipes.recipes)
         {
-            Debug.Log("Revisando receta: " + receta.name);
-
-            if (receta.level == 1)
+            if (recipe is RecipeSO recipeSO)
             {
-                if (receta.ingredientsByType == null || receta.ingredientsByType.Count == 0)
-                {
-                    Debug.LogError("ERROR: Receta " + receta.name + " no tiene ingredientesPorTipo configurados.");
-                    continue;
-                }
-
+               Debug.Log("Revisando receta: " + recipeSO.name);
                
-                Debug.Log("Ingredientes esperados por tipo:");
-                foreach (var tipo in receta.ingredientsByType)
-                {
-                    Debug.Log("- " + tipo);
-                }
-
-                List<IngredientSO.IngredientType> tiposEnPila = new List<IngredientSO.IngredientType>();
-                foreach (var ing in ingredientesEnPila)
-                {
-                    tiposEnPila.Add(ing.Type);
-                }
-
-                if (CompareByType(receta.ingredientsByType, tiposEnPila))
-                {
-                    Debug.Log("¡Receta encontrada! Creaste: " + receta.name);
-                    return receta.result;
-                }
-            }
-            else
-            {
-                if (receta.ingredientsByID == null || receta.ingredientsByID.Count == 0)
-                {
-                    Debug.LogError("ERROR: Receta " + receta.name + " no tiene ingredientes PorId configurados.");
-                    continue;
-                }
-
+                           if (recipeSO.level == 1)
+                           {
+                               if (recipeSO.ingredientsByType == null || recipeSO.ingredientsByType.Count == 0)
+                               {
+                                   Debug.LogError("ERROR: Receta " + recipeSO.name + " no tiene ingredientes PorTipo configurados.");
+                                   continue;
+                               }
+                               
+                               Debug.Log("Ingredientes esperados por tipo:");
+                               foreach (var tipo in recipeSO.ingredientsByType)
+                               {
+                                   Debug.Log("- " + tipo);
+                               }
                
-                Debug.Log("Ingredientes esperados por ID:");
-                foreach (var ing in receta.ingredientsByID)
-                {
-                    Debug.Log("- " + ing.name + " (ID: " + ing.Id + ")");
-                }
-
-                if (CompareByID(receta.ingredientsByID, ingredientesEnPila))
-                {
-                    Debug.Log("¡Receta encontrada! Creaste: " + receta.name);
-                    return receta.result;
-                }
+                               List<IngredientSO.IngredientType> typeOfStack = new List<IngredientSO.IngredientType>();
+                               foreach (var ing in stackIngredients)
+                               {
+                                   typeOfStack.Add(ing.Type);
+                               }
+               
+                               if (CompareByType(recipeSO.ingredientsByType, typeOfStack))
+                               {
+                                   Debug.Log("¡Receta encontrada! Creaste: " + recipeSO.name);
+                                   return recipeSO.result;
+                               }
+                           }
+                           else
+                           {
+                               if (recipeSO.ingredientsByID == null || recipeSO.ingredientsByID.Count == 0)
+                               {
+                                   Debug.LogError("ERROR: Receta " + recipeSO.name + " no tiene ingredientes PorId configurados.");
+                                   continue;
+                               }
+                               
+                               Debug.Log("Ingredientes esperados por ID:");
+                               foreach (var ing in recipeSO.ingredientsByID)
+                               {
+                                   Debug.Log("- " + ing.name + " (ID: " + ing.Id + ")");
+                               }
+               
+                               if (CompareByID(recipeSO.ingredientsByID, stackIngredients))
+                               {
+                                   Debug.Log("¡Receta encontrada! Creaste: " + recipeSO.name);
+                                   return recipeSO.result;
+                               }
+                           } 
             }
+                
         }
-
         Debug.Log("No se encontró ninguna receta.");
         return null;
     }

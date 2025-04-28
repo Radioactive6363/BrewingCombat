@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc5516d14cd30954480c6ad860e79526, type: 3}
-  m_Name: NewIngredient 3
+  m_Name: BlueBerry
   m_EditorClassIdentifier: 
   sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  IngredientName: Flor Negra
-  type: 0
-  _count: 43
+  IngredientName: Blueberry
+  type: 1
+  _count: 5

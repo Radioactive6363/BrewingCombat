@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ObjectUIScript : MonoBehaviour
 {
-    public IObject objectContained;
+    public IObject ObjectContained;
     [SerializeField] private GameObject objectUISprite;
     [SerializeField] private GameObject objectUIQuantity;
     [SerializeField] private GameObject objectUISelected;
@@ -13,9 +13,9 @@ public class ObjectUIScript : MonoBehaviour
     
     void Start()
     {
-        objectUISprite.GetComponent<Image>().sprite = objectContained.Sprite;
-        objectUIQuantity.GetComponent<TMPro.TextMeshProUGUI>().text = objectContained.Count.ToString();
-        objectUIName.GetComponent<TMPro.TextMeshProUGUI>().text = objectContained.Name;
+        objectUISprite.GetComponent<Image>().sprite = ObjectContained.Sprite;
+        objectUIQuantity.GetComponent<TMPro.TextMeshProUGUI>().text = ObjectContained.Count.ToString();
+        objectUIName.GetComponent<TMPro.TextMeshProUGUI>().text = ObjectContained.Name;
     }
 
     public void DisplayObjectOptions()
@@ -32,16 +32,19 @@ public class ObjectUIScript : MonoBehaviour
     
     public void UseObject()
     {
-        FindFirstObjectByType<InventorySystem>().AddItem(objectContained);
-    }
-    
-    public void RemoveObject()
-    {
-        FindFirstObjectByType<InventorySystem>().RemoveItem(objectContained);
+        if (ObjectContained is IngredientSO ingredient)
+        {
+            FindFirstObjectByType<InventorySystem>().RemoveItem(ingredient);
+            FindFirstObjectByType<CraftingController>().IngredientReceived(ingredient);
+        }
+        if (ObjectContained is PotionSO potion)
+        {
+            FindFirstObjectByType<InventorySystem>().RemoveItem(potion);
+        }
     }
     
     public void UpdateQuantity()
     {
-        objectUIQuantity.GetComponent<TMPro.TextMeshProUGUI>().text = objectContained.Count.ToString();
+        objectUIQuantity.GetComponent<TMPro.TextMeshProUGUI>().text = ObjectContained.Count.ToString();
     }
 }

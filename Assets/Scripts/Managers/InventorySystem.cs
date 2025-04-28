@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 public class InventorySystem : MonoBehaviour
 {
-    [SerializeField] private ObjectDatabase objectDatabaseStart;
+    [SerializeField] private ObjectDatabaseSO objectDatabaseStart;
     public static InventorySystem instanceInventorySystem; // Singleton
     public List<IObject> inventory;
     public UnityEvent<IObject> onInventoryChanged;

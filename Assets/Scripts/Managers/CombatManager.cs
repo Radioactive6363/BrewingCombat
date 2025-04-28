@@ -8,7 +8,7 @@ public class CombatManager : MonoBehaviour
     private static CombatManager Instance;
     [SerializeField] private Image abilityTimerBar;
     [SerializeField] private GameObject enemySpawn;
-    public EnemyDatabaseScriptable.EnemyDatabase availableEnemies;
+    public EnemyDatabaseScriptable availableEnemies;
     private EnemyClass currentEnemy;
     private AbilityStruct currentAbility;
     
@@ -86,8 +86,8 @@ public class CombatManager : MonoBehaviour
 
     private void DealDamageToPlayer(string abilityName,float damage)
     {
-        Debug.Log("Enemy used: " + abilityName);
-        Debug.Log("PLAYER DAMAGED BY: " + damage);
+        //Debug.Log("Enemy used: " + abilityName);
+        //Debug.Log("PLAYER DAMAGED BY: " + damage);
     }
 }
 

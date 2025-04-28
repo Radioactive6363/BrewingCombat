@@ -6,11 +6,12 @@ public class IngredientsUI : MonoBehaviour
 {
     private InventorySystem inventoryManager;
     private List<IObject> managerOnStartInventory;
-    private Dictionary<IObject,GameObject> gameObjectInventory = new Dictionary<IObject,GameObject>();
+    private Dictionary<IObject, GameObject> gameObjectInventory;
     [SerializeField] private GameObject objectUIPrefab;
     
     private void Start()
     {
+        gameObjectInventory = new Dictionary<IObject, GameObject>();
         inventoryManager = FindFirstObjectByType<InventorySystem>();
         inventoryManager.onInventoryChanged.AddListener(UpdateInventory);
         inventoryManager.inventoryInitialized.AddListener(InitializeUI);
@@ -29,7 +30,7 @@ public class IngredientsUI : MonoBehaviour
             if (obj.Count > 0)
             {
                 GameObject item = Instantiate(objectUIPrefab, transform);
-                item.GetComponent<ObjectUIScript>().objectContained = obj;
+                item.GetComponent<ObjectUIScript>().ObjectContained = obj;
                 gameObjectInventory.Add(obj, item);
             }
         }
