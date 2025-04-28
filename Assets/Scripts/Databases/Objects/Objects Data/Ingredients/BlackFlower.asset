@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc5516d14cd30954480c6ad860e79526, type: 3}
   m_Name: BlackFlower
   m_EditorClassIdentifier: 
-  sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  sprite: {fileID: -891127722, guid: 638aa2d0385290248b611f70fce6c394, type: 3}
   IngredientName: Black Flower
   type: 3
   potency: 10

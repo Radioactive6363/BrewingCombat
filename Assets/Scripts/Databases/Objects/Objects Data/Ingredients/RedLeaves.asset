@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc5516d14cd30954480c6ad860e79526, type: 3}
   m_Name: RedLeaves
   m_EditorClassIdentifier: 
-  sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  sprite: {fileID: 88032956, guid: 765b5de7a33c2ea40b96f20c3c454dec, type: 3}
   IngredientName: Red Leaves
   type: 0
   potency: 5

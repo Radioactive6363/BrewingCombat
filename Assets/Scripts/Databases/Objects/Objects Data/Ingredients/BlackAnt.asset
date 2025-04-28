@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc5516d14cd30954480c6ad860e79526, type: 3}
   m_Name: BlackAnt
   m_EditorClassIdentifier: 
-  sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  IngredientName: Black Ant
+  sprite: {fileID: -1300809528, guid: c197eb2f9824271458622b42b4dad234, type: 3}
+  IngredientName: Black Spider
   type: 3
   potency: 5
   chargeTime: 3

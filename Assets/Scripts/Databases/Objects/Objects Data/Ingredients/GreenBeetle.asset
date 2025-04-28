@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc5516d14cd30954480c6ad860e79526, type: 3}
   m_Name: GreenBeetle
   m_EditorClassIdentifier: 
-  sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  sprite: {fileID: 1028668337, guid: 8a76eb3d3833cf845a9d6f70794c5e9e, type: 3}
   IngredientName: Green Beetle
   type: 2
   potency: 5
