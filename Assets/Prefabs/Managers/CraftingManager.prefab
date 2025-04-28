@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cc978ff596a1184bba2232421ed2701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  todasLasRecetas: []
+  AllRecipes: {fileID: 11400000, guid: 571c0e8cb14699a4aad859052f3a0bc0, type: 2}

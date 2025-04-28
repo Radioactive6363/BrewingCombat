@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ab68a40dee533643a18e832afc1f1da, type: 3}
-  m_Name: VenomPotion
+  m_Name: WaterElementalPotionRecipe
   m_EditorClassIdentifier: 
-  name: Venom Potion
+  name: Water Elemental Potion
   level: 1
   result: {fileID: 0}
   ingredientsByID: []
-  ingredientsByType: 040000000200000000000000
+  ingredientsByType: 010000000100000004000000

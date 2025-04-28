@@ -63,7 +63,7 @@ public class CraftingController : MonoBehaviour
         {
             _ingredientsGameObjects[i].SetActive(false);
         }
-        craftingManager.TryToCraftWithStack(_ingredientStack);
+        craftingManager.GetPotion(_ingredientStack);
         CraftingPanel.SetActive(false);
         CraftPotionButton.SetActive(false);
 

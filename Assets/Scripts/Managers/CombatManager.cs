@@ -6,7 +6,11 @@ using UnityEngine.UI;
 public class CombatManager : MonoBehaviour
 {
     private static CombatManager Instance;
+    private float playerMaxHealth = 100;
+    private float playerHealth;
     [SerializeField] private Image abilityTimerBar;
+    [SerializeField] private Image potionTimerBar;
+    [SerializeField] private Image healthBar;
     [SerializeField] private GameObject enemySpawn;
     public EnemyDatabaseScriptable availableEnemies;
     private EnemyClass currentEnemy;
@@ -28,6 +32,7 @@ public class CombatManager : MonoBehaviour
     private void Start()
     {
         StartCombat(SpawnRandomEnemy());
+        playerHealth = playerMaxHealth;
     }
 
     private EnemyClass SpawnRandomEnemy()
@@ -79,15 +84,56 @@ public class CombatManager : MonoBehaviour
             abilityTimerBar.fillAmount = (timeLeft - Time.time) / abilityTimer;
             yield return null;
         }
-        DealDamageToPlayer(currentAbility.name,currentAbility.damage);
+        DealDamageToPlayer(currentAbility.damage);
         abilityTimerBar.fillAmount = 0f; 
         //currentAbility = null;
     }
 
-    private void DealDamageToPlayer(string abilityName,float damage)
+    public void PotionUsed(PotionSO potion)
     {
-        //Debug.Log("Enemy used: " + abilityName);
-        //Debug.Log("PLAYER DAMAGED BY: " + damage);
+        StartCoroutine(PotionTimer(potion));
+    }
+    
+    private IEnumerator PotionTimer(PotionSO potion)
+    {
+        float potionCraftingTimer = potion.ChargeTime;
+        float timeLeft = potionCraftingTimer + Time.time;
+        while (Time.time < timeLeft)
+        {
+            potionTimerBar.fillAmount = (timeLeft - Time.time) / potionCraftingTimer;
+            yield return null;
+        }
+        ExecutePotion(potion);
+        potionTimerBar.fillAmount = 0f;
+    }
+    
+    private void DealDamageToPlayer(int damage)
+    {
+        healthBar.fillAmount = playerHealth-damage / playerMaxHealth;
+        playerHealth -= damage;
+    }
+    
+    private void ExecutePotion(PotionSO potion)
+    {
+        switch (potion.typeOfEffect)
+        {
+            case(PotionEffectType.DamagePotion):
+                break;
+            case(PotionEffectType.DodgePotion):
+                break;
+            case(PotionEffectType.ShieldPotion):
+                break;
+            case(PotionEffectType.HealingPotion):
+                break;
+            case(PotionEffectType.VenomPotion):
+                break;
+            case(PotionEffectType.EarthElemental):
+                break;
+            case(PotionEffectType.WaterElemental):
+                break;
+            case(PotionEffectType.FireElemental):
+                break; 
+        }
     }
 }
 

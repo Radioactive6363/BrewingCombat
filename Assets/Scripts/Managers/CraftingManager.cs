@@ -6,6 +6,12 @@ public class CraftingManager : MonoBehaviour
 {
     [Header("Recetas disponibles")]
     public RecipeDatabaseSO AllRecipes;
+
+    public void GetPotion(IStack ingredientStack)
+    {
+        PotionSO potionCrafted = TryToCraftWithStack(ingredientStack);
+        FindFirstObjectByType<InventorySystem>().AddItem(potionCrafted);
+    }
     
     // Desde la pila
     public PotionSO TryToCraftWithStack(IStack ingredientStack)
@@ -36,56 +42,63 @@ public class CraftingManager : MonoBehaviour
 
         foreach (var recipe in AllRecipes.recipes)
         {
-            if (recipe is RecipeSO recipeSO)
+            if (recipe is RecipeSO recipeOS)
             {
-               Debug.Log("Revisando receta: " + recipeSO.name);
+               Debug.Log("Revisando receta: " + recipeOS.name);
                
-                           if (recipeSO.level == 1)
-                           {
-                               if (recipeSO.ingredientsByType == null || recipeSO.ingredientsByType.Count == 0)
-                               {
-                                   Debug.LogError("ERROR: Receta " + recipeSO.name + " no tiene ingredientes PorTipo configurados.");
+                if (recipeOS.level == 1)
+                {
+                    if (recipeOS.ingredientsByType == null || recipeOS.ingredientsByType.Count == 0)
+                    {
+                        Debug.LogError("ERROR: Receta " + recipeOS.name + " no tiene ingredientes Por Tipo configurados.");
                                    continue;
-                               }
-                               
-                               Debug.Log("Ingredientes esperados por tipo:");
-                               foreach (var tipo in recipeSO.ingredientsByType)
-                               {
-                                   Debug.Log("- " + tipo);
-                               }
+                    }
+                    Debug.Log("Ingredientes esperados por tipo:");
+                    foreach (var tipo in recipeOS.ingredientsByType)
+                    {
+                        Debug.Log("- " + tipo);
+                    }
                
-                               List<IngredientSO.IngredientType> typeOfStack = new List<IngredientSO.IngredientType>();
-                               foreach (var ing in stackIngredients)
-                               {
-                                   typeOfStack.Add(ing.Type);
-                               }
-               
-                               if (CompareByType(recipeSO.ingredientsByType, typeOfStack))
-                               {
-                                   Debug.Log("¡Receta encontrada! Creaste: " + recipeSO.name);
-                                   return recipeSO.result;
-                               }
-                           }
-                           else
-                           {
-                               if (recipeSO.ingredientsByID == null || recipeSO.ingredientsByID.Count == 0)
-                               {
-                                   Debug.LogError("ERROR: Receta " + recipeSO.name + " no tiene ingredientes PorId configurados.");
+                    List<IngredientSO.IngredientType> typeOfStack = new List<IngredientSO.IngredientType>();
+                    foreach (var ing in stackIngredients)
+                    {
+                        typeOfStack.Add(ing.Type);
+                    }
+                    if (CompareByType(recipeOS.ingredientsByType, typeOfStack))
+                    { 
+                        Debug.Log("¡Receta encontrada! Creaste: " + recipeOS.name);
+                        PotionSO potionCreated = recipeOS.result;
+                        potionCreated.typeOfEffect = recipeOS.PotionEffectType;
+                        foreach (var ing in stackIngredients)
+                        {
+                            potionCreated.Potency += ing.Potency;
+                            potionCreated.ChargeTime = ing.ChargeTime;
+                        }
+                        return potionCreated;
+                    }
+                }
+                else
+                {
+                    /*
+                    if (recipeOS.ingredientsByID == null || recipeOS.ingredientsByID.Count == 0)
+                    {
+                        Debug.LogError("ERROR: Receta " + recipeOS.name + " no tiene ingredientes PorId configurados.");
                                    continue;
-                               }
-                               
-                               Debug.Log("Ingredientes esperados por ID:");
-                               foreach (var ing in recipeSO.ingredientsByID)
-                               {
-                                   Debug.Log("- " + ing.name + " (ID: " + ing.Id + ")");
-                               }
-               
-                               if (CompareByID(recipeSO.ingredientsByID, stackIngredients))
-                               {
-                                   Debug.Log("¡Receta encontrada! Creaste: " + recipeSO.name);
-                                   return recipeSO.result;
-                               }
-                           } 
+                    }
+                    
+                    Debug.Log("Ingredientes esperados por ID:");
+                    foreach (var ing in recipeOS.ingredientsByID)
+                    {
+                        Debug.Log("- " + ing.name + " (ID: " + ing.Id + ")");
+                    }
+                           
+                    if (CompareByID(recipeOS.ingredientsByID, stackIngredients)) 
+                    { 
+                        Debug.Log("¡Receta encontrada! Creaste: " + recipeOS.name); 
+                        return recipeOS.result;
+                    }
+                    */
+                } 
             }
                 
         }
@@ -93,18 +106,19 @@ public class CraftingManager : MonoBehaviour
         return null;
     }
 
-    private bool CompareByType(List<IngredientSO.IngredientType> tiposReceta, List<IngredientSO.IngredientType> tiposPila)
+    private bool CompareByType(List<IngredientSO.IngredientType> recipeTypes, List<IngredientSO.IngredientType> typesStack)
     {
-        if (tiposReceta.Count != tiposPila.Count)
+        List<IngredientSO.IngredientType> typesRequired = new List<IngredientSO.IngredientType>(recipeTypes);
+        if (recipeTypes.Count != typesStack.Count)
             return false;
-
-        for (int i = 0; i < tiposReceta.Count; i++)
+        foreach (IngredientSO.IngredientType type in typesStack)
         {
-            if (tiposReceta[i] != tiposPila[i])
-                return false;
+            if (typesRequired.Contains(type)) 
+                typesRequired.Remove(type);
         }
-
-        return true;
+        if (typesRequired.Count == 0)
+            return true;
+        return false;
     }
 
     private bool CompareByID(List<IngredientSO> idRecipe, List<IngredientSO> ingStack)

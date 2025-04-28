@@ -40,6 +40,7 @@ public class ObjectUIScript : MonoBehaviour
         if (ObjectContained is PotionSO potion)
         {
             FindFirstObjectByType<InventorySystem>().RemoveItem(potion);
+            FindFirstObjectByType<CombatManager>().PotionUsed(potion);
         }
     }
     
