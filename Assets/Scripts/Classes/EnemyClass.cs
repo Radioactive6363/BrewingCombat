@@ -6,15 +6,19 @@ using Random = UnityEngine.Random;
 public class EnemyClass : MonoBehaviour, IAbilityQueue
 {
     public EnemyData enemyData;
-    [SerializeField] private List<AbilityStruct> Abilities = new List<AbilityStruct>();
+    [SerializeField] public List<AbilityStruct> Abilities = new List<AbilityStruct>();
 
     private IAbilityQueue abilityQueueHandler;  // Now using the queue handler
     private int _currentHealth;
+
+    private Animator animator;
 
     private void Start()
     {
         SetupEnemyData();
         SetupDefaultAbilities();
+
+        animator = GetComponent<Animator>();
 
         // Use the queue handler instead of the stack handler
         abilityQueueHandler = new AbilityQueueHandler();  // Changed to the Queue handler
@@ -126,5 +130,13 @@ public class EnemyClass : MonoBehaviour, IAbilityQueue
     public void InitializeQueue()
     {
         abilityQueueHandler.InitializeQueue();
+    }
+
+    public void AnimateEnemy(string animationName)
+    {
+        if (animator != null)
+        {
+            animator.Play(animationName);
+        }
     }
 }
