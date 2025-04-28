@@ -11,6 +11,7 @@ public class CombatManager : MonoBehaviour
     private float playerHealth;
     private float playerDefense = 2;
     private float playerDodge = 20;
+    private float playerBaseAttack = 1;
     [SerializeField] private Image abilityTimerBar;
     [SerializeField] private GameObject potionTimerGameObject;
     [SerializeField] private Image potionTimerBar;
@@ -19,19 +20,6 @@ public class CombatManager : MonoBehaviour
     public EnemyDatabaseScriptable availableEnemies;
     private EnemyClass currentEnemy;
     private AbilityStruct currentAbility;
-    
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); // Avoids destroying this object when reloading scene
-        }
-        else
-        {
-            Destroy(gameObject); // If instance already exists, destroy this one
-        }
-    }
     
     private void Start()
     {
@@ -113,19 +101,31 @@ public class CombatManager : MonoBehaviour
         ExecutePotion(potion);
         potionTimerBar.fillAmount = 0f;
     }
-    
+
     private void DealDamageToPlayer(int damage)
     {
         if (playerDodge <= Random.Range(0, 100))
         {
-            healthBar.fillAmount = (playerHealth-(damage-playerDefense)) / playerMaxHealth;
+            healthBar.fillAmount = (playerHealth - (damage - playerDefense)) / playerMaxHealth;
             playerHealth -= damage;
             Debug.Log("Player received " + damage + " damage");
+            if (playerHealth <= 0)
+            {
+                if (GameManager.Instance != null)
+                {
+                    GameManager.Instance.LoadScene("GameOver");
+                }
+            }
         }
         else
         {
             Debug.Log("Player Dodged the Attack!");
         }
+    }
+
+    public void MeleeAttack()
+    {
+        DealDamageToEnemy((int)playerBaseAttack);
     }
     
     private void ExecutePotion(PotionSO potion)
@@ -203,6 +203,20 @@ public class CombatManager : MonoBehaviour
         playerHealth += potency;
         Debug.Log("Player healed!");
     }
+
+    private void DealDamageToEnemy(int damage)
+    {
+        currentEnemy.enemyData.Health -= damage * 2;
+        Debug.Log("Enemy received " + damage * 2 + " Damage");
+        Debug.Log("Enemy has " + currentEnemy.enemyData.Health + " Health");
+        if (currentEnemy.enemyData.Health <= 0)
+        {
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.LoadScene("VictoryScreen");
+            }
+        }
+    }
     
     private void ShieldPlayer(int potency)
     {
@@ -218,30 +232,25 @@ public class CombatManager : MonoBehaviour
     
     private void DamageEnemyViaPotion(int potency)
     {
-        currentEnemy.enemyData.Health -= potency;
-        Debug.Log("Enemy received" + potency + " Damage");
+        DealDamageToEnemy(potency);
     }
     
     private void VenomEnemyViaPotion(int potency)
     {
-        currentEnemy.enemyData.Health -= potency / 2;
-        Debug.Log("Enemy received" + potency + " Damage");
+        DealDamageToEnemy(potency);
     }
     
     private void EarthElementalDamage(int potency)
     {
-        currentEnemy.enemyData.Health -= potency / 2;
-        Debug.Log("Enemy received" + potency + " Damage");
+        DealDamageToEnemy(potency);
     }
     private void WaterElementalDamage(int potency)
     {
-        currentEnemy.enemyData.Health -= potency / 2;
-        Debug.Log("Enemy received" + potency + " Damage");
+        DealDamageToEnemy(potency);
     }
     private void FireElementalDamage(int potency)
     {
-        currentEnemy.enemyData.Health -= potency / 2;
-        Debug.Log("Enemy received" + potency + " Damage");
+        DealDamageToEnemy(potency);
     }
 }
 

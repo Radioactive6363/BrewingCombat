@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Rat_Data
   m_EditorClassIdentifier: 
   Name: Rat
-  Health: 80
+  Health: 100
   Speed: 8
   Damage: 5
