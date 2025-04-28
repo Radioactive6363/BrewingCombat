@@ -142,4 +142,12 @@ public class MapPlayerClass : MonoBehaviour
 
         playerMoving = false;
     }
+
+    public void AttackAnimation()
+    {
+        if (playerAnimator != null)
+        {
+            playerAnimator.Play("Attack");
+        }
+    }
 }
