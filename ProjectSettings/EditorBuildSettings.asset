@@ -8,6 +8,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: a5186969fd6782f48a17277b3af4c07d
+  - enabled: 1
+    path: Assets/Scenes/LoseScreen.unity
+    guid: b042b9024ccd49c47a2896a25f0af8fc
+  - enabled: 1
+    path: Assets/Scenes/MapSelection.unity
+    guid: 9dece8ea6154f274782bf11790037437
+  - enabled: 1
+    path: Assets/Scenes/VictoryScreen.unity
+    guid: 9212ae554e80ad843911e8bf0a6beac3
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

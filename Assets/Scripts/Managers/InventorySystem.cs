@@ -4,6 +4,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class InventorySystem : MonoBehaviour
 {
@@ -38,7 +39,7 @@ public class InventorySystem : MonoBehaviour
         }
         inventoryInitialized.Invoke(inventory);
     }
-    
+
     // Adds item to inventory, item is an IObject
     public void AddItem(IObject item)
     {
