@@ -47,7 +47,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyData: {fileID: 11400000, guid: e8990d9569c4ffb4e947ffdfcf8e0d50, type: 2}
-  Abilities: []
+  Abilities:
+  - name: Venomous Lunge
+    damage: 95
+    probability: 5
+    cooldown: 20
+    chargeTime: 10
+  - name: Venomous Bite
+    damage: 30
+    probability: 3
+    cooldown: 10
+    chargeTime: 3
 --- !u!33 &812626237518928243
 MeshFilter:
   m_ObjectHideFlags: 0
