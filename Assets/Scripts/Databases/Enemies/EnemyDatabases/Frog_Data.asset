@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7626bf917f99fb640a16e980949ea3b2, type: 3}
-  m_Name: Spider_Data
+  m_Name: Frog_Data
   m_EditorClassIdentifier: 
-  Name: Spider
-  Health: 20
-  Speed: 20
-  Damage: 8
+  Name: Frog
+  Health: 100
+  Speed: 5
+  Damage: 5
