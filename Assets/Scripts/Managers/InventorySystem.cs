@@ -48,7 +48,7 @@ public class InventorySystem : MonoBehaviour
         }
         else
         {
-            inventory.Add(item);
+            inventory.Add(item.Clone());
             item.Count++;
         }
         onInventoryChanged.Invoke(item);
