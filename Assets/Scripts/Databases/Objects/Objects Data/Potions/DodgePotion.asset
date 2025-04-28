@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a00bc6df37138254dbec5cb1c147f65f, type: 3}
   m_Name: DodgePotion
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
-  potionName: 
+  icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  potionName: Manaos
   _count: 1
   typeOfEffect: 0

@@ -49,15 +49,15 @@ MonoBehaviour:
   enemyData: {fileID: 11400000, guid: 9dde95e3e6b08a04bb2c3be3854cf317, type: 2}
   Abilities:
   - name: Lunge
-    damage: 80
+    damage: 10
     probability: 4
     cooldown: 20
-    chargeTime: 5
+    chargeTime: 30
   - name: Bite
-    damage: 40
+    damage: 10
     probability: 2
     cooldown: 10
-    chargeTime: 2
+    chargeTime: 20
 --- !u!33 &5835730096161061967
 MeshFilter:
   m_ObjectHideFlags: 0

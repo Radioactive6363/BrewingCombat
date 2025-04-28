@@ -198,7 +198,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &207649670
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3367,6 +3367,10 @@ PrefabInstance:
       propertyPath: abilityTimerBar
       value: 
       objectReference: {fileID: 369555118}
+    - target: {fileID: 2829329306826681992, guid: 03256b7e3fb5f594282174eb41a976d6, type: 3}
+      propertyPath: potionTimerGameObject
+      value: 
+      objectReference: {fileID: 207649669}
     - target: {fileID: 6517053918651868659, guid: 03256b7e3fb5f594282174eb41a976d6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

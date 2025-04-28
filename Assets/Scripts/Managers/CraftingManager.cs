@@ -10,7 +10,7 @@ public class CraftingManager : MonoBehaviour
     public void GetPotion(IStack ingredientStack)
     {
         PotionSO potionCrafted = TryToCraftWithStack(ingredientStack);
-        FindFirstObjectByType<InventorySystem>().AddItem(potionCrafted);
+        FindFirstObjectByType<InventorySystem>().AddItem(potionCrafted as IObject);
     }
     
     // Desde la pila

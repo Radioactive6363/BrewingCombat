@@ -9,6 +9,7 @@ public class CombatManager : MonoBehaviour
     private float playerMaxHealth = 100;
     private float playerHealth;
     [SerializeField] private Image abilityTimerBar;
+    [SerializeField] private GameObject potionTimerGameObject;
     [SerializeField] private Image potionTimerBar;
     [SerializeField] private Image healthBar;
     [SerializeField] private GameObject enemySpawn;
@@ -79,18 +80,18 @@ public class CombatManager : MonoBehaviour
         currentAbility = currentEnemy.DequeueAbility();
         float abilityTimer = currentAbility.chargeTime;
         float timeLeft = abilityTimer + Time.time;
-        while (Time.time < timeLeft)
+        while (Time.time <= timeLeft)
         {
             abilityTimerBar.fillAmount = (timeLeft - Time.time) / abilityTimer;
             yield return null;
         }
         DealDamageToPlayer(currentAbility.damage);
         abilityTimerBar.fillAmount = 0f; 
-        //currentAbility = null;
     }
 
     public void PotionUsed(PotionSO potion)
     {
+        potionTimerGameObject.SetActive(true);
         StartCoroutine(PotionTimer(potion));
     }
     
@@ -109,7 +110,7 @@ public class CombatManager : MonoBehaviour
     
     private void DealDamageToPlayer(int damage)
     {
-        healthBar.fillAmount = playerHealth-damage / playerMaxHealth;
+        healthBar.fillAmount = (playerHealth-damage) / playerMaxHealth;
         playerHealth -= damage;
     }
     
