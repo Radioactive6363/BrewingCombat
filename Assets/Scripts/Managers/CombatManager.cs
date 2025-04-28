@@ -71,7 +71,7 @@ public class CombatManager : MonoBehaviour
     private IEnumerator ExecuteEnemyAbility()
     {
         //Basic Timing System using Time.time (real time unity)
-        currentAbility = currentEnemy.GetRandomAbility();
+        currentAbility = currentEnemy.DequeueAbility();
         float abilityTimer = currentAbility.chargeTime;
         float timeLeft = abilityTimer + Time.time;
         while (Time.time < timeLeft)

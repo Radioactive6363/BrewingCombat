@@ -14,10 +14,10 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
-  m_Fog: 0
-  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_Fog: 1
+  m_FogColor: {r: 0.41960788, g: 0.4784314, b: 0.627451, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.01
+  m_FogDensity: 0.035
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: bbe9494f815f3c340956427c884b72a0, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 135a7036ca1a07b4e9e162d80e6b6e77, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -484,12 +484,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1debba0f7eaf62f4f9f06e7a24ebc65a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerSpawnBlock: {x: 0, y: 0, z: 0}
+  playerPrefab: {fileID: 4146267466112066220, guid: 47078802100740b4c9956eacd6299802, type: 3}
+  playerSpawnOffset: {x: 0, y: 1.25, z: 0}
   dirtBlock: {fileID: 4617629360282063968, guid: 3c4e9977a4ebef74994762343983eba6, type: 3}
   dirtParent: {fileID: 980140025}
-  dirtAreaSize: {x: 12, y: 12}
+  dirtAreaSize: {x: 11, y: 11}
   dirtSeparationAmount: 1.1
+  trees:
+  - {fileID: 5088556844951899068, guid: dabb16abe2a0e2a4fa2511159b649b06, type: 3}
+  - {fileID: 4489246020890687554, guid: 35981c11dd0b23e4982bf682896a73b3, type: 3}
+  - {fileID: 5595755941503838729, guid: a9f5b6f4912bb844a9d3100f83a4739b, type: 3}
   obstacleChance: 5
-  secondsPerBlock: 0.03
 --- !u!1 &1607103628
 GameObject:
   m_ObjectHideFlags: 0
