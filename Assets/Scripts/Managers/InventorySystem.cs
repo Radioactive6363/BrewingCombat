@@ -1,24 +1,57 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class InventorySystem
+public class InventorySystem : MonoBehaviour
 {
-    private List<IObject> inventory = new List<IObject>();
+    [SerializeField] private ObjectDatabase objectDatabaseStart;
+    public static InventorySystem instanceInventorySystem; // Singleton
+    public List<IObject> inventory;
+    public UnityEvent<IObject> onInventoryChanged;
+    public UnityEvent<List<IObject>> inventoryInitialized;
 
+    private void Awake()
+    {
+        if (instanceInventorySystem == null)
+        {
+            instanceInventorySystem = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+    
+    private void Start()
+    {
+        inventory = new List<IObject>();
+        foreach (var item in objectDatabaseStart.objects)
+        {
+            if (item is IObject obj)
+            {
+                inventory.Add(obj.Clone());
+            }
+        }
+        inventoryInitialized.Invoke(inventory);
+    }
+    
     // Adds item to inventory, item is an IObject
     public void AddItem(IObject item)
     {
         if (inventory.Contains(item))
         {
-            item.count++;
+            item.Count++;
         }
         else
         {
             inventory.Add(item);
-            item.count++;
+            item.Count++;
         }
+        onInventoryChanged.Invoke(item);
     }
 
     // Removes item from inventory, item is an IObject
@@ -26,38 +59,40 @@ public class InventorySystem
     {
         if (inventory.Contains(item))
         {
-            item.count--;
-            if (item.count <= 0)
+            item.Count--;
+            if (item.Count <= 0)
             {
                 inventory.Remove(item);
             }
+            onInventoryChanged.Invoke(item);
         }
         else
         {
-            Debug.LogWarning("The item " + item.name + " doesnt exist in the inventory.");
+            Debug.LogWarning("The item " + item.Name + " doesnt exist in the inventory.");
         }
     }
 
     // Removes all instances of one item from the inventory, items are IObjects
-    public void CompletelyRemoveItem(IObject itemToRemove)
+    private void CompletelyRemoveItem(IObject itemToRemove)
     {
         if (inventory.Contains(itemToRemove))
         {
-            itemToRemove.count = 0;
+            itemToRemove.Count = 0;
             inventory.Remove(itemToRemove);
+            onInventoryChanged.Invoke(itemToRemove);
         }
         else
         {
-            Debug.LogWarning("The item " + itemToRemove.name + " doesnt exist in the inventory.");
+            Debug.LogWarning("The item " + itemToRemove.Name + " doesnt exist in the inventory.");
         }
     }
 
     // Gets the count of a certain item in the inventory
-    public int GetItemCount(IObject item)
+    private int GetItemCount(IObject item)
     {
         if (inventory.Contains(item))
         {
-            return item.count;
+            return item.Count;
         }
         else
         {
@@ -66,7 +101,7 @@ public class InventorySystem
     }
 
     // Returns all items of a certain ObjectType, multiple ObjectTypes can be entered at once to get the items of two or more ObjectTypes. If no objectTypes are provided, we simply get all of them.
-    public List<IObject> GetItemsOfType(params ObjectType[] objectTypes)
+    private List<IObject> GetItemsOfType(params ObjectType[] objectTypes)
     {
         HashSet<ObjectType> typesToFind;
 
@@ -81,6 +116,6 @@ public class InventorySystem
         }
 
         // Use LINQ to efficiently filter the inventory based on the types to find
-        return inventory.Where(item => typesToFind.Contains(item.type)).ToList();
+        return inventory.Where(item => typesToFind.Contains(item.ObjectType)).ToList();
     }
 }

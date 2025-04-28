@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum ObjectType
@@ -9,9 +10,11 @@ public enum ObjectType
 
 public interface IObject
 {
-    public Sprite sprite { get; set; }
-    public string name { get; set; }
-    public ObjectType type { get; set; }
-    public int id { get; set; }
-    public int count { get; set; }
+    public Sprite Sprite { get; }
+    public string Name { get; }
+    public ObjectType ObjectType { get; }
+    public int Id { get; }
+    public int Count { get; set; }
+
+    public IObject Clone();
 }
