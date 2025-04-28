@@ -6,6 +6,8 @@ using static Unity.Collections.AllocatorManager;
 
 public class MapPlayerClass : MonoBehaviour
 {
+    public bool canMove = true;
+
     private Dictionary<Vector3, BlockType> blockCoordinateSystem = new Dictionary<Vector3, BlockType>();
     private Vector3 playerSpawnOffset = Vector3.zero;
     private Vector3 currentBlock = Vector3.zero;
@@ -42,6 +44,8 @@ public class MapPlayerClass : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!canMove) return;
+
         if (!playerMoving)
         {
             movementXZ = Vector3.zero;

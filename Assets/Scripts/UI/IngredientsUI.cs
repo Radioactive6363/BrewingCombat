@@ -10,7 +10,7 @@ public class IngredientsUI : MonoBehaviour
     private Dictionary<IObject, GameObject> gameObjectInventory;
     [SerializeField] private GameObject objectUIPrefab;
 
-    private void Awake()
+    private void Start()
     {
         gameObjectInventory = new Dictionary<IObject, GameObject>();
         inventoryManager = FindFirstObjectByType<InventorySystem>();

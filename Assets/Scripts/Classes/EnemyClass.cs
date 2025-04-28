@@ -28,7 +28,7 @@ public class EnemyClass : MonoBehaviour, IAbilityQueue
 
     public void Initialize(EnemyData data)
     {
-        enemyData = data;
+        enemyData = data.Clone();
     }
 
     private void SetupEnemyData()

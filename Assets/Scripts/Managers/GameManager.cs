@@ -21,6 +21,7 @@ public class GameManager: MonoBehaviour
     // Cambiar a una escena
     public void LoadScene(string sceneName)
     {
+        Debug.Log("Loading Scene: " + sceneName);
         SceneManager.LoadScene(sceneName);
         FindFirstObjectByType<InventorySystem>().OnChangedScene();
     }

@@ -17,6 +17,7 @@ public class CombatManager : MonoBehaviour
     [SerializeField] private Image potionTimerBar;
     [SerializeField] private Image healthBar;
     [SerializeField] private GameObject enemySpawn;
+    [SerializeField] private MapPlayerClass mapPlayer;
     public EnemyDatabaseScriptable availableEnemies;
     private EnemyClass currentEnemy;
     private AbilityStruct currentAbility;
@@ -111,14 +112,27 @@ public class CombatManager : MonoBehaviour
             Debug.Log("Player received " + damage + " damage");
             if (playerHealth <= 0)
             {
+                if (mapPlayer != null)
+                {
+                    mapPlayer.PlayAnimation("Death");
+                }
+
                 if (GameManager.Instance != null)
                 {
-                    GameManager.Instance.LoadScene("GameOver");
+                    StartCoroutine(WaitToLoadScene("GameOver"));
                 }
+            }
+            else if (mapPlayer != null)
+            {
+                mapPlayer.PlayAnimation("Hit");
             }
         }
         else
         {
+            if (mapPlayer != null)
+            {
+                mapPlayer.PlayAnimation("Dodge");
+            }
             Debug.Log("Player Dodged the Attack!");
         }
     }
@@ -211,13 +225,22 @@ public class CombatManager : MonoBehaviour
         Debug.Log("Enemy has " + currentEnemy.enemyData.Health + " Health");
         if (currentEnemy.enemyData.Health <= 0)
         {
+            currentEnemy.AnimateEnemy("Death");
+
             if (GameManager.Instance != null)
             {
-                GameManager.Instance.LoadScene("VictoryScreen");
+                StartCoroutine(WaitToLoadScene("VictoryScreen"));
             }
         }
     }
     
+    private IEnumerator WaitToLoadScene(string sceneToLoad)
+    {
+        yield return new WaitForSeconds(1f);
+
+        GameManager.Instance.LoadScene(sceneToLoad);
+    }
+
     private void ShieldPlayer(int potency)
     {
         playerDefense += potency / 2;
