@@ -15,6 +15,6 @@ MonoBehaviour:
   sprite: {fileID: -891127722, guid: 638aa2d0385290248b611f70fce6c394, type: 3}
   IngredientName: Black Flower
   type: 3
-  potency: 10
-  chargeTime: 3
+  potency: 5
+  chargeTime: 1.2
   _count: 5
