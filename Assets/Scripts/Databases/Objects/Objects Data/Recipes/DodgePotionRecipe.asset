@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Dodge Potion
   level: 1
-  potionEffectType: 0
+  potionEffectType: 2
   result: {fileID: 11400000, guid: 411c79dfaa328dc4fb57bb9b54c0a692, type: 2}
   ingredientsByID: []
   ingredientsByType: 030000000100000004000000

@@ -22,6 +22,7 @@ public class GameManager: MonoBehaviour
     public void LoadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
+        FindFirstObjectByType<InventorySystem>().OnChangedScene();
     }
 
     // Cambiar a una escena por su índice

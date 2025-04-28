@@ -68,7 +68,7 @@ public class CraftingManager : MonoBehaviour
                     { 
                         Debug.Log("¡Receta encontrada! Creaste: " + recipeOS.name);
                         PotionSO potionCreated = recipeOS.result;
-                        potionCreated.typeOfEffect = recipeOS.PotionEffectType;
+                        potionCreated.EffectType = recipeOS.PotionEffectType;
                         foreach (var ing in stackIngredients)
                         {
                             potionCreated.Potency += ing.Potency;

@@ -130,7 +130,7 @@ public class CombatManager : MonoBehaviour
     
     private void ExecutePotion(PotionSO potion)
     {
-        switch (potion.typeOfEffect)
+        switch (potion.EffectType)
         {
             case(PotionEffectType.DamagePotion):
                 EnemyEffect(potion);
@@ -161,7 +161,7 @@ public class CombatManager : MonoBehaviour
 
     private void PlayerEffect(PotionSO potion)
     {
-        switch (potion.typeOfEffect)
+        switch (potion.EffectType)
         {
             case(PotionEffectType.HealingPotion):
                 HealDamageToPlayer(potion.Potency);
@@ -177,7 +177,7 @@ public class CombatManager : MonoBehaviour
     
     private void EnemyEffect(PotionSO potion)
     {
-        switch (potion.typeOfEffect)
+        switch (potion.EffectType)
         {
             case(PotionEffectType.DamagePotion):
                 DamageEnemyViaPotion(potion.Potency);

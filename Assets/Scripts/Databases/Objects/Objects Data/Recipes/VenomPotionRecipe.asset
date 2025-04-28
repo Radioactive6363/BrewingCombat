@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Venom Potion
   level: 1
-  potionEffectType: 0
+  potionEffectType: 7
   result: {fileID: 11400000, guid: 81c9528470a96834fbe53076de6c5cab, type: 2}
   ingredientsByID: []
   ingredientsByType: 020000000000000004000000

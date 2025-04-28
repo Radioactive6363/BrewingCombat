@@ -40,6 +40,11 @@ public class InventorySystem : MonoBehaviour
         inventoryInitialized.Invoke(inventory);
     }
 
+    public void OnChangedScene()
+    {
+        inventoryInitialized.Invoke(inventory);
+    }
+
     // Adds item to inventory, item is an IObject
     public void AddItem(IObject item)
     {
