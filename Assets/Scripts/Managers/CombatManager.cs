@@ -2,12 +2,15 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class CombatManager : MonoBehaviour
 {
     private static CombatManager Instance;
     private float playerMaxHealth = 100;
     private float playerHealth;
+    private float playerDefense = 2;
+    private float playerDodge = 20;
     [SerializeField] private Image abilityTimerBar;
     [SerializeField] private GameObject potionTimerGameObject;
     [SerializeField] private Image potionTimerBar;
@@ -94,7 +97,8 @@ public class CombatManager : MonoBehaviour
     public void PotionUsed(PotionSO potion)
     {
         potionTimerGameObject.SetActive(true);
-        StartCoroutine(PotionTimer(potion));
+        PotionSO potionToUse = potion;
+        StartCoroutine(PotionTimer(potionToUse));
     }
     
     private IEnumerator PotionTimer(PotionSO potion)
@@ -112,8 +116,16 @@ public class CombatManager : MonoBehaviour
     
     private void DealDamageToPlayer(int damage)
     {
-        healthBar.fillAmount = (playerHealth-damage) / playerMaxHealth;
-        playerHealth -= damage;
+        if (playerDodge <= Random.Range(0, 100))
+        {
+            healthBar.fillAmount = (playerHealth-(damage-playerDefense)) / playerMaxHealth;
+            playerHealth -= damage;
+            Debug.Log("Player received " + damage + " damage");
+        }
+        else
+        {
+            Debug.Log("Player Dodged the Attack!");
+        }
     }
     
     private void ExecutePotion(PotionSO potion)
@@ -121,22 +133,115 @@ public class CombatManager : MonoBehaviour
         switch (potion.typeOfEffect)
         {
             case(PotionEffectType.DamagePotion):
+                EnemyEffect(potion);
                 break;
             case(PotionEffectType.DodgePotion):
+                PlayerEffect(potion);
                 break;
             case(PotionEffectType.ShieldPotion):
+                PlayerEffect(potion);
                 break;
             case(PotionEffectType.HealingPotion):
+                PlayerEffect(potion);
                 break;
             case(PotionEffectType.VenomPotion):
+                EnemyEffect(potion);
                 break;
             case(PotionEffectType.EarthElemental):
+                EnemyEffect(potion);
                 break;
             case(PotionEffectType.WaterElemental):
+                EnemyEffect(potion);
                 break;
             case(PotionEffectType.FireElemental):
+                EnemyEffect(potion);
                 break; 
         }
+    }
+
+    private void PlayerEffect(PotionSO potion)
+    {
+        switch (potion.typeOfEffect)
+        {
+            case(PotionEffectType.HealingPotion):
+                HealDamageToPlayer(potion.Potency);
+                break;
+            case(PotionEffectType.ShieldPotion):
+                ShieldPlayer(potion.Potency);
+                break;
+            case(PotionEffectType.DodgePotion):
+                DodgePlayer(potion.Potency);
+                break;
+        }
+    }
+    
+    private void EnemyEffect(PotionSO potion)
+    {
+        switch (potion.typeOfEffect)
+        {
+            case(PotionEffectType.DamagePotion):
+                DamageEnemyViaPotion(potion.Potency);
+                break;
+            case(PotionEffectType.VenomPotion):
+                VenomEnemyViaPotion(potion.Potency);
+                break;
+            case(PotionEffectType.EarthElemental):
+                EarthElementalDamage(potion.Potency);
+                break;
+            case(PotionEffectType.WaterElemental):
+                WaterElementalDamage(potion.Potency);
+                break;
+            case(PotionEffectType.FireElemental):
+                FireElementalDamage(potion.Potency);
+                break; 
+        }
+    }
+    
+    private void HealDamageToPlayer(int potency)
+    {
+        healthBar.fillAmount = (playerHealth+potency) / playerMaxHealth;
+        playerHealth += potency;
+        Debug.Log("Player healed!");
+    }
+    
+    private void ShieldPlayer(int potency)
+    {
+        playerDefense += potency / 2;
+        Debug.Log("Player defence Increased to " + playerDefense);
+    }
+    
+    private void DodgePlayer(int potency)
+    {
+        playerDodge += potency / 2;
+        Debug.Log("Player dodge increased to " + playerDodge);
+    }
+    
+    private void DamageEnemyViaPotion(int potency)
+    {
+        currentEnemy.enemyData.Health -= potency;
+        Debug.Log("Enemy received" + potency + " Damage");
+    }
+    
+    private void VenomEnemyViaPotion(int potency)
+    {
+        currentEnemy.enemyData.Health -= potency / 2;
+        Debug.Log("Enemy received" + potency + " Damage");
+    }
+    
+    private void EarthElementalDamage(int potency)
+    {
+        currentEnemy.enemyData.Health -= potency / 2;
+        Debug.Log("Enemy received" + potency + " Damage");
+    }
+    private void WaterElementalDamage(int potency)
+    {
+        currentEnemy.enemyData.Health -= potency / 2;
+        Debug.Log("Enemy received" + potency + " Damage");
+    }
+    private void FireElementalDamage(int potency)
+    {
+        currentEnemy.enemyData.Health -= potency / 2;
+        Debug.Log("Enemy received" + potency + " Damage");
     }
 }
 

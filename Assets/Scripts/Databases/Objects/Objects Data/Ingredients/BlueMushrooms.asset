@@ -16,5 +16,5 @@ MonoBehaviour:
   IngredientName: Blue Mushrooms
   type: 1
   potency: 5
-  chargeTime: 3
+  chargeTime: 2
   _count: 5

@@ -15,6 +15,6 @@ MonoBehaviour:
   sprite: {fileID: 1028668337, guid: 8a76eb3d3833cf845a9d6f70794c5e9e, type: 3}
   IngredientName: Green Beetle
   type: 2
-  potency: 5
-  chargeTime: 2
+  potency: 3
+  chargeTime: 1.5
   _count: 5

@@ -15,6 +15,6 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: 26b4d8692c5e74d17bd9dc28bcbe961b, type: 3}
   IngredientName: Blueberry
   type: 1
-  potency: 15
-  chargeTime: 5
+  potency: 4
+  chargeTime: 1.4
   _count: 5
