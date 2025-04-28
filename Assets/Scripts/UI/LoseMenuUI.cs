@@ -6,6 +6,7 @@ public class LoseMenuUI : MonoBehaviour
     {
         if (GameManager.Instance != null)
         {
+            GameRestarted();
             GameManager.Instance.LoadScene("MapSelection");
         }
     }
@@ -16,5 +17,10 @@ public class LoseMenuUI : MonoBehaviour
         {
             GameManager.Instance.LoadScene("MainMenu");
         }
+    }
+
+    private void GameRestarted()
+    {
+        GameManager.Instance.OnGameRestart?.Invoke();
     }
 }

@@ -16,6 +16,11 @@ public class InventorySystem : MonoBehaviour
 
     private void Awake()
     {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnGameRestart.AddListener(DestroyInventorySystem);
+        }
+        
         if (instanceInventorySystem == null)
         {
             instanceInventorySystem = this;
@@ -38,6 +43,11 @@ public class InventorySystem : MonoBehaviour
             }
         }
         inventoryInitialized.Invoke(inventory);
+    }
+
+    private void DestroyInventorySystem()
+    {
+        Destroy(this.gameObject);
     }
 
     public void OnChangedScene()

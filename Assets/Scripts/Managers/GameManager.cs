@@ -5,6 +5,8 @@ public class GameManager: MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    public UnityEvent OnGameRestart;
+
     private void Awake()
     {
         if (Instance == null)
@@ -51,5 +53,10 @@ public class GameManager: MonoBehaviour
     {
         Debug.Log("Cerrando el juego...");
         Application.Quit();
+    }
+
+    public void GameRestartInvoke()
+    {
+        OnGameRestart?.Invoke();
     }
 }
