@@ -13,8 +13,6 @@ MonoBehaviour:
   m_Name: Spider_Data
   m_EditorClassIdentifier: 
   Name: Spider
-  Health: 25
-  Speed: 2
-  Damage: 2
-  enemyMesh: {fileID: 3938233431788777315, guid: c702044e8b7b7de4d96c5af2d585d4d4, type: 3}
-  enemyMaterial: []
+  Health: 20
+  Speed: 20
+  Damage: 8

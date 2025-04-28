@@ -8,7 +8,5 @@ public class EnemyData : ScriptableObject
     public int Health;
     public float Speed; 
     public float Damage; 
-    public Mesh enemyMesh;
-    public List<Material> enemyMaterial;
 }
 

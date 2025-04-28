@@ -48,7 +48,7 @@ public class CombatManager : MonoBehaviour
         GameObject enemyPrefab = availableEnemies.enemies[randomIndex];
         
         // Instantiate the enemy prefab in the scene
-        GameObject spawnedEnemy = Instantiate(enemyPrefab, enemySpawn.transform.position, Quaternion.identity);
+        GameObject spawnedEnemy = Instantiate(enemyPrefab, enemySpawn.transform.position, enemyPrefab.transform.rotation);
         
         // Get the EnemyClass component from the instantiated prefab
         EnemyClass enemy = spawnedEnemy.GetComponent<EnemyClass>();
@@ -86,7 +86,9 @@ public class CombatManager : MonoBehaviour
             yield return null;
         }
         DealDamageToPlayer(currentAbility.damage);
-        abilityTimerBar.fillAmount = 0f; 
+        abilityTimerBar.fillAmount = 0f;
+
+        currentEnemy.AnimateEnemy(currentAbility.animationName);
     }
 
     public void PotionUsed(PotionSO potion)
