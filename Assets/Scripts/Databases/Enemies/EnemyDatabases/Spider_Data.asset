@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Spider_Data
   m_EditorClassIdentifier: 
   Name: Spider
-  Health: 100
+  Health: 20
   Speed: 20
   Damage: 8

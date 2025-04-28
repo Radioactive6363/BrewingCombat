@@ -15,6 +15,6 @@ MonoBehaviour:
   sprite: {fileID: 1602527728, guid: 714f28a37410a154fa79182c7de34dad, type: 3}
   IngredientName: Green Fern
   type: 2
-  potency: 5
+  potency: 4
   chargeTime: 1.2
   _count: 5

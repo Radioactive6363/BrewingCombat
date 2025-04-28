@@ -7,15 +7,15 @@ public class GameManager: MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
+        if (Instance != null && Instance != this)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); // Avoids destroying this object when reloading scene
+            Destroy(gameObject);
+            return;
         }
-        else
-        {
-            Destroy(gameObject); // If instance already exists, destroy this one
-        }
+
+        // Crear instancia 
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     // Cambiar a una escena

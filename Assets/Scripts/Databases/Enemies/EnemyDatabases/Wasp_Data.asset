@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Wasp_Data
   m_EditorClassIdentifier: 
   Name: Wasp
-  Health: 100
+  Health: 40
   Speed: 25
   Damage: 3

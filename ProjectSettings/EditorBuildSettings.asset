@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: a5186969fd6782f48a17277b3af4c07d
   - enabled: 1
-    path: Assets/Scenes/GameOver.unity
+    path: Assets/Scenes/LoseScreen.unity
     guid: b042b9024ccd49c47a2896a25f0af8fc
   - enabled: 1
     path: Assets/Scenes/MapSelection.unity

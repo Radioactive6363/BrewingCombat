@@ -15,6 +15,6 @@ MonoBehaviour:
   sprite: {fileID: -1930065238, guid: 24ba8d6daff6023449d4789aa781fac6, type: 3}
   IngredientName: Red Beetle
   type: 0
-  potency: 4
+  potency: 3
   chargeTime: 1.5
   _count: 5
