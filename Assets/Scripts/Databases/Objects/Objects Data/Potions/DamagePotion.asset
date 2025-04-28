@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a00bc6df37138254dbec5cb1c147f65f, type: 3}
   m_Name: DamagePotion
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
+  icon: {fileID: -2048320319, guid: 25cee8a28474f124ba48d5bf2d4b96fa, type: 3}
   potionName: Damage Potion
-  _count: 1
+  _count: 0
   typeOfEffect: 0

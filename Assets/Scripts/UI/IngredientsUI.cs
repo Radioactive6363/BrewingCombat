@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,8 +9,8 @@ public class IngredientsUI : MonoBehaviour
     private List<IObject> managerOnStartInventory;
     private Dictionary<IObject, GameObject> gameObjectInventory;
     [SerializeField] private GameObject objectUIPrefab;
-    
-    private void Awake()
+
+    private void Start()
     {
         gameObjectInventory = new Dictionary<IObject, GameObject>();
         inventoryManager = FindFirstObjectByType<InventorySystem>();
@@ -49,6 +50,13 @@ public class IngredientsUI : MonoBehaviour
             {
                 gameObject.GetComponent<ObjectUIScript>().UpdateQuantity();
             }
+        }
+        else
+        {
+            GameObject item = Instantiate(objectUIPrefab, transform);
+            item.GetComponent<ObjectUIScript>().ObjectContained = objectToUpdate;
+            gameObjectInventory.Add(objectToUpdate, item);
+            
         }
     }
 }

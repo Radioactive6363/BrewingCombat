@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a00bc6df37138254dbec5cb1c147f65f, type: 3}
   m_Name: ShieldPotion
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
-  potionName: 
-  _count: 1
-  typeOfEffect: 0
+  icon: {fileID: -1684260788, guid: 4954754421720ae41b3a6448a79dd359, type: 3}
+  potionName: ShieldPotion
+  _count: 0
+  typeOfEffect: 6

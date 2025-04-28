@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a00bc6df37138254dbec5cb1c147f65f, type: 3}
   m_Name: VenomPotion
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
-  potionName: 
-  _count: 1
-  typeOfEffect: 0
+  icon: {fileID: 91551452, guid: 4bc61bb858e8f0e439c62307ea359ff5, type: 3}
+  potionName: VenomPotion
+  _count: 0
+  typeOfEffect: 7

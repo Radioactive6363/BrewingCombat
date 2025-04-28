@@ -10,7 +10,7 @@ public class CraftingManager : MonoBehaviour
     public void GetPotion(IStack ingredientStack)
     {
         PotionSO potionCrafted = TryToCraftWithStack(ingredientStack);
-        FindFirstObjectByType<InventorySystem>().AddItem(potionCrafted as IObject);
+        FindFirstObjectByType<InventorySystem>().AddItem(potionCrafted);
     }
     
     // Desde la pila
@@ -72,7 +72,7 @@ public class CraftingManager : MonoBehaviour
                         foreach (var ing in stackIngredients)
                         {
                             potionCreated.Potency += ing.Potency;
-                            potionCreated.ChargeTime = ing.ChargeTime;
+                            potionCreated.ChargeTime += ing.ChargeTime;
                         }
                         return potionCreated;
                     }

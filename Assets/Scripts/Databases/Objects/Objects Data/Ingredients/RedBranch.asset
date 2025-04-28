@@ -15,4 +15,6 @@ MonoBehaviour:
   sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   IngredientName: Red Branch
   type: 0
+  potency: 7
+  chargeTime: 4
   _count: 5

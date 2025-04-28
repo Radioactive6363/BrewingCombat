@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 200673350, guid: 4c3a665ca9336994a9c99b482f667e66, type: 3}
   potionName: Fire Potion
-  _count: 1
-  typeOfEffect: 5
+  _count: 0
+  typeOfEffect: 0

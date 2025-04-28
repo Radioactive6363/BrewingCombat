@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Damage Potion
   level: 1
-  result: {fileID: 0}
+  potionEffectType: 0
+  result: {fileID: 11400000, guid: ec6799a983a681843a0207b25a68b705, type: 2}
   ingredientsByID: []
   ingredientsByType: 030000000000000004000000
