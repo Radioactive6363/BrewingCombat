@@ -15,6 +15,6 @@ MonoBehaviour:
   sprite: {fileID: -1300809528, guid: c197eb2f9824271458622b42b4dad234, type: 3}
   IngredientName: Black Spider
   type: 3
-  potency: 2
+  potency: 4
   chargeTime: 3
   _count: 5
