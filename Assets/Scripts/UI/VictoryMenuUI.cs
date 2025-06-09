@@ -21,6 +21,6 @@ public class VictoryMenuUI : MonoBehaviour
 
     private void GameRestarted()
     {
-        GameManager.Instance.OnGameRestart?.Invoke();
+        GameManager.Instance.onGameRestart?.Invoke();
     }
 }

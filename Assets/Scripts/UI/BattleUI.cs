@@ -5,7 +5,7 @@ public class BattleUI : MonoBehaviour
     // The animator for the leftSidePanel GameObject. Used to move inventory to the right/left depending on if you want to open/close it.
     public Animator leftSidePanelAnimator;
 
-    private bool inventoryOn = false;
+    private bool _inventoryOn = false;
 
     private void Start()
     {
@@ -45,14 +45,14 @@ public class BattleUI : MonoBehaviour
     private void ShowInventory()
     {
         // If inventory was on and we clicked to open a panel, we close it. The opposite happens if the inventory was off.
-        if (inventoryOn)
+        if (_inventoryOn)
         {
-            inventoryOn = false;
+            _inventoryOn = false;
             leftSidePanelAnimator.Play("MoveLeft");
         }
         else
         {
-            inventoryOn = true;
+            _inventoryOn = true;
             leftSidePanelAnimator.Play("MoveRight");
         }
     }

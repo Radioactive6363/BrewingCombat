@@ -2,24 +2,24 @@ using UnityEngine;
 
 public class IngredientStack : IStack
 {
-    private IngredientSO[] a;
-    private int maxQuantity;
-    private int index;
+    private IngredientSo[] _a;
+    private int _maxQuantity;
+    private int _index;
 
-    public void InitializeStack(int Quantity)
+    public void InitializeStack(int quantity)
     {
-        maxQuantity = Quantity;
-        a = new IngredientSO[maxQuantity];
-        index = 0;
+        _maxQuantity = quantity;
+        _a = new IngredientSo[_maxQuantity];
+        _index = 0;
     }
 
-    public int StackIngredients(IngredientSO x)
+    public int StackIngredients(IngredientSo x)
     {
-        if (index < maxQuantity)
+        if (_index < _maxQuantity)
         {
-            a[index] = x;
-            index++;
-            return index;
+            _a[_index] = x;
+            _index++;
+            return _index;
         }
         else
         {
@@ -28,13 +28,13 @@ public class IngredientStack : IStack
         }
     }
 
-    public IngredientSO UnstackIngredients()
+    public IngredientSo UnstackIngredients()
     {
         if (!CheckEmptyStack())
         {
-            index--;
-            IngredientSO temp = a[index];
-            a[index] = null; // limpiar la posición
+            _index--;
+            IngredientSo temp = _a[_index];
+            _a[_index] = null; // limpiar la posición
             return temp;
         }
         else
@@ -45,18 +45,18 @@ public class IngredientStack : IStack
 
     public bool CheckEmptyStack()
     {
-        return index == 0;
+        return _index == 0;
     }
     
 
     public int ObtainQuantity()
     {
-        return index;
+        return _index;
     }
     
     public bool CheckFull()
     {
-        return index == maxQuantity;
+        return _index == _maxQuantity;
     }
 }
 

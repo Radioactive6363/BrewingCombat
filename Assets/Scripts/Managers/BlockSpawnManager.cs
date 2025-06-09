@@ -7,7 +7,7 @@ public class BlockSpawnManager : MonoBehaviour
 {
     public static BlockSpawnManager Instance { get; private set; }
 
-    public Dictionary<Vector3, BlockType> blockCoordinateSystem = new Dictionary<Vector3, BlockType>();
+    public Dictionary<Vector3, BlockType> BlockCoordinateSystem = new Dictionary<Vector3, BlockType>();
     public Vector3 playerSpawnBlock = Vector3.zero;
 
     [Header("Player Spawning Variables")]
@@ -26,9 +26,9 @@ public class BlockSpawnManager : MonoBehaviour
     [Header("Object Density Variables")]
     public int obstacleChance;
 
-    private bool spawnedNavPointLeft = false;
-    private bool spawnedNavPointRight = false;
-    private bool spawnedNavPointForward = false;
+    private bool _spawnedNavPointLeft = false;
+    private bool _spawnedNavPointRight = false;
+    private bool _spawnedNavPointForward = false;
 
     private void Awake()
     {
@@ -63,12 +63,12 @@ public class BlockSpawnManager : MonoBehaviour
                 {
                     playerSpawnBlock = dirtParent.position + Vector3.right * dirtSeparationAmount * j + Vector3.forward * dirtSeparationAmount * i;
                     Instantiate(playerPrefab, playerSpawnBlock + playerSpawnOffset, Quaternion.identity);
-                    blockCoordinateSystem.Add(playerSpawnBlock, BlockType.Normal);
+                    BlockCoordinateSystem.Add(playerSpawnBlock, BlockType.Normal);
                     continue;
                 }
                 else if (i != 0 && j == 0 || j == dirtAreaSize.x - 1)
                 {
-                    if (spawnedNavPointLeft && j == 0 || spawnedNavPointRight && j == dirtAreaSize.x - 1)
+                    if (_spawnedNavPointLeft && j == 0 || _spawnedNavPointRight && j == dirtAreaSize.x - 1)
                     {
                         block.Init(0, (int)Random.Range(1f, obstacleChance));
                     }
@@ -78,15 +78,15 @@ public class BlockSpawnManager : MonoBehaviour
 
                         if (j == 0 && block.CheckSpawnNavPoint())
                         {
-                            spawnedNavPointLeft = true;
+                            _spawnedNavPointLeft = true;
                         }
                         else if (j == dirtAreaSize.x - 1 && block.CheckSpawnNavPoint())
                         {
-                            spawnedNavPointRight = true;
+                            _spawnedNavPointRight = true;
                         }
                     }
                 }
-                else if (j < dirtAreaSize.x - 1 && i != dirtAreaSize.y - 1 || spawnedNavPointForward)
+                else if (j < dirtAreaSize.x - 1 && i != dirtAreaSize.y - 1 || _spawnedNavPointForward)
                 {
                     block.Init(0, (int)Random.Range(1f, obstacleChance));
                 }
@@ -96,21 +96,21 @@ public class BlockSpawnManager : MonoBehaviour
 
                     if (block.CheckSpawnNavPoint())
                     {
-                        spawnedNavPointForward = true;
+                        _spawnedNavPointForward = true;
                     }
                 }
 
                 if (block.CheckSpawnNavPoint())
                 {
-                    blockCoordinateSystem.Add(dirtParent.position + Vector3.right * dirtSeparationAmount * j + Vector3.forward * dirtSeparationAmount * i, BlockType.NavigationPoint);
+                    BlockCoordinateSystem.Add(dirtParent.position + Vector3.right * dirtSeparationAmount * j + Vector3.forward * dirtSeparationAmount * i, BlockType.NavigationPoint);
                 }
                 else if (block.CheckSpawnObsPoint())
                 {
-                    blockCoordinateSystem.Add(dirtParent.position + Vector3.right * dirtSeparationAmount * j + Vector3.forward * dirtSeparationAmount * i, BlockType.Obstructed);
+                    BlockCoordinateSystem.Add(dirtParent.position + Vector3.right * dirtSeparationAmount * j + Vector3.forward * dirtSeparationAmount * i, BlockType.Obstructed);
                 }
                 else
                 {
-                    blockCoordinateSystem.Add(dirtParent.position + Vector3.right * dirtSeparationAmount * j + Vector3.forward * dirtSeparationAmount * i, BlockType.Normal);
+                    BlockCoordinateSystem.Add(dirtParent.position + Vector3.right * dirtSeparationAmount * j + Vector3.forward * dirtSeparationAmount * i, BlockType.Normal);
                 }
             }
         }

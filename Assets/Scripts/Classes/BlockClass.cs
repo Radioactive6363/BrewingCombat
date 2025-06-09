@@ -19,10 +19,10 @@ public class BlockClass : MonoBehaviour
     public GameObject exchangePoint;
 
     [Header("Obstacle Points")]
-    private GameObject treePoint;
+    private GameObject _treePoint;
 
-    private bool spawnedNavigationPoint = false;
-    private bool spawnedObstaclePoint = false;
+    private bool _spawnedNavigationPoint = false;
+    private bool _spawnedObstaclePoint = false;
 
     public void Init(int navigationPointSpawnRoll, int obstacleSpawnRoll)
     {
@@ -30,34 +30,34 @@ public class BlockClass : MonoBehaviour
         {
             if (combatPoint != null)
             {
-                Instantiate(combatPoint, objectParent.position, treePoint.transform.rotation, objectParent);
+                Instantiate(combatPoint, objectParent.position, _treePoint.transform.rotation, objectParent);
             }
 
-            spawnedNavigationPoint = true;
+            _spawnedNavigationPoint = true;
         }
         else if (obstacleSpawnRoll == 1)
         {
-            if (treePoint != null)
+            if (_treePoint != null)
             {
-                Instantiate(treePoint, obstacleParent.position, treePoint.transform.rotation, obstacleParent);
+                Instantiate(_treePoint, obstacleParent.position, _treePoint.transform.rotation, obstacleParent);
             }
 
-            spawnedObstaclePoint = true;
+            _spawnedObstaclePoint = true;
         }
     }
 
     public void SetTreePoint(GameObject treePrefab)
     {
-        treePoint = treePrefab;
+        _treePoint = treePrefab;
     }
 
     public bool CheckSpawnNavPoint()
     {
-        return spawnedNavigationPoint;
+        return _spawnedNavigationPoint;
     }
 
     public bool CheckSpawnObsPoint()
     {
-        return spawnedObstaclePoint;
+        return _spawnedObstaclePoint;
     }
 }

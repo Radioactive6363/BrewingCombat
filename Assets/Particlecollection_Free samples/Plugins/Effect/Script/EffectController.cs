@@ -1,39 +1,40 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 [System.Serializable]
 public class EffectData{
-	public bool m_bFoldoutOpen = true;
+	[FormerlySerializedAs("m_bFoldoutOpen")] public bool mBFoldoutOpen = true;
 
-	public float m_fTimeSec = 0.0f;
-	public GameObject m_goEffect = null;
+	[FormerlySerializedAs("m_fTimeSec")] public float mFTimeSec = 0.0f;
+	[FormerlySerializedAs("m_goEffect")] public GameObject mGoEffect = null;
 
-	public bool m_bTransformFoldout = true;
-	public Vector3 m_goPos = new Vector3 (0, 0, 0);
-	public Vector3 m_goRotation = new Vector3 (0, 0, 0);
-	public Vector3 m_goScale = new Vector3 (1, 1, 1);
+	[FormerlySerializedAs("m_bTransformFoldout")] public bool mBTransformFoldout = true;
+	[FormerlySerializedAs("m_goPos")] public Vector3 mGoPos = new Vector3 (0, 0, 0);
+	[FormerlySerializedAs("m_goRotation")] public Vector3 mGoRotation = new Vector3 (0, 0, 0);
+	[FormerlySerializedAs("m_goScale")] public Vector3 mGoScale = new Vector3 (1, 1, 1);
 
-	public bool m_bSortingFoldout = true;
-	public int m_SortingLayerID;
-	public int m_SortingOrder;
+	[FormerlySerializedAs("m_bSortingFoldout")] public bool mBSortingFoldout = true;
+	[FormerlySerializedAs("m_SortingLayerID")] public int mSortingLayerID;
+	[FormerlySerializedAs("m_SortingOrder")] public int mSortingOrder;
 }
 
 public class EffectController : MonoBehaviour {
-	public int m_nNumOfEffects = 0;			///< 特效數量.
-	public bool m_bLockNums = false;		///< 特效數量鎖定.
+	[FormerlySerializedAs("m_nNumOfEffects")] public int mNNumOfEffects = 0;			///< 特效數量.
+	[FormerlySerializedAs("m_bLockNums")] public bool mBLockNums = false;		///< 特效數量鎖定.
 
-	public List<EffectData> m_kEffectGenList = new List<EffectData>();		///< 特效設定清單.
-	private int m_nNowIndex = 0;
+	[FormerlySerializedAs("m_kEffectGenList")] public List<EffectData> mKEffectGenList = new List<EffectData>();		///< 特效設定清單.
+	private int _mNNowIndex = 0;
 
 	void Awake()
 	{
-		for (int i = 0; i < m_kEffectGenList.Count; i++) {
-			Invoke ("GenEffect", m_kEffectGenList [i].m_fTimeSec);
+		for (int i = 0; i < mKEffectGenList.Count; i++) {
+			Invoke ("GenEffect", mKEffectGenList [i].mFTimeSec);
 		}
 
 		Comp comparer = new Comp ();			///< 時間Comparer.
-		m_kEffectGenList.Sort (comparer);		///< 依時間排序.
+		mKEffectGenList.Sort (comparer);		///< 依時間排序.
 	}
 
 	void Update()
@@ -46,18 +47,18 @@ public class EffectController : MonoBehaviour {
 	/// </summary>
 	void GenEffect()
 	{
-		EffectData effectData = m_kEffectGenList[m_nNowIndex];
+		EffectData effectData = mKEffectGenList[_mNNowIndex];
 		if (effectData == null)
 			return;
 
-		if(effectData.m_goEffect != null) {
-			GameObject go = Instantiate (effectData.m_goEffect);
+		if(effectData.mGoEffect != null) {
+			GameObject go = Instantiate (effectData.mGoEffect);
 			go.transform.parent = transform;
-			go.name = m_nNowIndex.ToString ();	///< 上編號.
-			UpdateEffectTransformByIndex (m_nNowIndex);
-			UPdateRenderLayerByIndex (m_nNowIndex);
+			go.name = _mNNowIndex.ToString ();	///< 上編號.
+			UpdateEffectTransformByIndex (_mNNowIndex);
+			UPdateRenderLayerByIndex (_mNNowIndex);
 		}
-		m_nNowIndex++;
+		_mNNowIndex++;
 	}
 
 	/// <summary>
@@ -67,16 +68,16 @@ public class EffectController : MonoBehaviour {
 	{
 		foreach (Transform tf in transform) {
 			int nIndex = int.Parse (tf.name);
-			EffectData effectData = m_kEffectGenList[nIndex];
+			EffectData effectData = mKEffectGenList[nIndex];
 			if (effectData == null)
 				return;
 
-			if (tf.position != effectData.m_goPos)
-				effectData.m_goPos = tf.position;
-			if (tf.localRotation.eulerAngles != effectData.m_goRotation)
-				effectData.m_goRotation = tf.localRotation.eulerAngles;
-			if (tf.localScale != effectData.m_goScale)
-				effectData.m_goScale = tf.localScale;
+			if (tf.position != effectData.mGoPos)
+				effectData.mGoPos = tf.position;
+			if (tf.localRotation.eulerAngles != effectData.mGoRotation)
+				effectData.mGoRotation = tf.localRotation.eulerAngles;
+			if (tf.localScale != effectData.mGoScale)
+				effectData.mGoScale = tf.localScale;
 		}
 	}
 
@@ -90,16 +91,16 @@ public class EffectController : MonoBehaviour {
 		Transform tf = this.transform.Find (nIndex.ToString());
 		if (tf == null)
 			return;
-		EffectData effectData = m_kEffectGenList[nIndex];
+		EffectData effectData = mKEffectGenList[nIndex];
 		if (effectData == null)
 			return;
 
 		/// 設定特效物件Transform.
-		tf.position = effectData.m_goPos;
+		tf.position = effectData.mGoPos;
 		Quaternion effectObjRotation = new Quaternion ();
-		effectObjRotation.eulerAngles = effectData.m_goRotation;
+		effectObjRotation.eulerAngles = effectData.mGoRotation;
 		tf.localRotation = effectObjRotation;
-		tf.localScale = effectData.m_goScale;
+		tf.localScale = effectData.mGoScale;
 	}
 
 	/// <summary>
@@ -146,14 +147,14 @@ public class EffectController : MonoBehaviour {
 		Transform tf = this.transform.Find (nIndex.ToString());
 		if (tf == null)
 			return;
-		EffectData effectData = m_kEffectGenList[nIndex];
+		EffectData effectData = mKEffectGenList[nIndex];
 		if (effectData == null)
 			return;
 
 		/// Render Layer 更新.
 		Renderer render = tf.gameObject.GetComponent<Renderer>();
-		render.sortingLayerID = effectData.m_SortingLayerID;
-		render.sortingOrder = effectData.m_SortingOrder;
+		render.sortingLayerID = effectData.mSortingLayerID;
+		render.sortingOrder = effectData.mSortingOrder;
 	}
 }
 
@@ -173,7 +174,7 @@ public class Comp : IComparer<EffectData>
 			if (y == null) {
 				return -1;
 			} else {
-				float fDiff = x.m_fTimeSec.CompareTo (y.m_fTimeSec);
+				float fDiff = x.mFTimeSec.CompareTo (y.mFTimeSec);
 				if (fDiff > 0)
 					return 1;
 				else if (fDiff < 0)

@@ -32,12 +32,12 @@ public class ObjectUIScript : MonoBehaviour
     
     public void UseObject()
     {
-        if (ObjectContained is IngredientSO ingredient)
+        if (ObjectContained is IngredientSo ingredient)
         {
             FindFirstObjectByType<InventorySystem>().RemoveItem(ingredient);
             FindFirstObjectByType<CraftingController>().IngredientReceived(ingredient);
         }
-        if (ObjectContained is PotionSO potion)
+        if (ObjectContained is PotionSo potion)
         {
             FindFirstObjectByType<InventorySystem>().RemoveItem(potion);
             FindFirstObjectByType<CombatManager>().PotionUsed(potion);

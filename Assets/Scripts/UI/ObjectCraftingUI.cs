@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class ObjectCraftingUI : MonoBehaviour
 {
-    private IngredientSO ingredientContained;
+    private IngredientSo _ingredientContained;
     [SerializeField] private GameObject objectUISprite;
     [SerializeField] private GameObject objectUIName;
 
-    public void GetObjectData(IngredientSO ingredientReceived)
+    public void GetObjectData(IngredientSo ingredientReceived)
     {
-        ingredientContained = ingredientReceived;
-        objectUISprite.GetComponent<Image>().sprite = ingredientContained.Sprite;
-        objectUIName.GetComponent<TMPro.TextMeshProUGUI>().text = ingredientContained.Name;
+        _ingredientContained = ingredientReceived;
+        objectUISprite.GetComponent<Image>().sprite = _ingredientContained.Sprite;
+        objectUIName.GetComponent<TMPro.TextMeshProUGUI>().text = _ingredientContained.Name;
     }
 }

@@ -8,9 +8,9 @@ using UnityEngine.SceneManagement;
 
 public class InventorySystem : MonoBehaviour
 {
-    [SerializeField] private ObjectDatabaseSO objectDatabaseStart;
-    public static InventorySystem instanceInventorySystem; // Singleton
-    public List<IObject> inventory;
+    [SerializeField] private ObjectDatabaseSo objectDatabaseStart;
+    public static InventorySystem InstanceInventorySystem; // Singleton
+    public List<IObject> Inventory;
     public UnityEvent<IObject> onInventoryChanged;
     public UnityEvent<List<IObject>> inventoryInitialized;
 
@@ -18,12 +18,12 @@ public class InventorySystem : MonoBehaviour
     {
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.OnGameRestart.AddListener(DestroyInventorySystem);
+            GameManager.Instance.onGameRestart.AddListener(DestroyInventorySystem);
         }
         
-        if (instanceInventorySystem == null)
+        if (InstanceInventorySystem == null)
         {
-            instanceInventorySystem = this;
+            InstanceInventorySystem = this;
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -34,15 +34,15 @@ public class InventorySystem : MonoBehaviour
     
     private void Start()
     {
-        inventory = new List<IObject>();
+        Inventory = new List<IObject>();
         foreach (var item in objectDatabaseStart.objects)
         {
             if (item is IObject obj)
             {
-                inventory.Add(obj.Clone());
+                Inventory.Add(obj.Clone());
             }
         }
-        inventoryInitialized.Invoke(inventory);
+        inventoryInitialized.Invoke(Inventory);
     }
 
     private void DestroyInventorySystem()
@@ -52,19 +52,19 @@ public class InventorySystem : MonoBehaviour
 
     public void OnChangedScene()
     {
-        inventoryInitialized.Invoke(inventory);
+        inventoryInitialized.Invoke(Inventory);
     }
 
     // Adds item to inventory, item is an IObject
     public void AddItem(IObject item)
     {
-        if (inventory.Contains(item))
+        if (Inventory.Contains(item))
         {
             item.Count++;
         }
         else
         {
-            inventory.Add(item.Clone());
+            Inventory.Add(item.Clone());
             item.Count++;
         }
         onInventoryChanged.Invoke(item);
@@ -73,12 +73,12 @@ public class InventorySystem : MonoBehaviour
     // Removes item from inventory, item is an IObject
     public void RemoveItem(IObject item)
     {
-        if (inventory.Contains(item))
+        if (Inventory.Contains(item))
         {
             item.Count--;
             if (item.Count <= 0)
             {
-                inventory.Remove(item);
+                Inventory.Remove(item);
             }
             onInventoryChanged.Invoke(item);
         }
@@ -91,10 +91,10 @@ public class InventorySystem : MonoBehaviour
     // Removes all instances of one item from the inventory, items are IObjects
     private void CompletelyRemoveItem(IObject itemToRemove)
     {
-        if (inventory.Contains(itemToRemove))
+        if (Inventory.Contains(itemToRemove))
         {
             itemToRemove.Count = 0;
-            inventory.Remove(itemToRemove);
+            Inventory.Remove(itemToRemove);
             onInventoryChanged.Invoke(itemToRemove);
         }
         else
@@ -106,7 +106,7 @@ public class InventorySystem : MonoBehaviour
     // Gets the count of a certain item in the inventory
     private int GetItemCount(IObject item)
     {
-        if (inventory.Contains(item))
+        if (Inventory.Contains(item))
         {
             return item.Count;
         }
@@ -132,6 +132,6 @@ public class InventorySystem : MonoBehaviour
         }
 
         // Use LINQ to efficiently filter the inventory based on the types to find
-        return inventory.Where(item => typesToFind.Contains(item.ObjectType)).ToList();
+        return Inventory.Where(item => typesToFind.Contains(item.ObjectType)).ToList();
     }
 }

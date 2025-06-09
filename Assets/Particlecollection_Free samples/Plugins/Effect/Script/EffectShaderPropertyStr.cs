@@ -37,6 +37,6 @@ public class EffectShaderPropertyStr {
 	public const string EnableUVMirror = "Enable_UVMirror";
 	public const string EnableBloom = "Enable_Bloom";
 	
-	public static readonly int Material_Color = Shader.PropertyToID (EffectShaderPropertyStr.ColorStr);
-	public static readonly int Material_Color_Factor = Shader.PropertyToID (EffectShaderPropertyStr.ColorFactor);
+	public static readonly int MaterialColor = Shader.PropertyToID (EffectShaderPropertyStr.ColorStr);
+	public static readonly int MaterialColorFactor = Shader.PropertyToID (EffectShaderPropertyStr.ColorFactor);
 }

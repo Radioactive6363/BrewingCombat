@@ -156,10 +156,10 @@ public class EnemyPrefabCreator : EditorWindow
         }
 
         _enemyData = ScriptableObject.CreateInstance<EnemyData>();
-        _enemyData.Name = ename;
-        _enemyData.Health = hp;
-        _enemyData.Speed = spd;
-        _enemyData.Damage = dm;
+        _enemyData.name = ename;
+        _enemyData.health = hp;
+        _enemyData.speed = spd;
+        _enemyData.damage = dm;
 
         string assetPath = AssetDatabase.GenerateUniqueAssetPath($"{path}/{ename}_Data.asset");
         AssetDatabase.CreateAsset(_enemyData, assetPath);
@@ -219,8 +219,8 @@ public class EnemyPrefabCreator : EditorWindow
         if (enemyComponent != null && abilities != null)
         {
             // Create a NEW list to assign, preventing modification issues with the list in the Editor window
-            enemyComponent.Abilities = new List<AbilityStruct>(abilities);
-            Debug.Log($"Assigned {enemyComponent.Abilities.Count} abilities to {newEnemyInstance.name}.");
+            enemyComponent.abilities = new List<AbilityStruct>(abilities);
+            Debug.Log($"Assigned {enemyComponent.abilities.Count} abilities to {newEnemyInstance.name}.");
         }
         // ------------------------------------------------------------
 

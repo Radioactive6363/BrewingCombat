@@ -1,20 +1,21 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "NewPotion", menuName = "Items/Potion")]
-public class PotionSO : ScriptableObject, IObject
+public class PotionSo : ScriptableObject, IObject
 {
     [SerializeField] private Sprite icon;
     [SerializeField] private string potionName;
-    [SerializeField] private int _count = 1; 
-    private PotionEffectType typeOfEffect;
+    [FormerlySerializedAs("_count")] [SerializeField] private int count = 1; 
+    private PotionEffectType _typeOfEffect;
     private ObjectType _objectType = ObjectType.CraftedPotion;
     private StatStruct _stat = new StatStruct();
 
     public PotionEffectType EffectType
     {
-        get => typeOfEffect;
-        set => typeOfEffect = value;
+        get => _typeOfEffect;
+        set => _typeOfEffect = value;
     }
     public int Potency
     {
@@ -32,8 +33,8 @@ public class PotionSO : ScriptableObject, IObject
     public int Id { get; set; }
     public int Count
     {
-        get => _count;
-        set => _count = value;
+        get => count;
+        set => count = value;
     }
 
     public IObject Clone()

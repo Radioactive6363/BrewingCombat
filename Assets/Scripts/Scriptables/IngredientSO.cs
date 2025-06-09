@@ -1,7 +1,8 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "NewIngredient", menuName = "Items/Ingredient")]
-public class IngredientSO : ScriptableObject, IObject
+public class IngredientSo : ScriptableObject, IObject
 { 
     public enum IngredientType
     {
@@ -12,25 +13,25 @@ public class IngredientSO : ScriptableObject, IObject
         Base,
     }
     [SerializeField] private Sprite sprite;
-    [SerializeField] private string IngredientName;
+    [FormerlySerializedAs("IngredientName")] [SerializeField] private string ingredientName;
     [SerializeField] private IngredientType type; // "Rojo", "Azul", "Verde", "Negro", "Base"
     [SerializeField] private int potency;
     [SerializeField] private float chargeTime;
-    private ObjectType objectType = ObjectType.Ingredient; 
-    [SerializeField] private int _count = 1; 
+    private ObjectType _objectType = ObjectType.Ingredient; 
+    [FormerlySerializedAs("_count")] [SerializeField] private int count = 1; 
     
     
     public int Potency => potency;
     public float ChargeTime => chargeTime;
     public Sprite Sprite => sprite;
-    public string Name => IngredientName;
+    public string Name => ingredientName;
     public IngredientType Type => type;
-    public ObjectType ObjectType => objectType;
+    public ObjectType ObjectType => _objectType;
     public int Id { get; set; }
     public int Count
     {
-        get => _count;
-        set => _count = value;
+        get => count;
+        set => count = value;
     }
     
     public IObject Clone()

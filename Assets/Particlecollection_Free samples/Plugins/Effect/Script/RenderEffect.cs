@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Reflection;
+using UnityEngine.Serialization;
 
 public enum RenderBillBoardType{
     Normal,
@@ -17,20 +18,20 @@ public enum RenderBillBoardType{
 [System.Serializable]
 public class MaterialEffect
 {
-    public Material m_EffectMaterial;
-    public bool m_EnableAlphaAnimation = false;
-    public float m_AlphaAnimationTimeScale = 1.0f;
-    public AnimationCurve m_AlphaCurve = new AnimationCurve();
+    [FormerlySerializedAs("m_EffectMaterial")] public Material mEffectMaterial;
+    [FormerlySerializedAs("m_EnableAlphaAnimation")] public bool mEnableAlphaAnimation = false;
+    [FormerlySerializedAs("m_AlphaAnimationTimeScale")] public float mAlphaAnimationTimeScale = 1.0f;
+    [FormerlySerializedAs("m_AlphaCurve")] public AnimationCurve mAlphaCurve = new AnimationCurve();
     //public bool enableSetTextureWrapMode = true;
-    public Texture m_MainTexture = null;
-    public Texture m_MaskTexutre = null;
-    public TextureWrapMode m_MainTexWrapMode;
-    public TextureWrapMode m_MaskTexWrapMode;
-	public bool m_EnableUVScroll = false;
-	public Vector2 m_UVScrollMainTex;
-	public Vector2 m_UVScrollCutTex;
+    [FormerlySerializedAs("m_MainTexture")] public Texture mMainTexture = null;
+    [FormerlySerializedAs("m_MaskTexutre")] public Texture mMaskTexutre = null;
+    [FormerlySerializedAs("m_MainTexWrapMode")] public TextureWrapMode mMainTexWrapMode;
+    [FormerlySerializedAs("m_MaskTexWrapMode")] public TextureWrapMode mMaskTexWrapMode;
+	[FormerlySerializedAs("m_EnableUVScroll")] public bool mEnableUVScroll = false;
+	[FormerlySerializedAs("m_UVScrollMainTex")] public Vector2 mUVScrollMainTex;
+	[FormerlySerializedAs("m_UVScrollCutTex")] public Vector2 mUVScrollCutTex;
 #if UNITY_EDITOR
-    public bool m_EditorExtend = false;
+    [FormerlySerializedAs("m_EditorExtend")] public bool mEditorExtend = false;
 #endif
 
     public MaterialEffect(Material material)
@@ -42,60 +43,60 @@ public class MaterialEffect
     {
         if (material == null)
             return;
-        m_EffectMaterial = material;
+        mEffectMaterial = material;
         //effectMaterial.renderQueue += renderSeqFix;
         if(material.HasProperty(EffectShaderPropertyStr.MainTexStr))
-          m_MainTexture = material.GetTexture(EffectShaderPropertyStr.MainTexStr);
+          mMainTexture = material.GetTexture(EffectShaderPropertyStr.MainTexStr);
         if (material.HasProperty(EffectShaderPropertyStr.CutTexStr))
-            m_MaskTexutre = material.GetTexture(EffectShaderPropertyStr.CutTexStr);
+            mMaskTexutre = material.GetTexture(EffectShaderPropertyStr.CutTexStr);
     }
 
     public void UpdateEffect(float execueTime)
     {
-        if (m_MainTexture != null && m_MainTexWrapMode != m_MainTexture.wrapMode)
+        if (mMainTexture != null && mMainTexWrapMode != mMainTexture.wrapMode)
         {
-            m_MainTexture.wrapMode = m_MainTexWrapMode;
+            mMainTexture.wrapMode = mMainTexWrapMode;
         }
-        if (m_MaskTexutre != null && m_MaskTexWrapMode != m_MaskTexutre.wrapMode)
+        if (mMaskTexutre != null && mMaskTexWrapMode != mMaskTexutre.wrapMode)
         {
-            m_MaskTexutre.wrapMode = m_MaskTexWrapMode;
+            mMaskTexutre.wrapMode = mMaskTexWrapMode;
         }
-		if (m_EnableUVScroll) {
-			if(m_MainTexture)
-				m_EffectMaterial.SetTextureOffset (EffectShaderPropertyStr.MainTexStr, m_UVScrollMainTex * execueTime);
-			if(m_MaskTexutre)
-				m_EffectMaterial.SetTextureOffset (EffectShaderPropertyStr.CutTexStr, m_UVScrollCutTex * execueTime);
+		if (mEnableUVScroll) {
+			if(mMainTexture)
+				mEffectMaterial.SetTextureOffset (EffectShaderPropertyStr.MainTexStr, mUVScrollMainTex * execueTime);
+			if(mMaskTexutre)
+				mEffectMaterial.SetTextureOffset (EffectShaderPropertyStr.CutTexStr, mUVScrollCutTex * execueTime);
 			
 		}
     }
     void SetAlpha(float value)
     {
-        Color color = m_EffectMaterial.color;
+        Color color = mEffectMaterial.color;
         color.a = value;
-        m_EffectMaterial.color = color;
+        mEffectMaterial.color = color;
     }
 }
 
 [ExecuteInEditMode]
 //[RequireComponent(typeof(Renderer))]
 public class RenderEffect : MonoBehaviour {
-    public RenderBillBoardType m_BillBoardType;
-	private Camera m_ReferenceCamera = null;
-    public bool m_EnableBillBoard = false;
-    public bool m_EnableSetSortLayer = true;
-    public Renderer m_Render;
-    public List<MaterialEffect> m_MaterialEffects = new List<MaterialEffect>();
-	private float m_TimeLine = 0.0f;
-    [HideInInspector]
-    public int m_SortingLayerID;
-    [HideInInspector]
-    public int m_SortingOrder;
+    [FormerlySerializedAs("m_BillBoardType")] public RenderBillBoardType mBillBoardType;
+	private Camera _mReferenceCamera = null;
+    [FormerlySerializedAs("m_EnableBillBoard")] public bool mEnableBillBoard = false;
+    [FormerlySerializedAs("m_EnableSetSortLayer")] public bool mEnableSetSortLayer = true;
+    [FormerlySerializedAs("m_Render")] public Renderer mRender;
+    [FormerlySerializedAs("m_MaterialEffects")] public List<MaterialEffect> mMaterialEffects = new List<MaterialEffect>();
+	private float _mTimeLine = 0.0f;
+    [FormerlySerializedAs("m_SortingLayerID")] [HideInInspector]
+    public int mSortingLayerID;
+    [FormerlySerializedAs("m_SortingOrder")] [HideInInspector]
+    public int mSortingOrder;
 
     void Awake()
     {
-		m_ReferenceCamera = Camera.main;
-        m_Render = GetComponent<Renderer>();
-        if (m_Render == null)
+		_mReferenceCamera = Camera.main;
+        mRender = GetComponent<Renderer>();
+        if (mRender == null)
             return;
     }
 
@@ -106,63 +107,63 @@ public class RenderEffect : MonoBehaviour {
 
     public void UpdateRenderLayer()
     {
-        if(m_EnableSetSortLayer)
+        if(mEnableSetSortLayer)
         {
-            m_Render.sortingLayerID = m_SortingLayerID;
-            m_Render.sortingOrder = m_SortingOrder;
+            mRender.sortingLayerID = mSortingLayerID;
+            mRender.sortingOrder = mSortingOrder;
         }
 
     }
 
     public void RefreshMaterial()
     {
-		if (m_Render == null) {
-			m_Render = GetComponent<Renderer>();
-			if(m_Render == null)
+		if (mRender == null) {
+			mRender = GetComponent<Renderer>();
+			if(mRender == null)
 				return;
 		}
         int i = 0; 
-        for(i = 0; i < m_Render.sharedMaterials.Length; i++)
+        for(i = 0; i < mRender.sharedMaterials.Length; i++)
         {
-            if (m_MaterialEffects.Count <= i)
+            if (mMaterialEffects.Count <= i)
             {
-                MaterialEffect matEffect = new MaterialEffect(m_Render.sharedMaterials[i]);
-                m_MaterialEffects.Add(matEffect);
+                MaterialEffect matEffect = new MaterialEffect(mRender.sharedMaterials[i]);
+                mMaterialEffects.Add(matEffect);
             }
             else
             {          
-                m_MaterialEffects[i].ReInitMaterial(m_Render.sharedMaterials[i]);
+                mMaterialEffects[i].ReInitMaterial(mRender.sharedMaterials[i]);
             }
         }
-        for (int j = m_MaterialEffects.Count - 1; i <= j; j--)
+        for (int j = mMaterialEffects.Count - 1; i <= j; j--)
         {
-            m_MaterialEffects.RemoveAt(j);
+            mMaterialEffects.RemoveAt(j);
        }
         UpdateRenderLayer();
     }
 
     void UpdateBillBoard()
     {
-        if (m_EnableBillBoard == false)
+        if (mEnableBillBoard == false)
             return;
-		if (m_ReferenceCamera == null)
-			m_ReferenceCamera = Camera.main;
-        if(m_BillBoardType == RenderBillBoardType.Normal)
+		if (_mReferenceCamera == null)
+			_mReferenceCamera = Camera.main;
+        if(mBillBoardType == RenderBillBoardType.Normal)
         {
-            Vector3 targetPos = transform.position + m_ReferenceCamera.transform.rotation * Vector3.forward;
-            Vector3 targetOrientation = m_ReferenceCamera.transform.rotation * Vector3.up;
+            Vector3 targetPos = transform.position + _mReferenceCamera.transform.rotation * Vector3.forward;
+            Vector3 targetOrientation = _mReferenceCamera.transform.rotation * Vector3.up;
             transform.LookAt(targetPos, targetOrientation);
         }
-        else if (m_BillBoardType == RenderBillBoardType.Vertical)
+        else if (mBillBoardType == RenderBillBoardType.Vertical)
         {
-            var v = m_ReferenceCamera.transform.forward;
+            var v = _mReferenceCamera.transform.forward;
             v.y = 0;
             transform.rotation = Quaternion.LookRotation(v, Vector3.up);
         }
-        else if(m_BillBoardType == RenderBillBoardType.Horizontal)
+        else if(mBillBoardType == RenderBillBoardType.Horizontal)
         {
-            Vector3 targetPos = transform.position + m_ReferenceCamera.transform.rotation * Vector3.down;
-            Vector3 targetOrientation = m_ReferenceCamera.transform.rotation * Vector3.up;
+            Vector3 targetPos = transform.position + _mReferenceCamera.transform.rotation * Vector3.down;
+            Vector3 targetOrientation = _mReferenceCamera.transform.rotation * Vector3.up;
             transform.LookAt(targetPos, targetOrientation);
             Vector3 rotation = transform.rotation.eulerAngles;
             rotation.x = 90.0f;
@@ -172,10 +173,10 @@ public class RenderEffect : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        m_TimeLine += Time.deltaTime;
-        foreach(MaterialEffect matEffect in m_MaterialEffects)
+        _mTimeLine += Time.deltaTime;
+        foreach(MaterialEffect matEffect in mMaterialEffects)
         {
-            matEffect.UpdateEffect(m_TimeLine);
+            matEffect.UpdateEffect(_mTimeLine);
         }
     }
 
@@ -185,7 +186,7 @@ public class RenderEffect : MonoBehaviour {
 
 	public void Sim(float timer){
 		UpdateBillBoard ();
-		foreach(MaterialEffect matEffect in m_MaterialEffects)
+		foreach(MaterialEffect matEffect in mMaterialEffects)
 		{
 			matEffect.UpdateEffect(timer);
 		}

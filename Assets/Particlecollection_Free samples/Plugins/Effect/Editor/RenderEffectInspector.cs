@@ -45,16 +45,16 @@ public class RenderEffectInspector : Editor
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Open BillBoardOption");
-            renderEffect.m_EnableBillBoard = EditorGUILayout.Toggle(renderEffect.m_EnableBillBoard);
+            renderEffect.mEnableBillBoard = EditorGUILayout.Toggle(renderEffect.mEnableBillBoard);
             EditorGUILayout.EndHorizontal();
 
-            if (renderEffect.m_EnableBillBoard)
+            if (renderEffect.mEnableBillBoard)
             {
 
                 EditorGUI.indentLevel++;
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("BillBoard Type");
-                renderEffect.m_BillBoardType = (RenderBillBoardType)EditorGUILayout.EnumPopup(renderEffect.m_BillBoardType);
+                renderEffect.mBillBoardType = (RenderBillBoardType)EditorGUILayout.EnumPopup(renderEffect.mBillBoardType);
                 EditorGUILayout.EndHorizontal();
                 EditorGUI.indentLevel--;
             }
@@ -64,20 +64,20 @@ public class RenderEffectInspector : Editor
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Open Sort Layer Option");
-            renderEffect.m_EnableSetSortLayer = EditorGUILayout.Toggle(renderEffect.m_EnableSetSortLayer);
+            renderEffect.mEnableSetSortLayer = EditorGUILayout.Toggle(renderEffect.mEnableSetSortLayer);
             EditorGUILayout.EndHorizontal();
-            if (renderEffect.m_EnableSetSortLayer)
+            if (renderEffect.mEnableSetSortLayer)
             {
                 EditorGUI.indentLevel++;
                 EditorGUI.BeginChangeCheck();
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("Sorting Layer");
-                renderEffect.m_SortingLayerID = EditorGUILayout.IntPopup(renderEffect.m_SortingLayerID, m_LayerName, m_LayerID);
+                renderEffect.mSortingLayerID = EditorGUILayout.IntPopup(renderEffect.mSortingLayerID, m_LayerName, m_LayerID);
                 EditorGUILayout.EndHorizontal();
 
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("Sorting Order");
-                renderEffect.m_SortingOrder = EditorGUILayout.IntField(renderEffect.m_SortingOrder);
+                renderEffect.mSortingOrder = EditorGUILayout.IntField(renderEffect.mSortingOrder);
                 EditorGUILayout.EndHorizontal();
 
                 if (EditorGUI.EndChangeCheck())
@@ -96,10 +96,10 @@ public class RenderEffectInspector : Editor
 		}
         EditorGUI.indentLevel++;
         int index = 0;
-        foreach(MaterialEffect matEffect in renderEffect.m_MaterialEffects)
+        foreach(MaterialEffect matEffect in renderEffect.mMaterialEffects)
         {
             string strIndex = "Element:" + index + "    ";
-            if (matEffect.m_EffectMaterial == null)
+            if (matEffect.mEffectMaterial == null)
             {
                 GUILayout.Button(strIndex + "Material Not Assign");
                 index++;
@@ -107,22 +107,22 @@ public class RenderEffectInspector : Editor
             }
             else
             {
-                if(GUILayout.Button(strIndex + matEffect.m_EffectMaterial.name))
+                if(GUILayout.Button(strIndex + matEffect.mEffectMaterial.name))
                 {
-                    matEffect.m_EditorExtend = !matEffect.m_EditorExtend;
+                    matEffect.mEditorExtend = !matEffect.mEditorExtend;
                 }
                 index++;
-                if (matEffect.m_EditorExtend)
+                if (matEffect.mEditorExtend)
                 {
 
                     EditorGUILayout.BeginHorizontal();
                     EditorGUILayout.LabelField("Main Texture WrapMode");
-                    matEffect.m_MainTexWrapMode = (TextureWrapMode)EditorGUILayout.EnumPopup(matEffect.m_MainTexWrapMode);
+                    matEffect.mMainTexWrapMode = (TextureWrapMode)EditorGUILayout.EnumPopup(matEffect.mMainTexWrapMode);
                     EditorGUILayout.EndHorizontal();
 
                     EditorGUILayout.BeginHorizontal();
                     EditorGUILayout.LabelField("Cutoff Texture WrapMode");
-                    matEffect.m_MaskTexWrapMode = (TextureWrapMode)EditorGUILayout.EnumPopup(matEffect.m_MaskTexWrapMode);
+                    matEffect.mMaskTexWrapMode = (TextureWrapMode)EditorGUILayout.EnumPopup(matEffect.mMaskTexWrapMode);
                     EditorGUILayout.EndHorizontal();
                 }
             }
@@ -138,7 +138,7 @@ public class RenderEffectInspector : Editor
                 if (GUILayout.Button("Switch To Line Render"))
                 {
                     LineRenderer lineRender = renderEffect.gameObject.AddComponent<LineRenderer>();
-                    renderEffect.m_Render = lineRender;
+                    renderEffect.mRender = lineRender;
                     lineRender.sharedMaterials = render.sharedMaterials;
                     UnityEngine.Object.DestroyImmediate(render);
                     MeshFilter meshFilter = renderEffect.gameObject.GetComponent<MeshFilter>();
@@ -160,7 +160,7 @@ public class RenderEffectInspector : Editor
                 {
                     MeshRenderer lineRender = renderEffect.gameObject.AddComponent<MeshRenderer>();
                     lineRender.sharedMaterials = render.sharedMaterials;
-                    renderEffect.m_Render = lineRender;
+                    renderEffect.mRender = lineRender;
                     UnityEngine.Object.DestroyImmediate(render);
                     MeshFilter meshFilter = renderEffect.gameObject.GetComponent<MeshFilter>();
                     if (meshFilter == null)
@@ -186,7 +186,7 @@ public class RenderEffectInspector : Editor
                 {
                     TrailRenderer lineRender = renderEffect.gameObject.AddComponent<TrailRenderer>();
                     lineRender.sharedMaterials = render.sharedMaterials;
-                    renderEffect.m_Render = lineRender;
+                    renderEffect.mRender = lineRender;
                     UnityEngine.Object.DestroyImmediate(render);
                     MeshFilter meshFilter = renderEffect.gameObject.GetComponent<MeshFilter>();
                     if (meshFilter != null)

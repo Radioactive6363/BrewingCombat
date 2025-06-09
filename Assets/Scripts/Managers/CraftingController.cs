@@ -1,34 +1,35 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CraftingController : MonoBehaviour
 {
-    private CraftingManager craftingManager;
+    private CraftingManager _craftingManager;
     private IngredientStack _ingredientStack = new IngredientStack();
-    [SerializeField] private GameObject[] _ingredientsGameObjects = new GameObject[3];
-    [SerializeField] private GameObject CraftPotionButton;
-    [SerializeField] private GameObject CraftingPanel;
+    [FormerlySerializedAs("_ingredientsGameObjects")] [SerializeField] private GameObject[] ingredientsGameObjects = new GameObject[3];
+    [FormerlySerializedAs("CraftPotionButton")] [SerializeField] private GameObject craftPotionButton;
+    [FormerlySerializedAs("CraftingPanel")] [SerializeField] private GameObject craftingPanel;
     
     void Start()
     {
-        craftingManager = FindFirstObjectByType<CraftingManager>();
-        _ingredientStack.InitializeStack(_ingredientsGameObjects.Length);
+        _craftingManager = FindFirstObjectByType<CraftingManager>();
+        _ingredientStack.InitializeStack(ingredientsGameObjects.Length);
     }
 
-    public void IngredientReceived(IngredientSO ingredient)
+    public void IngredientReceived(IngredientSo ingredient)
     {
         if (!_ingredientStack.CheckFull())
         {
             _ingredientStack.StackIngredients(ingredient);
-            _ingredientsGameObjects[_ingredientStack.ObtainQuantity()-1].SetActive(true);
-            _ingredientsGameObjects[_ingredientStack.ObtainQuantity()-1].GetComponent<ObjectCraftingUI>().GetObjectData(ingredient);
-            if (!CraftingPanel.activeSelf)
+            ingredientsGameObjects[_ingredientStack.ObtainQuantity()-1].SetActive(true);
+            ingredientsGameObjects[_ingredientStack.ObtainQuantity()-1].GetComponent<ObjectCraftingUI>().GetObjectData(ingredient);
+            if (!craftingPanel.activeSelf)
             {
-                CraftingPanel.SetActive(true);
+                craftingPanel.SetActive(true);
             }
-            if (!CraftPotionButton.activeSelf && _ingredientStack.CheckFull())
+            if (!craftPotionButton.activeSelf && _ingredientStack.CheckFull())
             {
-                CraftPotionButton.SetActive(true);
+                craftPotionButton.SetActive(true);
             }
         }
         else
@@ -42,16 +43,16 @@ public class CraftingController : MonoBehaviour
     { 
         if (!_ingredientStack.CheckEmptyStack())
         {
-            _ingredientsGameObjects[_ingredientStack.ObtainQuantity()-1].SetActive(false);
+            ingredientsGameObjects[_ingredientStack.ObtainQuantity()-1].SetActive(false);
             FindFirstObjectByType<InventorySystem>().AddItem(_ingredientStack.UnstackIngredients()); 
-            if (CraftingPanel.activeSelf && _ingredientStack.CheckEmptyStack())
+            if (craftingPanel.activeSelf && _ingredientStack.CheckEmptyStack())
             {
-                CraftingPanel.SetActive(false);
+                craftingPanel.SetActive(false);
             }
         }
-        if (CraftPotionButton.activeSelf && !_ingredientStack.CheckFull())
+        if (craftPotionButton.activeSelf && !_ingredientStack.CheckFull())
         {
-            CraftPotionButton.SetActive(false);
+            craftPotionButton.SetActive(false);
         }
     }
 
@@ -61,11 +62,11 @@ public class CraftingController : MonoBehaviour
         Debug.Log(_ingredientStack.ObtainQuantity());
         for (int i = 0; i < _ingredientStack.ObtainQuantity(); i++)
         {
-            _ingredientsGameObjects[i].SetActive(false);
+            ingredientsGameObjects[i].SetActive(false);
         }
-        craftingManager.GetPotion(_ingredientStack);
-        CraftingPanel.SetActive(false);
-        CraftPotionButton.SetActive(false);
+        _craftingManager.GetPotion(_ingredientStack);
+        craftingPanel.SetActive(false);
+        craftPotionButton.SetActive(false);
 
     }
 }

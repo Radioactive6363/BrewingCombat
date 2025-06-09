@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
+
 public class GameManager: MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    public UnityEvent OnGameRestart;
+    [FormerlySerializedAs("OnGameRestart")] public UnityEvent onGameRestart;
 
     private void Awake()
     {
@@ -57,6 +59,6 @@ public class GameManager: MonoBehaviour
 
     public void GameRestartInvoke()
     {
-        OnGameRestart?.Invoke();
+        onGameRestart?.Invoke();
     }
 }

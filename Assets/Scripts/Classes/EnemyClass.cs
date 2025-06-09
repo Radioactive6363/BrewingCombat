@@ -1,27 +1,28 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class EnemyClass : MonoBehaviour, IAbilityQueue
 {
     public EnemyData enemyData;
-    [SerializeField] public List<AbilityStruct> Abilities = new List<AbilityStruct>();
+    [FormerlySerializedAs("Abilities")] [SerializeField] public List<AbilityStruct> abilities = new List<AbilityStruct>();
 
-    private IAbilityQueue abilityQueueHandler;  // Now using the queue handler
+    private IAbilityQueue _abilityQueueHandler;  // Now using the queue handler
     private int _currentHealth;
 
-    private Animator animator;
+    private Animator _animator;
 
     private void Start()
     {
         SetupEnemyData();
         SetupDefaultAbilities();
 
-        animator = GetComponent<Animator>();
+        _animator = GetComponent<Animator>();
 
         // Use the queue handler instead of the stack handler
-        abilityQueueHandler = new AbilityQueueHandler();  // Changed to the Queue handler
+        _abilityQueueHandler = new AbilityQueueHandler();  // Changed to the Queue handler
         InitializeQueue();  // Initialize the queue
         FillAbilityQueue();  // Fill the queue with abilities
     }
@@ -35,17 +36,17 @@ public class EnemyClass : MonoBehaviour, IAbilityQueue
     {
         if (enemyData != null)
         {
-            gameObject.name = enemyData.Name;
-            _currentHealth = enemyData.Health;
+            gameObject.name = enemyData.name;
+            _currentHealth = enemyData.health;
             Debug.Log("Initialized Enemy: " + gameObject.name);
         }
     }
 
     private void SetupDefaultAbilities()
     {
-        if (Abilities.Count == 0)
+        if (abilities.Count == 0)
         {
-            Abilities.Add(new AbilityStruct
+            abilities.Add(new AbilityStruct
             {
                 name = "Struggle",
                 damage = 5,
@@ -69,13 +70,13 @@ public class EnemyClass : MonoBehaviour, IAbilityQueue
 
     private AbilityStruct GetRandomAbility()
     {
-        AbilityStruct chosenAbility = Abilities[0];
+        AbilityStruct chosenAbility = abilities[0];
         bool foundAbility = false;
 
         // Try up to 3 attempts
         for (int attempt = 0; attempt < 3; attempt++)
         {
-            foreach (AbilityStruct ability in Abilities)
+            foreach (AbilityStruct ability in abilities)
             {
                 if (Random.Range(0f, ability.probability) <= 1f)
                 {
@@ -95,7 +96,7 @@ public class EnemyClass : MonoBehaviour, IAbilityQueue
     // This will enqueue the ability (FIFO)
     public void QueueAbility(AbilityStruct ability)
     {
-        abilityQueueHandler.QueueAbility(ability);
+        _abilityQueueHandler.QueueAbility(ability);
     }
 
     // This dequeues the ability (FIFO)
@@ -103,7 +104,7 @@ public class EnemyClass : MonoBehaviour, IAbilityQueue
     {
         if (!CheckEmptyQueue())  // If the queue is not empty
         {
-            var ability = abilityQueueHandler.DequeueAbility();
+            var ability = _abilityQueueHandler.DequeueAbility();
             Debug.Log($"Dequeued Ability: {ability.name}");
 
             // Refill the empty spot of the queue
@@ -123,20 +124,20 @@ public class EnemyClass : MonoBehaviour, IAbilityQueue
     // Check if the queue is empty
     public bool CheckEmptyQueue()
     {
-        return abilityQueueHandler.CheckEmptyQueue();
+        return _abilityQueueHandler.CheckEmptyQueue();
     }
 
     // Initialize the queue handler (in case you want to reset the queue)
     public void InitializeQueue()
     {
-        abilityQueueHandler.InitializeQueue();
+        _abilityQueueHandler.InitializeQueue();
     }
 
     public void AnimateEnemy(string animationName)
     {
-        if (animator != null)
+        if (_animator != null)
         {
-            animator.Play(animationName);
+            _animator.Play(animationName);
         }
     }
 }

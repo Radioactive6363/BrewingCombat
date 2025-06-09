@@ -8,32 +8,32 @@ public class MapPlayerClass : MonoBehaviour
 {
     public bool canMove = true;
 
-    private Dictionary<Vector3, BlockType> blockCoordinateSystem = new Dictionary<Vector3, BlockType>();
-    private Vector3 playerSpawnOffset = Vector3.zero;
-    private Vector3 currentBlock = Vector3.zero;
-    private float dirtSeparationAmount;
+    private Dictionary<Vector3, BlockType> _blockCoordinateSystem = new Dictionary<Vector3, BlockType>();
+    private Vector3 _playerSpawnOffset = Vector3.zero;
+    private Vector3 _currentBlock = Vector3.zero;
+    private float _dirtSeparationAmount;
 
-    private Vector3 movementXZ = Vector2.zero;
+    private Vector3 _movementXZ = Vector2.zero;
 
-    private bool playerMoving = false;
+    private bool _playerMoving = false;
 
-    private Animator playerAnimator;
+    private Animator _playerAnimator;
 
     private void Start()
     {
-        playerAnimator = GetComponentInChildren<Animator>();
+        _playerAnimator = GetComponentInChildren<Animator>();
 
-        if (playerAnimator == null)
+        if (_playerAnimator == null)
         {
             Debug.LogWarning("Couldn't get player animator!");
         }
 
         if (BlockSpawnManager.Instance != null)
         {
-            blockCoordinateSystem = BlockSpawnManager.Instance.blockCoordinateSystem;
-            playerSpawnOffset = BlockSpawnManager.Instance.playerSpawnOffset;
-            currentBlock = BlockSpawnManager.Instance.playerSpawnBlock;
-            dirtSeparationAmount = BlockSpawnManager.Instance.dirtSeparationAmount;
+            _blockCoordinateSystem = BlockSpawnManager.Instance.BlockCoordinateSystem;
+            _playerSpawnOffset = BlockSpawnManager.Instance.playerSpawnOffset;
+            _currentBlock = BlockSpawnManager.Instance.playerSpawnBlock;
+            _dirtSeparationAmount = BlockSpawnManager.Instance.dirtSeparationAmount;
         }
         else
         {
@@ -46,48 +46,48 @@ public class MapPlayerClass : MonoBehaviour
     {
         if (!canMove) return;
 
-        if (!playerMoving)
+        if (!_playerMoving)
         {
-            movementXZ = Vector3.zero;
+            _movementXZ = Vector3.zero;
 
             if (Input.GetKey(KeyCode.W))
             {
-                movementXZ.z += 1;
-                movementXZ.z = Mathf.Clamp(movementXZ.z, -1f, 1f);
+                _movementXZ.z += 1;
+                _movementXZ.z = Mathf.Clamp(_movementXZ.z, -1f, 1f);
             }
 
             if (Input.GetKey(KeyCode.S))
             {
-                movementXZ.z -= 1;
-                movementXZ.z = Mathf.Clamp(movementXZ.z, -1f, 1f);
+                _movementXZ.z -= 1;
+                _movementXZ.z = Mathf.Clamp(_movementXZ.z, -1f, 1f);
             }
         
             if (Input.GetKey(KeyCode.D))
             {
-                movementXZ.x += 1;
-                movementXZ.x = Mathf.Clamp(movementXZ.x, -1f, 1f);
+                _movementXZ.x += 1;
+                _movementXZ.x = Mathf.Clamp(_movementXZ.x, -1f, 1f);
             }
 
             if (Input.GetKey(KeyCode.A))
             {
-                movementXZ.x -= 1;
-                movementXZ.x = Mathf.Clamp(movementXZ.x, -1f, 1f);
+                _movementXZ.x -= 1;
+                _movementXZ.x = Mathf.Clamp(_movementXZ.x, -1f, 1f);
             }
 
         }
         else
         {
-            transform.position = Vector3.Lerp(transform.position, currentBlock + playerSpawnOffset, Time.deltaTime * 20f);
+            transform.position = Vector3.Lerp(transform.position, _currentBlock + _playerSpawnOffset, Time.deltaTime * 20f);
         }
 
-        if (movementXZ != Vector3.zero)
+        if (_movementXZ != Vector3.zero)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(movementXZ, Vector3.up);
+            Quaternion targetRotation = Quaternion.LookRotation(_movementXZ, Vector3.up);
 
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 15f);
         }
 
-        if (movementXZ != Vector3.zero && !playerMoving)
+        if (_movementXZ != Vector3.zero && !_playerMoving)
         {
             StartCoroutine(MovePlayer());
         }
@@ -95,17 +95,17 @@ public class MapPlayerClass : MonoBehaviour
 
     private IEnumerator MovePlayer()
     {
-        playerMoving = true;
+        _playerMoving = true;
 
-        if (blockCoordinateSystem != null && dirtSeparationAmount != 0f && currentBlock != null)
+        if (_blockCoordinateSystem != null && _dirtSeparationAmount != 0f && _currentBlock != null)
         {
-            Vector3 movementDirection = movementXZ * dirtSeparationAmount + transform.position - playerSpawnOffset;
+            Vector3 movementDirection = _movementXZ * _dirtSeparationAmount + transform.position - _playerSpawnOffset;
             Debug.DrawLine(transform.position, movementDirection, Color.red, 1f);
 
             Vector3 closestBlock = Vector3.one * Mathf.Infinity;
             BlockType blockType = BlockType.Normal;
             float closestBlockDistance = Mathf.Infinity;
-            foreach (var block in blockCoordinateSystem)
+            foreach (var block in _blockCoordinateSystem)
             {
                 float distanceToDirection = Vector3.Distance(block.Key, movementDirection);
 
@@ -121,18 +121,18 @@ public class MapPlayerClass : MonoBehaviour
             {
                 if (blockType != BlockType.NavigationPoint)
                 {
-                    currentBlock = closestBlock;
+                    _currentBlock = closestBlock;
 
-                    if (playerAnimator != null)
+                    if (_playerAnimator != null)
                     {
-                        playerAnimator.Play("Move_Forward");
+                        _playerAnimator.Play("Move_Forward");
                     }
                 }
                 else
                 {
-                    if (playerAnimator != null)
+                    if (_playerAnimator != null)
                     {
-                        playerAnimator.Play("Attack");
+                        _playerAnimator.Play("Attack");
 
                         yield return new WaitForSeconds(1f);
 
@@ -144,14 +144,14 @@ public class MapPlayerClass : MonoBehaviour
 
         yield return new WaitForSeconds(.4f);
 
-        playerMoving = false;
+        _playerMoving = false;
     }
 
     public void PlayAnimation(string animationName)
     {
-        if (playerAnimator != null)
+        if (_playerAnimator != null)
         {
-            playerAnimator.Play(animationName);
+            _playerAnimator.Play(animationName);
         }
     }
 }

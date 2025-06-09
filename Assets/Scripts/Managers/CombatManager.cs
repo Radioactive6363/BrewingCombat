@@ -6,12 +6,12 @@ using Random = UnityEngine.Random;
 
 public class CombatManager : MonoBehaviour
 {
-    private static CombatManager Instance;
-    private float playerMaxHealth = 100;
-    private float playerHealth;
-    private float playerDefense = 2;
-    private float playerDodge = 20;
-    private float playerBaseAttack = 1;
+    private static CombatManager _instance;
+    private float _playerMaxHealth = 100;
+    private float _playerHealth;
+    private float _playerDefense = 2;
+    private float _playerDodge = 20;
+    private float _playerBaseAttack = 1;
     [SerializeField] private Image abilityTimerBar;
     [SerializeField] private GameObject potionTimerGameObject;
     [SerializeField] private Image potionTimerBar;
@@ -19,13 +19,13 @@ public class CombatManager : MonoBehaviour
     [SerializeField] private GameObject enemySpawn;
     [SerializeField] private MapPlayerClass mapPlayer;
     public EnemyDatabaseScriptable availableEnemies;
-    private EnemyClass currentEnemy;
-    private AbilityStruct currentAbility;
+    private EnemyClass _currentEnemy;
+    private AbilityStruct _currentAbility;
     
     private void Start()
     {
         StartCombat(SpawnRandomEnemy());
-        playerHealth = playerMaxHealth;
+        _playerHealth = _playerMaxHealth;
     }
 
     private EnemyClass SpawnRandomEnemy()
@@ -54,7 +54,7 @@ public class CombatManager : MonoBehaviour
     
     private void StartCombat(EnemyClass enemy)
     {
-        currentEnemy = enemy;
+        _currentEnemy = enemy;
         StartCoroutine(CombatLoop());
     }
 
@@ -69,28 +69,28 @@ public class CombatManager : MonoBehaviour
     private IEnumerator ExecuteEnemyAbility()
     {
         //Basic Timing System using Time.time (real time unity)
-        currentAbility = currentEnemy.DequeueAbility();
-        float abilityTimer = currentAbility.chargeTime;
+        _currentAbility = _currentEnemy.DequeueAbility();
+        float abilityTimer = _currentAbility.chargeTime;
         float timeLeft = abilityTimer + Time.time;
         while (Time.time <= timeLeft)
         {
             abilityTimerBar.fillAmount = (timeLeft - Time.time) / abilityTimer;
             yield return null;
         }
-        DealDamageToPlayer(currentAbility.damage);
+        DealDamageToPlayer(_currentAbility.damage);
         abilityTimerBar.fillAmount = 0f;
 
-        currentEnemy.AnimateEnemy(currentAbility.animationName);
+        _currentEnemy.AnimateEnemy(_currentAbility.animationName);
     }
 
-    public void PotionUsed(PotionSO potion)
+    public void PotionUsed(PotionSo potion)
     {
         potionTimerGameObject.SetActive(true);
-        PotionSO potionToUse = potion;
+        PotionSo potionToUse = potion;
         StartCoroutine(PotionTimer(potionToUse));
     }
     
-    private IEnumerator PotionTimer(PotionSO potion)
+    private IEnumerator PotionTimer(PotionSo potion)
     {
         float potionCraftingTimer = potion.ChargeTime;
         float timeLeft = potionCraftingTimer + Time.time;
@@ -105,12 +105,12 @@ public class CombatManager : MonoBehaviour
 
     private void DealDamageToPlayer(int damage)
     {
-        if (playerDodge <= Random.Range(0, 100))
+        if (_playerDodge <= Random.Range(0, 100))
         {
-            healthBar.fillAmount = (playerHealth - (damage - playerDefense)) / playerMaxHealth;
-            playerHealth -= damage;
+            healthBar.fillAmount = (_playerHealth - (damage - _playerDefense)) / _playerMaxHealth;
+            _playerHealth -= damage;
             Debug.Log("Player received " + damage + " damage");
-            if (playerHealth <= 0)
+            if (_playerHealth <= 0)
             {
                 if (mapPlayer != null)
                 {
@@ -139,10 +139,10 @@ public class CombatManager : MonoBehaviour
 
     public void MeleeAttack()
     {
-        DealDamageToEnemy((int)playerBaseAttack);
+        DealDamageToEnemy((int)_playerBaseAttack);
     }
     
-    private void ExecutePotion(PotionSO potion)
+    private void ExecutePotion(PotionSo potion)
     {
         switch (potion.EffectType)
         {
@@ -173,7 +173,7 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    private void PlayerEffect(PotionSO potion)
+    private void PlayerEffect(PotionSo potion)
     {
         switch (potion.EffectType)
         {
@@ -189,7 +189,7 @@ public class CombatManager : MonoBehaviour
         }
     }
     
-    private void EnemyEffect(PotionSO potion)
+    private void EnemyEffect(PotionSo potion)
     {
         switch (potion.EffectType)
         {
@@ -213,19 +213,19 @@ public class CombatManager : MonoBehaviour
     
     private void HealDamageToPlayer(int potency)
     {
-        healthBar.fillAmount = (playerHealth+potency) / playerMaxHealth;
-        playerHealth += potency;
+        healthBar.fillAmount = (_playerHealth+potency) / _playerMaxHealth;
+        _playerHealth += potency;
         Debug.Log("Player healed!");
     }
 
     private void DealDamageToEnemy(int damage)
     {
-        currentEnemy.enemyData.Health -= damage * 2;
+        _currentEnemy.enemyData.health -= damage * 2;
         Debug.Log("Enemy received " + damage * 2 + " Damage");
-        Debug.Log("Enemy has " + currentEnemy.enemyData.Health + " Health");
-        if (currentEnemy.enemyData.Health <= 0)
+        Debug.Log("Enemy has " + _currentEnemy.enemyData.health + " Health");
+        if (_currentEnemy.enemyData.health <= 0)
         {
-            currentEnemy.AnimateEnemy("Death");
+            _currentEnemy.AnimateEnemy("Death");
 
             if (GameManager.Instance != null)
             {
@@ -243,14 +243,14 @@ public class CombatManager : MonoBehaviour
 
     private void ShieldPlayer(int potency)
     {
-        playerDefense += potency / 2;
-        Debug.Log("Player defence Increased to " + playerDefense);
+        _playerDefense += potency / 2;
+        Debug.Log("Player defence Increased to " + _playerDefense);
     }
     
     private void DodgePlayer(int potency)
     {
-        playerDodge += potency / 2;
-        Debug.Log("Player dodge increased to " + playerDodge);
+        _playerDodge += potency / 2;
+        Debug.Log("Player dodge increased to " + _playerDodge);
     }
     
     private void DamageEnemyViaPotion(int potency)

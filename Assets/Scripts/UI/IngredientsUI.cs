@@ -5,45 +5,45 @@ using UnityEngine;
 
 public class IngredientsUI : MonoBehaviour
 {
-    private InventorySystem inventoryManager;
-    private List<IObject> managerOnStartInventory;
-    private Dictionary<IObject, GameObject> gameObjectInventory;
+    private InventorySystem _inventoryManager;
+    private List<IObject> _managerOnStartInventory;
+    private Dictionary<IObject, GameObject> _gameObjectInventory;
     [SerializeField] private GameObject objectUIPrefab;
 
     private void Awake()
     {
-        gameObjectInventory = new Dictionary<IObject, GameObject>();
-        inventoryManager = FindFirstObjectByType<InventorySystem>();
-        inventoryManager.inventoryInitialized.AddListener(InitializeUI);
-        inventoryManager.onInventoryChanged.AddListener(UpdateInventory);
+        _gameObjectInventory = new Dictionary<IObject, GameObject>();
+        _inventoryManager = FindFirstObjectByType<InventorySystem>();
+        _inventoryManager.inventoryInitialized.AddListener(InitializeUI);
+        _inventoryManager.onInventoryChanged.AddListener(UpdateInventory);
     }
 
     private void InitializeUI(List<IObject> objects)
     {
-        managerOnStartInventory = objects;
+        _managerOnStartInventory = objects;
         UpdateInventoryOnStartUI();
     }
 
     private void UpdateInventoryOnStartUI()
     {
-        foreach (IObject obj in managerOnStartInventory)
+        foreach (IObject obj in _managerOnStartInventory)
         {
             if (obj.Count > 0)
             {
                 GameObject item = Instantiate(objectUIPrefab, transform);
                 item.GetComponent<ObjectUIScript>().ObjectContained = obj;
-                gameObjectInventory.Add(obj, item);
+                _gameObjectInventory.Add(obj, item);
             }
         }
     }
 
     private void UpdateInventory(IObject objectToUpdate)
     {
-        if (gameObjectInventory.TryGetValue(objectToUpdate, out GameObject gameObject))
+        if (_gameObjectInventory.TryGetValue(objectToUpdate, out GameObject gameObject))
         {
             if (objectToUpdate.Count <= 0)
             {
-                gameObjectInventory.Remove(objectToUpdate);
+                _gameObjectInventory.Remove(objectToUpdate);
                 Destroy(gameObject);
             }
             else
@@ -55,7 +55,7 @@ public class IngredientsUI : MonoBehaviour
         {
             GameObject item = Instantiate(objectUIPrefab, transform);
             item.GetComponent<ObjectUIScript>().ObjectContained = objectToUpdate;
-            gameObjectInventory.Add(objectToUpdate, item);
+            _gameObjectInventory.Add(objectToUpdate, item);
             
         }
     }

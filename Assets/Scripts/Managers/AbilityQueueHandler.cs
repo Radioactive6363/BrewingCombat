@@ -1,35 +1,35 @@
 public class AbilityQueueHandler : IAbilityQueue
 {
-    private AbilityStruct[] abilityQueue; 
-    private int front; 
-    private int back;
-    private const int initialCapacity = 10; 
+    private AbilityStruct[] _abilityQueue; 
+    private int _front; 
+    private int _back;
+    private const int InitialCapacity = 10; 
 
     public AbilityQueueHandler()
     {
-        abilityQueue = new AbilityStruct[initialCapacity];
-        front = 0; 
-        back = 0;
+        _abilityQueue = new AbilityStruct[InitialCapacity];
+        _front = 0; 
+        _back = 0;
     }
 
     // Initialize the queue
     public void InitializeQueue()
     {
-        abilityQueue = new AbilityStruct[initialCapacity];
-        front = 0;
-        back = 0;
+        _abilityQueue = new AbilityStruct[InitialCapacity];
+        _front = 0;
+        _back = 0;
     }
 
     // Enqueue an ability (add it to the back of the queue)
     public void QueueAbility(AbilityStruct ability)
     {
-        if ((back + 1) % abilityQueue.Length == front)  // Check if the queue is full
+        if ((_back + 1) % _abilityQueue.Length == _front)  // Check if the queue is full
         {
             ResizeQueue();
         }
 
-        abilityQueue[back] = ability;  // Add ability to the back
-        back = (back + 1) % abilityQueue.Length;  // Move the back pointer forward
+        _abilityQueue[_back] = ability;  // Add ability to the back
+        _back = (_back + 1) % _abilityQueue.Length;  // Move the back pointer forward
     }
 
     // Dequeue an ability (remove it from the front of the queue)
@@ -40,9 +40,9 @@ public class AbilityQueueHandler : IAbilityQueue
             throw new System.InvalidOperationException("Queue is empty.");
         }
 
-        AbilityStruct dequeuedAbility = abilityQueue[front];  // Get the ability at the front
-        abilityQueue[front] = default;  // Clear the value at the front 
-        front = (front + 1) % abilityQueue.Length;  // Move the front pointer forward
+        AbilityStruct dequeuedAbility = _abilityQueue[_front];  // Get the ability at the front
+        _abilityQueue[_front] = default;  // Clear the value at the front 
+        _front = (_front + 1) % _abilityQueue.Length;  // Move the front pointer forward
 
         return dequeuedAbility;
     }
@@ -50,23 +50,23 @@ public class AbilityQueueHandler : IAbilityQueue
     // Check if the queue is empty
     public bool CheckEmptyQueue()
     {
-        return front == back;  // The queue is empty if front equals back
+        return _front == _back;  // The queue is empty if front equals back
     }
 
     // Resize the queue when it's full
     private void ResizeQueue()
     {
-        int newCapacity = abilityQueue.Length * 2;  // Double the capacity
+        int newCapacity = _abilityQueue.Length * 2;  // Double the capacity
         AbilityStruct[] newQueue = new AbilityStruct[newCapacity];
 
-        int currentSize = (back - front + abilityQueue.Length) % abilityQueue.Length;
+        int currentSize = (_back - _front + _abilityQueue.Length) % _abilityQueue.Length;
         for (int i = 0; i < currentSize; i++)
         {
-            newQueue[i] = abilityQueue[(front + i) % abilityQueue.Length];  // Copy existing elements to the new queue
+            newQueue[i] = _abilityQueue[(_front + i) % _abilityQueue.Length];  // Copy existing elements to the new queue
         }
 
-        abilityQueue = newQueue;  // Replace the old queue with the new, larger queue
-        front = 0;  // Reset front to 0
-        back = currentSize;  // Set back to the current size
+        _abilityQueue = newQueue;  // Replace the old queue with the new, larger queue
+        _front = 0;  // Reset front to 0
+        _back = currentSize;  // Set back to the current size
     }
 }

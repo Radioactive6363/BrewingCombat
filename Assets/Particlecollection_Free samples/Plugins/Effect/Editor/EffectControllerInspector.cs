@@ -28,10 +28,10 @@ public class EffectControllerInspector : Editor
 		EditorGUILayout.BeginVertical ();
 
 		EditorGUILayout.BeginHorizontal ();
-		EditorGUI.BeginDisabledGroup (effectCtrl.m_bLockNums);
-		effectCtrl.m_nNumOfEffects = EditorGUILayout.IntField("Effect Count", effectCtrl.m_nNumOfEffects);
+		EditorGUI.BeginDisabledGroup (effectCtrl.mBLockNums);
+		effectCtrl.mNNumOfEffects = EditorGUILayout.IntField("Effect Count", effectCtrl.mNNumOfEffects);
 		EditorGUI.EndDisabledGroup();
-		effectCtrl.m_bLockNums = EditorGUILayout.Toggle (effectCtrl.m_bLockNums);
+		effectCtrl.mBLockNums = EditorGUILayout.Toggle (effectCtrl.mBLockNums);
 		if (GUILayout.Button ("One Click Expansion"))
 			bShowAll = true;
 		else
@@ -45,44 +45,44 @@ public class EffectControllerInspector : Editor
 		EditorGUILayout.EndHorizontal();
 
 		int nCnt = 0;
-		for (; nCnt < effectCtrl.m_nNumOfEffects; nCnt++) {
-			if (nCnt >= effectCtrl.m_kEffectGenList.Count) {
-				effectCtrl.m_kEffectGenList.Add (new EffectData ());
+		for (; nCnt < effectCtrl.mNNumOfEffects; nCnt++) {
+			if (nCnt >= effectCtrl.mKEffectGenList.Count) {
+				effectCtrl.mKEffectGenList.Add (new EffectData ());
 			}
 
-			EffectData effectData = effectCtrl.m_kEffectGenList [nCnt];
+			EffectData effectData = effectCtrl.mKEffectGenList [nCnt];
 			if (effectData == null)
 				continue;
 			if (bShowAll)
-				effectData.m_bFoldoutOpen = true;
+				effectData.mBFoldoutOpen = true;
 			if (bHideAll)
-				effectData.m_bFoldoutOpen = false;
+				effectData.mBFoldoutOpen = false;
 			
-			effectData.m_bFoldoutOpen = EditorGUILayout.Foldout (effectData.m_bFoldoutOpen, ("Effect " + nCnt + " Setting"));
-			if (effectData.m_bFoldoutOpen) {
-				effectData.m_fTimeSec = EditorGUILayout.FloatField ("Shot Time", effectData.m_fTimeSec);
-				effectData.m_goEffect = EditorGUILayout.ObjectField ("Obj", effectData.m_goEffect, typeof(GameObject), true) as GameObject;
+			effectData.mBFoldoutOpen = EditorGUILayout.Foldout (effectData.mBFoldoutOpen, ("Effect " + nCnt + " Setting"));
+			if (effectData.mBFoldoutOpen) {
+				effectData.mFTimeSec = EditorGUILayout.FloatField ("Shot Time", effectData.mFTimeSec);
+				effectData.mGoEffect = EditorGUILayout.ObjectField ("Obj", effectData.mGoEffect, typeof(GameObject), true) as GameObject;
 
 				EditorGUI.indentLevel++;
 				/// Transform panel.
-				effectData.m_bTransformFoldout = EditorGUILayout.Foldout (effectData.m_bTransformFoldout, "Transform");
-				if (effectData.m_bTransformFoldout) {
+				effectData.mBTransformFoldout = EditorGUILayout.Foldout (effectData.mBTransformFoldout, "Transform");
+				if (effectData.mBTransformFoldout) {
 					EditorGUI.indentLevel++;
 					EditorGUI.BeginChangeCheck ();
 					GUILayout.BeginHorizontal ();
 					if (GUILayout.Button ("P", GUILayout.Width(25), GUILayout.ExpandWidth(false)))
-						effectData.m_goPos = new Vector3 (0, 0, 0);
-					effectData.m_goPos = EditorGUILayout.Vector3Field ("", effectData.m_goPos);
+						effectData.mGoPos = new Vector3 (0, 0, 0);
+					effectData.mGoPos = EditorGUILayout.Vector3Field ("", effectData.mGoPos);
 					GUILayout.EndHorizontal ();
 					GUILayout.BeginHorizontal ();
 					if (GUILayout.Button ("R", GUILayout.Width(25), GUILayout.ExpandWidth(false)))
-						effectData.m_goRotation = new Vector3 (0, 0, 0);
-					effectData.m_goRotation = EditorGUILayout.Vector3Field ("", effectData.m_goRotation);
+						effectData.mGoRotation = new Vector3 (0, 0, 0);
+					effectData.mGoRotation = EditorGUILayout.Vector3Field ("", effectData.mGoRotation);
 					GUILayout.EndHorizontal ();
 					GUILayout.BeginHorizontal ();
 					if (GUILayout.Button ("S", GUILayout.Width(25), GUILayout.ExpandWidth(false)))
-						effectData.m_goScale = new Vector3 (0, 0, 0);
-					effectData.m_goScale = EditorGUILayout.Vector3Field ("", effectData.m_goScale);
+						effectData.mGoScale = new Vector3 (0, 0, 0);
+					effectData.mGoScale = EditorGUILayout.Vector3Field ("", effectData.mGoScale);
 					GUILayout.EndHorizontal ();
 					if (EditorGUI.EndChangeCheck ()) {
 						effectCtrl.UpdateEffectTransformByIndex (nCnt);
@@ -93,25 +93,25 @@ public class EffectControllerInspector : Editor
 				ParticleSystem particleSystem = effectCtrl.CheckHasParticleSystem (nCnt);
 				RenderEffect renderEffect = effectCtrl.CheckHasRenderEffectScript (nCnt);
 				if (particleSystem == null) {
-					effectData.m_bSortingFoldout = EditorGUILayout.Foldout (effectData.m_bSortingFoldout, "Sorting Layer");
+					effectData.mBSortingFoldout = EditorGUILayout.Foldout (effectData.mBSortingFoldout, "Sorting Layer");
 					/// Sorting panel.
-					if (effectData.m_bSortingFoldout) {
+					if (effectData.mBSortingFoldout) {
 						EditorGUI.indentLevel++;
 						EditorGUI.BeginChangeCheck ();
 						EditorGUILayout.BeginHorizontal ();
 						EditorGUILayout.LabelField ("Sorting Layer");
-						effectData.m_SortingLayerID = EditorGUILayout.IntPopup (effectData.m_SortingLayerID, m_LayerName, m_LayerID);
+						effectData.mSortingLayerID = EditorGUILayout.IntPopup (effectData.mSortingLayerID, m_LayerName, m_LayerID);
 						EditorGUILayout.EndHorizontal ();
 
 						EditorGUILayout.BeginHorizontal ();
 						EditorGUILayout.LabelField ("Sorting Order");
-						effectData.m_SortingOrder = EditorGUILayout.IntField (effectData.m_SortingOrder);
+						effectData.mSortingOrder = EditorGUILayout.IntField (effectData.mSortingOrder);
 						EditorGUILayout.EndHorizontal ();
 						if (EditorGUI.EndChangeCheck ()) {
 							if (renderEffect != null) {
-								renderEffect.m_SortingLayerID = effectData.m_SortingLayerID;
-								renderEffect.m_SortingOrder = effectData.m_SortingOrder;
-								renderEffect.m_EnableSetSortLayer = true;
+								renderEffect.mSortingLayerID = effectData.mSortingLayerID;
+								renderEffect.mSortingOrder = effectData.mSortingOrder;
+								renderEffect.mEnableSetSortLayer = true;
 								renderEffect.UpdateRenderLayer ();
 							} else {
 								effectCtrl.UPdateRenderLayerByIndex (nCnt);
@@ -123,15 +123,15 @@ public class EffectControllerInspector : Editor
 				EditorGUI.indentLevel--;
 			}
 
-			if (nCnt != effectCtrl.m_nNumOfEffects - 1) {
+			if (nCnt != effectCtrl.mNNumOfEffects - 1) {
 				EditorGUILayout.LabelField ("", GUILayout.Height (2));
 				GUILayout.Box ("", GUILayout.ExpandWidth (true), GUILayout.Height (1));
 				EditorGUILayout.LabelField ("", GUILayout.Height (2));
 			}
 		}
 
-		for (; nCnt < effectCtrl.m_kEffectGenList.Count; nCnt++) {
-			effectCtrl.m_kEffectGenList.RemoveAt (nCnt);
+		for (; nCnt < effectCtrl.mKEffectGenList.Count; nCnt++) {
+			effectCtrl.mKEffectGenList.RemoveAt (nCnt);
 		}
 
 		EditorGUILayout.EndVertical ();

@@ -21,6 +21,6 @@ public class LoseMenuUI : MonoBehaviour
 
     private void GameRestarted()
     {
-        GameManager.Instance.OnGameRestart?.Invoke();
+        GameManager.Instance.onGameRestart?.Invoke();
     }
 }

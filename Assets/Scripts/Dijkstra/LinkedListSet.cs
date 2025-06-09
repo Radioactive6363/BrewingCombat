@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public interface SetTDA
+public interface ISetADT
 {
     void InitializeSet();
     bool IsSetEmpty();
@@ -16,23 +16,23 @@ public interface SetTDA
 
 public class Node
 {
-    public int data;
-    public Node next;
+    public int Data;
+    public Node Next;
 }
 
 // DYNAMIC IMPLEMENTATION //
-public class LinkedListSet : SetTDA
+public class LinkedListSet : ISetADT
 {
-    Node head;
+    Node _head;
 
     public void InitializeSet()
     {
-        head = null;
+        _head = null;
     }
 
     public bool IsSetEmpty()
     {
-        return (head == null);
+        return (_head == null);
     }
 
     public void Add(int x)
@@ -41,100 +41,100 @@ public class LinkedListSet : SetTDA
         if (!this.Contains(x))
         {
             Node temp = new Node();
-            temp.data = x;
-            temp.next = head;
-            head = temp;
+            temp.Data = x;
+            temp.Next = _head;
+            _head = temp;
         }
     }
 
     public int Choose()
     {
-        return head.data;
+        return _head.Data;
     }
 
     public void Remove(int x)
     {
-        if (head != null)
+        if (_head != null)
         {
             // If it's the first element in the list
-            if (head.data == x)
+            if (_head.Data == x)
             {
-                head = head.next;
+                _head = _head.Next;
             }
             else
             {
-                Node temp = head;
-                while (temp.next != null && temp.next.data != x)
-                    temp = temp.next;
-                if (temp.next != null)
-                    temp.next = temp.next.next;
+                Node temp = _head;
+                while (temp.Next != null && temp.Next.Data != x)
+                    temp = temp.Next;
+                if (temp.Next != null)
+                    temp.Next = temp.Next.Next;
             }
         }
     }
 
     public bool Contains(int x)
     {
-        Node temp = head;
-        while (temp != null && temp.data != x)
+        Node temp = _head;
+        while (temp != null && temp.Data != x)
         {
-            temp = temp.next;
+            temp = temp.Next;
         }
         return (temp != null);
     }
 }
 
 // STATIC IMPLEMENTATION //
-public class ArraySet : SetTDA
+public class ArraySet : ISetADT
 {
-    int[] array;
-    int count;
+    int[] _array;
+    int _count;
 
     public void Add(int x)
     {
         if (!this.Contains(x))
         {
-            array[count] = x;
-            count++;
+            _array[_count] = x;
+            _count++;
         }
     }
 
     public bool IsSetEmpty()
     {
-        return count == 0;
+        return _count == 0;
     }
 
     public int Choose()
     {
-        return array[count - 1];
+        return _array[_count - 1];
     }
 
     public void InitializeSet()
     {
-        array = new int[100];
-        count = 0;
+        _array = new int[100];
+        _count = 0;
     }
 
     public bool Contains(int x)
     {
         int i = 0;
-        while (i < count && array[i] != x)
+        while (i < _count && _array[i] != x)
         {
             i++;
         }
-        return (i < count);
+        return (i < _count);
     }
 
     public void Remove(int x)
     {
         int i = 0;
-        while (i < count && array[i] != x)
+        while (i < _count && _array[i] != x)
         {
             i++;
         }
-        if (i < count)
+        if (i < _count)
         {
-            array[i] = array[count - 1];
-            count--;
+            _array[i] = _array[_count - 1];
+            _count--;
         }
     }
 }

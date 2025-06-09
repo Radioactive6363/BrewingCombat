@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 class DijkstraAlgorithm
 {
-    public static int[] distances;
-    public static string[] paths;
+    public static int[] Distances;
+    public static string[] Paths;
 
     private static int GetMinimumDistanceIndex(int[] distances, bool[] isInShortestPathSet, int vertexCount)
     {
@@ -31,11 +31,11 @@ class DijkstraAlgorithm
 
     public static void Dijkstra(AdjacencyMatrixGraph graph, int sourceLabel)
     {
-        int[,] matrix = graph.adjacencyMatrix;
-        int vertexCount = graph.nodeCount;
+        int[,] matrix = graph.AdjacencyMatrix;
+        int vertexCount = graph.NodeCount;
         int source = graph.VertexToIndex(sourceLabel);
 
-        distances = new int[vertexCount];
+        Distances = new int[vertexCount];
         bool[] isInShortestPathSet = new bool[vertexCount];
 
         int[] previousNodes = new int[vertexCount];
@@ -44,38 +44,38 @@ class DijkstraAlgorithm
         for (int i = 0; i < vertexCount; ++i)
         {
             // Set all distances to max (unreachable initially)
-            distances[i] = int.MaxValue;
+            Distances[i] = int.MaxValue;
             isInShortestPathSet[i] = false;
             previousNodes[i] = currentNodes[i] = -1;
         }
 
         // Distance to the source node is 0
-        distances[source] = 0;
-        previousNodes[source] = currentNodes[source] = graph.labels[source];
+        Distances[source] = 0;
+        previousNodes[source] = currentNodes[source] = graph.Labels[source];
 
         // Loop over all vertices
         for (int count = 0; count < vertexCount - 1; ++count)
         {
-            int u = GetMinimumDistanceIndex(distances, isInShortestPathSet, vertexCount);
+            int u = GetMinimumDistanceIndex(Distances, isInShortestPathSet, vertexCount);
             isInShortestPathSet[u] = true;
 
             // Check neighbors of the selected node
             for (int v = 0; v < vertexCount; ++v)
             {
                 if (!isInShortestPathSet[v] && matrix[u, v] != 0 &&
-                    distances[u] != int.MaxValue &&
-                    distances[u] + matrix[u, v] < distances[v])
+                    Distances[u] != int.MaxValue &&
+                    Distances[u] + matrix[u, v] < Distances[v])
                 {
-                    distances[v] = distances[u] + matrix[u, v];
-                    previousNodes[v] = graph.labels[u];
-                    currentNodes[v] = graph.labels[v];
+                    Distances[v] = Distances[u] + matrix[u, v];
+                    previousNodes[v] = graph.Labels[u];
+                    currentNodes[v] = graph.Labels[v];
                 }
             }
         }
 
         // Build path strings
-        paths = new string[vertexCount];
-        int originLabel = graph.labels[source];
+        Paths = new string[vertexCount];
+        int originLabel = graph.Labels[source];
 
         for (int i = 0; i < vertexCount; i++)
         {
@@ -101,11 +101,11 @@ class DijkstraAlgorithm
                 {
                     if (j == 0)
                     {
-                        paths[i] = pathList[j].ToString();
+                        Paths[i] = pathList[j].ToString();
                     }
                     else
                     {
-                        paths[i] += "," + pathList[j].ToString();
+                        Paths[i] += "," + pathList[j].ToString();
                     }
                 }
             }

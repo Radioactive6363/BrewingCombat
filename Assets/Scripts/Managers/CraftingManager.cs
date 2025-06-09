@@ -1,33 +1,34 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CraftingManager : MonoBehaviour
 {
-    [Header("Recetas disponibles")]
-    public RecipeDatabaseSO AllRecipes;
+    [FormerlySerializedAs("AllRecipes")] [Header("Recetas disponibles")]
+    public RecipeDatabaseSo allRecipes;
 
     public void GetPotion(IStack ingredientStack)
     {
-        PotionSO potionCrafted = TryToCraftWithStack(ingredientStack);
+        PotionSo potionCrafted = TryToCraftWithStack(ingredientStack);
         FindFirstObjectByType<InventorySystem>().AddItem(potionCrafted);
     }
     
     // Desde la pila
-    public PotionSO TryToCraftWithStack(IStack ingredientStack)
+    public PotionSo TryToCraftWithStack(IStack ingredientStack)
     {
-        List<IngredientSO> stackIngredients = new List<IngredientSO>();
+        List<IngredientSo> stackIngredients = new List<IngredientSo>();
         int tempStackQuantity = ingredientStack.ObtainQuantity();
         for (int i = 0; i < tempStackQuantity; i++)
         {
-            IngredientSO ingredient = ingredientStack.UnstackIngredients();
+            IngredientSo ingredient = ingredientStack.UnstackIngredients();
             Debug.Log(ingredient);
             stackIngredients.Add(ingredient);
         }
         return TryToCraft(stackIngredients);
     }
     
-    public PotionSO TryToCraft(List<IngredientSO> stackIngredients)
+    public PotionSo TryToCraft(List<IngredientSo> stackIngredients)
     {
         Debug.Log("Intentando craftear. Ingredientes en pila:");
         foreach (var ing in stackIngredients)
@@ -40,9 +41,9 @@ public class CraftingManager : MonoBehaviour
             Debug.Log($"- {ing.name} (Tipo: {ing.Type}, ID: {ing.Id})");
         }
 
-        foreach (var recipe in AllRecipes.recipes)
+        foreach (var recipe in allRecipes.recipes)
         {
-            if (recipe is RecipeSO recipeOS)
+            if (recipe is RecipeSo recipeOS)
             {
                Debug.Log("Revisando receta: " + recipeOS.name);
                
@@ -59,7 +60,7 @@ public class CraftingManager : MonoBehaviour
                         Debug.Log("- " + tipo);
                     }
                
-                    List<IngredientSO.IngredientType> typeOfStack = new List<IngredientSO.IngredientType>();
+                    List<IngredientSo.IngredientType> typeOfStack = new List<IngredientSo.IngredientType>();
                     foreach (var ing in stackIngredients)
                     {
                         typeOfStack.Add(ing.Type);
@@ -67,7 +68,7 @@ public class CraftingManager : MonoBehaviour
                     if (CompareByType(recipeOS.ingredientsByType, typeOfStack))
                     { 
                         Debug.Log("¡Receta encontrada! Creaste: " + recipeOS.name);
-                        PotionSO potionCreated = recipeOS.result;
+                        PotionSo potionCreated = recipeOS.result;
                         potionCreated.EffectType = recipeOS.PotionEffectType;
                         foreach (var ing in stackIngredients)
                         {
@@ -106,12 +107,12 @@ public class CraftingManager : MonoBehaviour
         return null;
     }
 
-    private bool CompareByType(List<IngredientSO.IngredientType> recipeTypes, List<IngredientSO.IngredientType> typesStack)
+    private bool CompareByType(List<IngredientSo.IngredientType> recipeTypes, List<IngredientSo.IngredientType> typesStack)
     {
-        List<IngredientSO.IngredientType> typesRequired = new List<IngredientSO.IngredientType>(recipeTypes);
+        List<IngredientSo.IngredientType> typesRequired = new List<IngredientSo.IngredientType>(recipeTypes);
         if (recipeTypes.Count != typesStack.Count)
             return false;
-        foreach (IngredientSO.IngredientType type in typesStack)
+        foreach (IngredientSo.IngredientType type in typesStack)
         {
             if (typesRequired.Contains(type)) 
                 typesRequired.Remove(type);
@@ -121,7 +122,7 @@ public class CraftingManager : MonoBehaviour
         return false;
     }
 
-    private bool CompareByID(List<IngredientSO> idRecipe, List<IngredientSO> ingStack)
+    private bool CompareByID(List<IngredientSo> idRecipe, List<IngredientSo> ingStack)
     {
         if (idRecipe.Count != ingStack.Count)
             return false;
