@@ -18,7 +18,7 @@ public interface IGraphADT
 
 public class AdjacencyMatrixGraph : IGraphADT
 {
-    static int _maxVertices = 100;
+    static int _maxVertices = 500;
     public int[,] AdjacencyMatrix;
     public int[] Labels;
     public int NodeCount;
