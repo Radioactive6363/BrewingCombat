@@ -72,7 +72,7 @@ public class BlockSpawnManager : MonoBehaviour
         {
             for (int j = 0; j < dirtAreaSize.x; j++)
             {
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.01f);
                 index++;
                 Vector3 blockPosition = dirtParent.position + Vector3.right * dirtSeparationAmount * j + Vector3.forward * dirtSeparationAmount * i;
                 BlockClass block = Instantiate(dirtBlock, blockPosition, Quaternion.identity, dirtParent);
@@ -136,6 +136,7 @@ public class BlockSpawnManager : MonoBehaviour
                 else if (block.CheckSpawnObsPoint())
                 {
                     BlockCoordinateSystem.Add(dirtParent.position + Vector3.right * dirtSeparationAmount * j + Vector3.forward * dirtSeparationAmount * i, BlockType.Obstructed);
+                    _adjacencyMatrixGraph.AddVertex(index);
                 }
                 else
                 {
@@ -147,22 +148,33 @@ public class BlockSpawnManager : MonoBehaviour
             }
         }
         
-                
         // Creating an octagonal direction system to check for each vertex neighbor availability.
-        int width = (int)dirtAreaSize.y;
-        int[] neighborOffsets = {
-            -width - 1, -width, -width + 1,
-            -1,             1,
-            width - 1,  width,  width + 1
-        };
+        int rows = (int)dirtAreaSize.y;
+        int cols = (int)dirtAreaSize.x;
 
-        // Setting the neighbors of each vertex in the system
         foreach (var vertex in NavigableVertices)
         {
-            foreach (int offset in neighborOffsets)
+            int row = vertex / cols;
+            int col = vertex % cols;
+
+            for (int dRow = -1; dRow <= 1; dRow++)
             {
-                if (_adjacencyMatrixGraph.Labels.Contains(vertex + offset))
-                    _adjacencyMatrixGraph.AddEdge(vertex, vertex + offset, 1);
+                for (int dCol = -1; dCol <= 1; dCol++)
+                {
+                    if (dRow == 0 && dCol == 0) continue;
+
+                    int nRow = row + dRow;
+                    int nCol = col + dCol;
+
+                    if (nRow < 0 || nRow >= rows || nCol < 0 || nCol >= cols) continue;
+
+                    int neighborIndex = nRow * cols + nCol;
+
+                    if (NavigableVertices.Contains(neighborIndex))
+                    {
+                        _adjacencyMatrixGraph.AddEdge(vertex, neighborIndex, 1);
+                    }
+                }
             }
         }
         
