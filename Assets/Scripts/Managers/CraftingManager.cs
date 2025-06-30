@@ -40,20 +40,28 @@ public class CraftingManager : MonoBehaviour
         }
     }
     
-    public void GetPotion(IStack ingredientStack)
+    public bool TryGetPotion(IStack ingredientStack)
     {
         PotionSo potionCrafted = TryToCraftWithStack(ingredientStack);
-        FindFirstObjectByType<InventorySystem>().AddItem(potionCrafted);
+
+        if (potionCrafted != null)
+        {
+            FindFirstObjectByType<InventorySystem>().AddItem(potionCrafted);
+            return true;
+        }
+
+        return false;
     }
     
     // Desde la pila
     public PotionSo TryToCraftWithStack(IStack ingredientStack)
     {
         List<IngredientSo> stackIngredients = new List<IngredientSo>();
-        int tempStackQuantity = ingredientStack.ObtainQuantity();
+        IStack tempStack = ingredientStack;
+        int tempStackQuantity = tempStack.ObtainQuantity();
         for (int i = 0; i < tempStackQuantity; i++)
         {
-            IngredientSo ingredient = ingredientStack.UnstackIngredients();
+            IngredientSo ingredient = tempStack.UnstackIngredients();
             Debug.Log(ingredient);
             stackIngredients.Add(ingredient);
         }

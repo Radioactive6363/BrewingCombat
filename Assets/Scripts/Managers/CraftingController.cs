@@ -58,16 +58,17 @@ public class CraftingController : MonoBehaviour
 
     public void CraftPotion()
     {
-        Debug.Log("Craft Potion");
-        Debug.Log(_ingredientStack.ObtainQuantity());
-        for (int i = 0; i < _ingredientStack.ObtainQuantity(); i++)
+        if (_craftingManager.TryGetPotion(_ingredientStack))
         {
-            ingredientsGameObjects[i].SetActive(false);
+            Debug.Log("Craft Potion");
+            Debug.Log(_ingredientStack.ObtainQuantity());
+            for (int i = 0; i < _ingredientStack.ObtainQuantity(); i++)
+            {
+                ingredientsGameObjects[i].SetActive(false);
+            }
+            craftingPanel.SetActive(false);
+            craftPotionButton.SetActive(false);
         }
-        _craftingManager.GetPotion(_ingredientStack);
-        craftingPanel.SetActive(false);
-        craftPotionButton.SetActive(false);
-
     }
 }
 
