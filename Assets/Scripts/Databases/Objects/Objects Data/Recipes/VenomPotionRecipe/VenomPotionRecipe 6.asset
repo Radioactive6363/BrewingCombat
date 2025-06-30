@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: VenomPotionRecipe 6
   m_EditorClassIdentifier: 
   name: Venom Potion
-  level: 12
+  level: 21
   potionEffectType: 7
   result: {fileID: 11400000, guid: 81c9528470a96834fbe53076de6c5cab, type: 2}
   ingredientsByID:
-  - {fileID: 11400000, guid: a9428aaa405f7a14f904481a3f577b61, type: 2}
+  - {fileID: 11400000, guid: 35e3463b2bcead04da42ebc5b7750a47, type: 2}
   - {fileID: 11400000, guid: d95ee96660686004088385d1767b955c, type: 2}
   - {fileID: 11400000, guid: 8722978323c242c4c8dfecc9f8fe9f39, type: 2}
   ingredientsByType: 020000000000000004000000
