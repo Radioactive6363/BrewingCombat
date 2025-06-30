@@ -496,6 +496,8 @@ MonoBehaviour:
   - {fileID: 4489246020890687554, guid: 35981c11dd0b23e4982bf682896a73b3, type: 3}
   - {fileID: 5595755941503838729, guid: a9f5b6f4912bb844a9d3100f83a4739b, type: 3}
   obstacleChance: 5
+  dijkstraLoaded: 0
+  DestinationNodes: 
 --- !u!1 &1607103628
 GameObject:
   m_ObjectHideFlags: 0

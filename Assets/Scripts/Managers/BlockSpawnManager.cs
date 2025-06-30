@@ -26,6 +26,8 @@ public class BlockSpawnManager : MonoBehaviour
 
     [Header("Object Density Variables")]
     public int obstacleChance;
+
+    public bool dijkstraLoaded = false;
     
     private bool _spawnedNavPointLeft = false;
     private bool _spawnedNavPointRight = false;
@@ -35,7 +37,7 @@ public class BlockSpawnManager : MonoBehaviour
     private List<int> NavigableVertices = new List<int>();
 
     private int sourceNode;
-    private List<int> DestinationNodes = new List<int>();
+    public List<int> DestinationNodes = new List<int>();
     
     private void Awake()
     {
@@ -131,7 +133,6 @@ public class BlockSpawnManager : MonoBehaviour
                     _adjacencyMatrixGraph.AddVertex(index); // We add a possible navigation point as a vertex for the adjacencyMatrixGraph
                     NavigableVertices.Add(index); // We add the vertex as a navigable vertex.
                     DestinationNodes.Add(index);
-                    Debug.Log("FOUND A NAVPOINT!!!, INDEX: " + index);
                 }
                 else if (block.CheckSpawnObsPoint())
                 {
@@ -143,7 +144,6 @@ public class BlockSpawnManager : MonoBehaviour
                     BlockCoordinateSystem.Add(dirtParent.position + Vector3.right * dirtSeparationAmount * j + Vector3.forward * dirtSeparationAmount * i, BlockType.Normal);
                     _adjacencyMatrixGraph.AddVertex(index); // We add a possible normal navigation point as a vertex for the adjacencyMatrixGraph
                     NavigableVertices.Add(index); // We add the vertex as a navigable vertex.
-                    Debug.Log("FOUND A BASIC NAVPOINT, INDEX: " + index);
                 }
             }
         }
@@ -178,7 +178,7 @@ public class BlockSpawnManager : MonoBehaviour
             }
         }
         
-        DijkstraAlgorithm.Dijkstra(_adjacencyMatrixGraph, sourceNode);
+        DijkstraAlgorithm.Dijkstra(_adjacencyMatrixGraph, sourceNode, (int)dirtAreaSize.x);
         
         if (DijkstraAlgorithm.Distances[DestinationNodes[0]] == int.MaxValue)
         {
@@ -189,6 +189,8 @@ public class BlockSpawnManager : MonoBehaviour
             string path = DijkstraAlgorithm.Paths[DestinationNodes[0]];
             Debug.Log($"\nCamino del nodo {sourceNode} hacia el nodo {DestinationNodes[0]}: Distancia = {DijkstraAlgorithm.Distances[DestinationNodes[0]]}, Camino = {path}");
         }
+        
+        dijkstraLoaded = true;
         
         yield break;
     }

@@ -46,36 +46,19 @@ public class MapPlayerClass : MonoBehaviour
     {
         if (!canMove) return;
 
-        if (!_playerMoving)
+        if (BlockSpawnManager.Instance.dijkstraLoaded && !_playerMoving)
         {
-            _movementXZ = Vector3.zero;
-
-            if (Input.GetKey(KeyCode.W))
+            for (int input = 1; input <= 3; input++)
             {
-                _movementXZ.z += 1;
-                _movementXZ.z = Mathf.Clamp(_movementXZ.z, -1f, 1f);
+                if (Input.GetKeyDown((KeyCode)((int)KeyCode.Alpha1 + input - 1)))
+                {
+                    StartCoroutine(MovePlayer(BlockSpawnManager.Instance.DestinationNodes[input - 1]));
+                    break;
+                }
             }
-
-            if (Input.GetKey(KeyCode.S))
-            {
-                _movementXZ.z -= 1;
-                _movementXZ.z = Mathf.Clamp(_movementXZ.z, -1f, 1f);
-            }
-        
-            if (Input.GetKey(KeyCode.D))
-            {
-                _movementXZ.x += 1;
-                _movementXZ.x = Mathf.Clamp(_movementXZ.x, -1f, 1f);
-            }
-
-            if (Input.GetKey(KeyCode.A))
-            {
-                _movementXZ.x -= 1;
-                _movementXZ.x = Mathf.Clamp(_movementXZ.x, -1f, 1f);
-            }
-
         }
-        else
+        
+        if (_playerMoving)
         {
             transform.position = Vector3.Lerp(transform.position, _currentBlock + _playerSpawnOffset, Time.deltaTime * 20f);
         }
@@ -86,64 +69,68 @@ public class MapPlayerClass : MonoBehaviour
 
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 15f);
         }
-
-        if (_movementXZ != Vector3.zero && !_playerMoving)
-        {
-            StartCoroutine(MovePlayer());
-        }
     }
 
-    private IEnumerator MovePlayer()
+    private IEnumerator MovePlayer(int index)
     {
+        yield return new WaitUntil(() => BlockSpawnManager.Instance.dijkstraLoaded);
+
+        Vector3[] movementSteps = DijkstraAlgorithm.GetPathsXZ(index);
         _playerMoving = true;
 
-        if (_blockCoordinateSystem != null && _dirtSeparationAmount != 0f && _currentBlock != null)
+        foreach (var step in movementSteps)
         {
-            Vector3 movementDirection = _movementXZ * _dirtSeparationAmount + transform.position - _playerSpawnOffset;
-            Debug.DrawLine(transform.position, movementDirection, Color.red, 1f);
-
-            Vector3 closestBlock = Vector3.one * Mathf.Infinity;
-            BlockType blockType = BlockType.Normal;
-            float closestBlockDistance = Mathf.Infinity;
-            foreach (var block in _blockCoordinateSystem)
+            _movementXZ = step;
+            
+            if (_blockCoordinateSystem != null && _dirtSeparationAmount != 0f && _currentBlock != null)
             {
-                float distanceToDirection = Vector3.Distance(block.Key, movementDirection);
+                Vector3 movementDirection = _movementXZ * _dirtSeparationAmount + transform.position - _playerSpawnOffset;
+                Debug.DrawLine(transform.position, movementDirection, Color.red, 1f);
 
-                if (distanceToDirection < closestBlockDistance && distanceToDirection < 0.25f && block.Value != BlockType.Obstructed)
+                Vector3 closestBlock = Vector3.one * Mathf.Infinity;
+                BlockType blockType = BlockType.Normal;
+                float closestBlockDistance = Mathf.Infinity;
+                foreach (var block in _blockCoordinateSystem)
                 {
-                    closestBlockDistance = distanceToDirection;
-                    closestBlock = block.Key;
-                    blockType = block.Value;
+                    float distanceToDirection = Vector3.Distance(block.Key, movementDirection);
+
+                    if (distanceToDirection < closestBlockDistance && distanceToDirection < 0.25f && block.Value != BlockType.Obstructed)
+                    {
+                        closestBlockDistance = distanceToDirection;
+                        closestBlock = block.Key;
+                        blockType = block.Value;
+                    }
+                }
+
+                if (closestBlockDistance != Mathf.Infinity)
+                {
+                    if (blockType != BlockType.NavigationPoint)
+                    {
+                        _currentBlock = closestBlock;
+
+                        if (_playerAnimator != null)
+                        {
+                            _playerAnimator.Play("Move_Forward");
+                        }
+                    }
+                    else
+                    {
+                        if (_playerAnimator != null)
+                        {
+                            _playerAnimator.Play("Attack");
+
+                            yield return new WaitForSeconds(1f);
+
+                            SceneManager.LoadScene("SampleScene");
+                        }
+                    }
                 }
             }
 
-            if (closestBlockDistance != Mathf.Infinity)
-            {
-                if (blockType != BlockType.NavigationPoint)
-                {
-                    _currentBlock = closestBlock;
-
-                    if (_playerAnimator != null)
-                    {
-                        _playerAnimator.Play("Move_Forward");
-                    }
-                }
-                else
-                {
-                    if (_playerAnimator != null)
-                    {
-                        _playerAnimator.Play("Attack");
-
-                        yield return new WaitForSeconds(1f);
-
-                        SceneManager.LoadScene("SampleScene");
-                    }
-                }
-            }
+            yield return new WaitForSeconds(.4f);
         }
 
-        yield return new WaitForSeconds(.4f);
-
+        _movementXZ = Vector3.zero;
         _playerMoving = false;
     }
 
