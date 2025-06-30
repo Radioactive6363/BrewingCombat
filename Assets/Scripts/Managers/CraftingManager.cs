@@ -86,10 +86,10 @@ public class CraftingManager : MonoBehaviour
             Debug.Log(ingredient);
             stackIngredients.Add(ingredient);
         }
-        return TryToCraft(stackIngredients);
+        return TryToCraft(stackIngredients, ingredientStack);
     }
     
-    public PotionSo TryToCraft(List<IngredientSo> stackIngredients)
+    public PotionSo TryToCraft(List<IngredientSo> stackIngredients, IStack ingredientStack)
     {
         Debug.Log("Intentando craftear. Ingredientes en pila:");
         foreach (var ing in stackIngredients)
@@ -130,6 +130,14 @@ public class CraftingManager : MonoBehaviour
                 if (CompareByType(recipeOS.ingredientsByType, typeOfStack))
                 {
                     Debug.Log("¡Receta encontrada! Creaste: " + recipeOS.name);
+
+                    int tempStackQuantity = ingredientStack.ObtainQuantity();
+                    
+                    for (int i = 0; i < tempStackQuantity; i++)
+                        ingredientStack.UnstackIngredients();
+                    
+                    ingredientStack.UnstackIngredients();
+                    
                     PotionSo potionCreated = recipeOS.result;
                     //Mejora de pocion
                     if (diccionarioDeArboles.TryGetValue(recipeOS.PotionEffectType, out var arbolDeMejoras))
