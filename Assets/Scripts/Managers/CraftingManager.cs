@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -57,7 +58,7 @@ public class CraftingManager : MonoBehaviour
     public PotionSo TryToCraftWithStack(IStack ingredientStack)
     {
         List<IngredientSo> stackIngredients = new List<IngredientSo>();
-        IStack tempStack = ingredientStack;
+        IStack tempStack = ingredientStack.Clone();
         int tempStackQuantity = tempStack.ObtainQuantity();
         for (int i = 0; i < tempStackQuantity; i++)
         {

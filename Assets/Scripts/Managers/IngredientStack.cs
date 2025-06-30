@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class IngredientStack : IStack
@@ -57,6 +58,24 @@ public class IngredientStack : IStack
     public bool CheckFull()
     {
         return _index == _maxQuantity;
+    }
+
+    public IStack Clone()
+    {
+        // Create a new IngredientStack with the same capacity
+        IngredientStack clonedStack = new IngredientStack();
+        clonedStack.InitializeStack(_maxQuantity);
+        
+        // Copy all ingredients from the current stack to the cloned stack
+        for (int i = 0; i < _index; i++)
+        {
+            clonedStack._a[i] = _a[i];
+        }
+        
+        // Set the same index position
+        clonedStack._index = _index;
+        
+        return clonedStack;
     }
 }
 

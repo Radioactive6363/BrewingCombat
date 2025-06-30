@@ -6,4 +6,5 @@ public interface IStack
     bool CheckEmptyStack();
     int ObtainQuantity();
     bool CheckFull();
+    IStack Clone();
 }
