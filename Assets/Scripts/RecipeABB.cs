@@ -64,14 +64,14 @@ public class RecipeABB : IRecipeABBTDA
         }
     }
 
-    private RecipeSo Mayor(IRecipeABBTDA nodo)
+    public RecipeSo Mayor(IRecipeABBTDA nodo)
     {
         if (nodo.HijoDer().ArbolVacio())
             return nodo.Raiz();
         return Mayor(nodo.HijoDer());
     }
 
-    private RecipeSo Menor(IRecipeABBTDA nodo)
+    public RecipeSo Menor(IRecipeABBTDA nodo)
     {
         if (nodo.HijoIzq().ArbolVacio())
             return nodo.Raiz();

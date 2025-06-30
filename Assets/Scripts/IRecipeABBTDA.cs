@@ -7,6 +7,8 @@ public interface IRecipeABBTDA
     void InicializarArbol();
     void AgregarElem(RecipeSo receta);
     void EliminarElem(int nivel);
+    RecipeSo Mayor(IRecipeABBTDA nodo);
+    RecipeSo Menor(IRecipeABBTDA nodo);
     RecipeSo BuscarPorNivel(int nivel);
     int CalcularAltura();
 }
