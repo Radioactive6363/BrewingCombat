@@ -131,6 +131,7 @@ public class CraftingManager : MonoBehaviour
                 {
                     Debug.Log("¡Receta encontrada! Creaste: " + recipeOS.name);
                     PotionSo potionCreated = recipeOS.result;
+
                     //Mejora de pocion
                     if (diccionarioDeArboles.TryGetValue(recipeOS.PotionEffectType, out var arbolDeMejoras))
                     {
@@ -146,9 +147,16 @@ public class CraftingManager : MonoBehaviour
                             potionCreated.Potency += appliedPotency;
                             potionCreated.ChargeTime += ing.ChargeTime;
                         }
+
+                        
+
                         Debug.Log($"¡Mejora encontrada! Creaste: {recetaMejorada.name}\n" +
                                   $"Potency: {potionCreated?.Potency}\n" +
                                   $"Level: {recipeOS?.level}");
+                        PotionHistorySystem.Instance.AddToHistory(potionCreated);
+                        PotionHistorySystem.Instance.SortHistoryByDate(true);
+                        PotionHistorySystem.Instance.PrintHistoryToConsole();
+                        FindFirstObjectByType<PotionHistoryUIManager>()?.LoadHistory();
                         return potionCreated;
                     } 
                 }

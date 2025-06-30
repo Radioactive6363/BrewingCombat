@@ -44,6 +44,9 @@ TagManager:
   - name: New Layer 1
     uniqueID: 3891560847
     locked: 0
+  - name: text
+    uniqueID: 2787481453
+    locked: 0
   m_RenderingLayers:
   - Default
   - Light Layer 1
