@@ -1,107 +1,91 @@
-/*
-using UnityEngine;
-
-public class ABB : IABBTDA
+public class RecipeABB : IRecipeABBTDA
 {
-    NodoABB raiz;
+    NodoRecipeABB raiz;
 
-    public IngredientSo Raiz()
-    {
-        return raiz.info;
-    }
+    public void InicializarArbol() => raiz = null;
+    public bool ArbolVacio() => raiz == null;
 
-    public bool ArbolVacio()
-    {
-        return (raiz == null);
-    }
+    public RecipeSo Raiz() => raiz.info;
+    public IRecipeABBTDA HijoIzq() => raiz.hijoIzq;
+    public IRecipeABBTDA HijoDer() => raiz.hijoDer;
 
-    public void InicializarArbol()
+    public void AgregarElem(RecipeSo receta)
     {
-        raiz = null;
-    }
-
-    public IABBTDA HijoDer()
-    {
-        return raiz.hijoDer;
-    }
-
-    public IABBTDA HijoIzq()
-    {
-        return raiz.hijoIzq;
-    }
-
-    public void AgregarElem(IngredientSo x)
-    {
-        if(raiz == null)
+        if (raiz == null)
         {
-            raiz = new NodoABB();
-            raiz.info = x;
-            raiz.hijoIzq = new ABB();
+            raiz = new NodoRecipeABB
+            {
+                info = receta,
+                hijoIzq = new RecipeABB(),
+                hijoDer = new RecipeABB()
+            };
             raiz.hijoIzq.InicializarArbol();
-            raiz.hijoDer = new ABB();
             raiz.hijoDer.InicializarArbol();
         }
-        else if (raiz.info > x)
-        {
-            raiz.hijoIzq.AgregarElem(x);
-        }
-        else if (raiz.info < x)
-        {
-            raiz.hijoDer.AgregarElem(x);
-        }
+        else if (receta.level < raiz.info.level)
+            raiz.hijoIzq.AgregarElem(receta);
+        else if (receta.level > raiz.info.level)
+            raiz.hijoDer.AgregarElem(receta);
     }
 
-    public void EliminarElem(int x)
+    public void EliminarElem(int nivel)
     {
-        if (raiz != null)
+        if (raiz == null)
+            return;
+
+        if (nivel < raiz.info.level)
         {
-            if (raiz.info == x && raiz.hijoIzq.ArbolVacio() && raiz.hijoDer.ArbolVacio())
+            raiz.hijoIzq.EliminarElem(nivel);
+        }
+        else if (nivel > raiz.info.level)
+        {
+            raiz.hijoDer.EliminarElem(nivel);
+        }
+        else 
+        {
+            if (raiz.hijoIzq.ArbolVacio() && raiz.hijoDer.ArbolVacio())
             {
                 raiz = null;
             }
-            else if (raiz.info == x && !raiz.hijoIzq.ArbolVacio())
+            else if (!raiz.hijoIzq.ArbolVacio())
             {
-                raiz.info = this.mayor(raiz.hijoIzq);
-                raiz.hijoIzq.EliminarElem(raiz.info);
-            }
-            else if (raiz.info == x && raiz.hijoIzq.ArbolVacio())
-            {
-                raiz.info = this.menor(raiz.hijoDer);
-                raiz.hijoDer.EliminarElem(raiz.info);
-            }
-            else if(raiz.info < x)
-            {
-                raiz.hijoDer.EliminarElem(x);
+                RecipeSo mayor = Mayor(raiz.hijoIzq);
+                raiz.info = mayor;
+                raiz.hijoIzq.EliminarElem(mayor.level);
             }
             else
             {
-                raiz.hijoIzq.EliminarElem(x);
+                RecipeSo menor = Menor(raiz.hijoDer);
+                raiz.info = menor;
+                raiz.hijoDer.EliminarElem(menor.level);
             }
         }
     }
 
-    public int mayor(IABBTDA a)
+    private RecipeSo Mayor(IRecipeABBTDA nodo)
     {
-        if (a.HijoDer().ArbolVacio())
-        {
-            return a.Raiz();
-        }
-        else
-        {
-            return mayor(a.HijoDer());
-        }
+        if (nodo.HijoDer().ArbolVacio())
+            return nodo.Raiz();
+        return Mayor(nodo.HijoDer());
     }
 
-    public int menor(IABBTDA a)
+    private RecipeSo Menor(IRecipeABBTDA nodo)
     {
-        if (a.HijoIzq(). ArbolVacio())
-        {
-            return a.Raiz();
-        }
+        if (nodo.HijoIzq().ArbolVacio())
+            return nodo.Raiz();
+        return Menor(nodo.HijoIzq());
+    }
+
+    public RecipeSo BuscarPorNivel(int nivel)
+    {
+        if (raiz == null)
+            return null;
+
+        if (nivel == raiz.info.level)
+            return raiz.info;
+        else if (nivel < raiz.info.level)
+            return raiz.hijoIzq.BuscarPorNivel(nivel);
         else
-        {
-            return menor(a.HijoIzq());
-        }
+            return raiz.hijoDer.BuscarPorNivel(nivel);
     }
 }
-*/

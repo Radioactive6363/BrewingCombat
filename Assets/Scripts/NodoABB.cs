@@ -1,10 +1,6 @@
-using UnityEngine;
-
-public class NodoABB
+public class NodoRecipeABB
 {
-    // datos a almacenar, en este caso un entero
-    public IngredientSo info;
-    // referencia los nodos izquiero y derecho
-    public IABBTDA hijoIzq;
-    public IABBTDA hijoDer;
+    public RecipeSo info;
+    public IRecipeABBTDA hijoIzq;
+    public IRecipeABBTDA hijoDer;
 }

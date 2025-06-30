@@ -3839,12 +3839,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35462a0b1c4f3a64d987419c9217a355, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ingredientsGameObjects:
+  ingredientsGameObjects:
   - {fileID: 3677569409197948740}
   - {fileID: 8719064615023867029}
   - {fileID: 6891459760619960157}
-  CraftPotionButton: {fileID: 1548915243}
-  CraftingPanel: {fileID: 4591997608433448889}
+  craftPotionButton: {fileID: 1548915243}
+  craftingPanel: {fileID: 4591997608433448889}
 --- !u!114 &3517455840629948729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5098,6 +5098,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6203868730407300441, guid: 65780f27b8a9b2d448599502d142a87b, type: 3}
       propertyPath: AllRecipes
+      value: 
+      objectReference: {fileID: 11400000, guid: 571c0e8cb14699a4aad859052f3a0bc0, type: 2}
+    - target: {fileID: 6203868730407300441, guid: 65780f27b8a9b2d448599502d142a87b, type: 3}
+      propertyPath: allRecipes
       value: 
       objectReference: {fileID: 11400000, guid: 571c0e8cb14699a4aad859052f3a0bc0, type: 2}
     m_RemovedComponents: []

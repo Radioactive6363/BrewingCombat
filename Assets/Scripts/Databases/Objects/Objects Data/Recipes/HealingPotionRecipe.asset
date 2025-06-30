@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: HealingPotionRecipe
   m_EditorClassIdentifier: 
   name: Healing Potion
-  level: 1
+  level: 2
   potionEffectType: 1
   result: {fileID: 11400000, guid: 589599d4af8af9f4498a9085f7bd111e, type: 2}
   ingredientsByID: []

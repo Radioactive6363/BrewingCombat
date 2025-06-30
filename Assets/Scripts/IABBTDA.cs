@@ -1,12 +1,11 @@
-using UnityEngine;
-
-public interface IABBTDA
+public interface IRecipeABBTDA
 {
-    IngredientSo Raiz();
-    IABBTDA HijoIzq();
-    IABBTDA HijoDer();
+    RecipeSo Raiz();
+    IRecipeABBTDA HijoIzq();
+    IRecipeABBTDA HijoDer();
     bool ArbolVacio();
     void InicializarArbol();
-    void AgregarElem(int x);
-    void EliminarElem(int x);
+    void AgregarElem(RecipeSo receta);
+    void EliminarElem(int nivel);
+    RecipeSo BuscarPorNivel(int nivel);
 }

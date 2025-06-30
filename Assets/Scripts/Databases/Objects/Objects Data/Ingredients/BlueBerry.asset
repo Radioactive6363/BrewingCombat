@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: BlueBerry
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 26b4d8692c5e74d17bd9dc28bcbe961b, type: 3}
-  IngredientName: Blueberry
+  ingredientName: Blueberry
   type: 1
   potency: 4
   chargeTime: 1.4
-  _count: 5
+  count: 5

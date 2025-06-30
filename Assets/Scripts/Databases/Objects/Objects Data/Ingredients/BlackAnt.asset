@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: BlackAnt
   m_EditorClassIdentifier: 
   sprite: {fileID: -1300809528, guid: c197eb2f9824271458622b42b4dad234, type: 3}
-  IngredientName: Black Spider
+  ingredientName: Black Spider
   type: 3
   potency: 4
   chargeTime: 3
-  _count: 5
+  count: 5

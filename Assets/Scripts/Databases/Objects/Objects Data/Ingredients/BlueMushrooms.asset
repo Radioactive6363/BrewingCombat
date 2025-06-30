@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: BlueMushrooms
   m_EditorClassIdentifier: 
   sprite: {fileID: 1575166352, guid: 024b7f8edd43f834c98867a49df8b35a, type: 3}
-  IngredientName: Blue Mushrooms
+  ingredientName: Blue Mushrooms
   type: 1
   potency: 5
   chargeTime: 2
-  _count: 5
+  count: 5

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: RedFlower
   m_EditorClassIdentifier: 
   sprite: {fileID: -2052440691, guid: 1cd16d95502820f479d8267c51842d6e, type: 3}
-  IngredientName: Red Flower
+  ingredientName: Red Flower
   type: 0
   potency: 5
   chargeTime: 2
-  _count: 5
+  count: 5

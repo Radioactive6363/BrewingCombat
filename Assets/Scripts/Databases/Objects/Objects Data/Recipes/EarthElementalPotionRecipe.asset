@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EarthElementalPotionRecipe
   m_EditorClassIdentifier: 
   name: Earth Elemental Potion
-  level: 1
+  level: 6
   potionEffectType: 3
   result: {fileID: 11400000, guid: be804e29dc1ddb84a89d2051fd8f58ae, type: 2}
   ingredientsByID: []

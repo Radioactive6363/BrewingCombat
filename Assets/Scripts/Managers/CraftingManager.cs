@@ -5,9 +5,41 @@ using UnityEngine.Serialization;
 
 public class CraftingManager : MonoBehaviour
 {
-    [FormerlySerializedAs("AllRecipes")] [Header("Recetas disponibles")]
+    [Header("Recetas disponibles")]
+    private RecipeABB arbolDeMejoras;
     public RecipeDatabaseSo allRecipes;
 
+    private void Awake()
+    {
+        arbolDeMejoras = new RecipeABB();
+        arbolDeMejoras.InicializarArbol();
+
+        foreach (var receta in allRecipes.recipes)
+        {
+            if (receta is RecipeSo recetaSo)
+            {
+                arbolDeMejoras.AgregarElem(recetaSo);
+            }
+        }
+        MostrarRecetasOrdenadas(); //Debugging
+    }
+    
+    public void MostrarRecetasOrdenadas()
+    {
+        Debug.Log("Árbol de recetas (ordenado por nivel):");
+        MostrarRecetasRecursivo(arbolDeMejoras);
+    }
+
+    private void MostrarRecetasRecursivo(IRecipeABBTDA nodo)
+    {
+        if (!nodo.ArbolVacio())
+        {
+            MostrarRecetasRecursivo(nodo.HijoIzq());
+            Debug.Log($"Nivel: {nodo.Raiz().level}, Nombre: {nodo.Raiz().name}");
+            MostrarRecetasRecursivo(nodo.HijoDer());
+        }
+    }
+    
     public void GetPotion(IStack ingredientStack)
     {
         PotionSo potionCrafted = TryToCraftWithStack(ingredientStack);
@@ -69,6 +101,14 @@ public class CraftingManager : MonoBehaviour
                     { 
                         Debug.Log("¡Receta encontrada! Creaste: " + recipeOS.name);
                         PotionSo potionCreated = recipeOS.result;
+                        //Mejora de pocion
+                        RecipeSo recetaMejorada = arbolDeMejoras.BuscarPorNivel(recipeOS.level + 1);
+                        if (recetaMejorada != null && CompareByID(recetaMejorada.ingredientsByID, stackIngredients))
+                        {
+                            Debug.Log("¡Mejora encontrada! Creaste: " + recetaMejorada.name);
+                            potionCreated = recetaMejorada.result;
+                        }
+                        
                         potionCreated.EffectType = recipeOS.PotionEffectType;
                         foreach (var ing in stackIngredients)
                         {
