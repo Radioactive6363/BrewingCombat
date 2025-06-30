@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class RecipeABB : IRecipeABBTDA
 {
     NodoRecipeABB raiz;
@@ -87,5 +89,15 @@ public class RecipeABB : IRecipeABBTDA
             return raiz.hijoIzq.BuscarPorNivel(nivel);
         else
             return raiz.hijoDer.BuscarPorNivel(nivel);
+    }
+    public int CalcularAltura()
+    {
+        if (ArbolVacio())
+            return -1;
+
+        int alturaIzq = raiz.hijoIzq.CalcularAltura();
+        int alturaDer = raiz.hijoDer.CalcularAltura();
+
+        return 1 + Mathf.Max(alturaIzq, alturaDer);
     }
 }

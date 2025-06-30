@@ -8,4 +8,5 @@ public interface IRecipeABBTDA
     void AgregarElem(RecipeSo receta);
     void EliminarElem(int nivel);
     RecipeSo BuscarPorNivel(int nivel);
+    int CalcularAltura();
 }

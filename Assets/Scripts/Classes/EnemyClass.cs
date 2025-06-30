@@ -64,7 +64,7 @@ public class EnemyClass : MonoBehaviour, IAbilityQueue
             AbilityStruct chosenAbility = GetRandomAbility();
             // Enqueue the chosen ability
             QueueAbility(chosenAbility);
-            Debug.Log("Queued Ability: " + chosenAbility.name);
+            //Debug.Log("Queued Ability: " + chosenAbility.name);
         }
     }
 

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ab68a40dee533643a18e832afc1f1da, type: 3}
+  m_Name: VenomPotionRecipe 2
+  m_EditorClassIdentifier: 
+  name: Venom Potion
+  level: 12
+  potionEffectType: 7
+  result: {fileID: 11400000, guid: 81c9528470a96834fbe53076de6c5cab, type: 2}
+  ingredientsByID:
+  - {fileID: 11400000, guid: a9428aaa405f7a14f904481a3f577b61, type: 2}
+  - {fileID: 11400000, guid: f937ea1d5263eda49bf4034ba95785c3, type: 2}
+  - {fileID: 11400000, guid: 8722978323c242c4c8dfecc9f8fe9f39, type: 2}
+  ingredientsByType: 020000000000000004000000

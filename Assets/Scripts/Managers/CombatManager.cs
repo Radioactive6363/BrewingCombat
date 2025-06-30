@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 public class CombatManager : MonoBehaviour
 {
     private static CombatManager _instance;
-    private float _playerMaxHealth = 100;
+    private float _playerMaxHealth = 100000;
     private float _playerHealth;
     private float _playerDefense = 2;
     private float _playerDodge = 20;

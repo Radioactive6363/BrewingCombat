@@ -7,19 +7,23 @@ using UnityEngine.Serialization;
 public class CraftingManager : MonoBehaviour
 {
     [Header("Recetas disponibles")]
-    private RecipeABB arbolDeMejoras;
+    private Dictionary<PotionEffectType, RecipeABB> diccionarioDeArboles;
     public RecipeDatabaseSo allRecipes;
 
     private void Awake()
     {
-        arbolDeMejoras = new RecipeABB();
-        arbolDeMejoras.InicializarArbol();
-
+        diccionarioDeArboles = new Dictionary<PotionEffectType, RecipeABB>();
         foreach (var receta in allRecipes.recipes)
         {
             if (receta is RecipeSo recetaSo)
             {
-                arbolDeMejoras.AgregarElem(recetaSo);
+                if (!diccionarioDeArboles.TryGetValue(recetaSo.PotionEffectType, out RecipeABB arbol))
+                {
+                    arbol = new RecipeABB();
+                    arbol.InicializarArbol();
+                    diccionarioDeArboles[recetaSo.PotionEffectType] = arbol;
+                }
+                arbol.AgregarElem(recetaSo);
             }
         }
         MostrarRecetasOrdenadas(); //Debugging
@@ -27,8 +31,12 @@ public class CraftingManager : MonoBehaviour
     
     public void MostrarRecetasOrdenadas()
     {
-        Debug.Log("Árbol de recetas (ordenado por nivel):");
-        MostrarRecetasRecursivo(arbolDeMejoras);
+        Debug.Log("Arbol de recetas (ordenado por nivel):");
+        foreach (var keyValue in diccionarioDeArboles)
+        {
+            Debug.Log($"--- Arbol para efecto: {keyValue.Key} ---");
+            MostrarRecetasRecursivo(keyValue.Value);
+        }
     }
 
     private void MostrarRecetasRecursivo(IRecipeABBTDA nodo)
@@ -36,10 +44,22 @@ public class CraftingManager : MonoBehaviour
         if (!nodo.ArbolVacio())
         {
             MostrarRecetasRecursivo(nodo.HijoIzq());
-            Debug.Log($"Nivel: {nodo.Raiz().level}, Nombre: {nodo.Raiz().name}");
+
+            string nombre = nodo.Raiz().name;
+            int nivel = nodo.Raiz().level;
+            int altura = nodo.CalcularAltura();
+
+            string hijoIzq = nodo.HijoIzq().ArbolVacio() ? "null" : nodo.HijoIzq().Raiz().name + $" (Nivel {nodo.HijoIzq().Raiz().level})";
+            string hijoDer = nodo.HijoDer().ArbolVacio() ? "null" : nodo.HijoDer().Raiz().name + $" (Nivel {nodo.HijoDer().Raiz().level})";
+
+            Debug.Log($"Nodo actual -> Nombre: {nombre}, Nivel: {nivel}, Altura: {altura}\n" +
+                      $"   Hijo Izquierdo: {hijoIzq}\n" +
+                      $"   Hijo Derecho: {hijoDer}");
+
             MostrarRecetasRecursivo(nodo.HijoDer());
-        }
-    }
+        } 
+    }   
+
     
     public bool TryGetPotion(IStack ingredientStack)
     {
@@ -86,71 +106,53 @@ public class CraftingManager : MonoBehaviour
         {
             if (recipe is RecipeSo recipeOS)
             {
-               Debug.Log("Revisando receta: " + recipeOS.name);
+                Debug.Log("Revisando receta: " + recipeOS.name);
                
-                if (recipeOS.level == 1)
+                if (recipeOS.ingredientsByType == null || recipeOS.ingredientsByType.Count == 0)
                 {
-                    if (recipeOS.ingredientsByType == null || recipeOS.ingredientsByType.Count == 0)
+                    Debug.LogError(
+                        "ERROR: Receta " + recipeOS.name + " no tiene ingredientes Por Tipo configurados.");
+                    continue; 
+                }
+
+                Debug.Log("Ingredientes esperados por tipo:");
+                foreach (var tipo in recipeOS.ingredientsByType)
+                {
+                    Debug.Log("- " + tipo);
+                }
+
+                List<IngredientSo.IngredientType> typeOfStack = new List<IngredientSo.IngredientType>();
+                foreach (var ing in stackIngredients)
+                {
+                    typeOfStack.Add(ing.Type);
+                }
+
+                if (CompareByType(recipeOS.ingredientsByType, typeOfStack))
+                {
+                    Debug.Log("¡Receta encontrada! Creaste: " + recipeOS.name);
+                    PotionSo potionCreated = recipeOS.result;
+                    //Mejora de pocion
+                    if (diccionarioDeArboles.TryGetValue(recipeOS.PotionEffectType, out var arbolDeMejoras))
                     {
-                        Debug.LogError("ERROR: Receta " + recipeOS.name + " no tiene ingredientes Por Tipo configurados.");
-                                   continue;
-                    }
-                    Debug.Log("Ingredientes esperados por tipo:");
-                    foreach (var tipo in recipeOS.ingredientsByType)
-                    {
-                        Debug.Log("- " + tipo);
-                    }
-               
-                    List<IngredientSo.IngredientType> typeOfStack = new List<IngredientSo.IngredientType>();
-                    foreach (var ing in stackIngredients)
-                    {
-                        typeOfStack.Add(ing.Type);
-                    }
-                    if (CompareByType(recipeOS.ingredientsByType, typeOfStack))
-                    { 
-                        Debug.Log("¡Receta encontrada! Creaste: " + recipeOS.name);
-                        PotionSo potionCreated = recipeOS.result;
-                        //Mejora de pocion
-                        RecipeSo recetaMejorada = arbolDeMejoras.BuscarPorNivel(recipeOS.level + 1);
+                        RecipeSo recetaMejorada = arbolDeMejoras.BuscarPorNivel(recipeOS.level);
                         if (recetaMejorada != null && CompareByID(recetaMejorada.ingredientsByID, stackIngredients))
                         {
-                            Debug.Log("¡Mejora encontrada! Creaste: " + recetaMejorada.name);
                             potionCreated = recetaMejorada.result;
                         }
-                        
                         potionCreated.EffectType = recipeOS.PotionEffectType;
                         foreach (var ing in stackIngredients)
                         {
-                            potionCreated.Potency += ing.Potency;
+                            int appliedPotency = ing.Potency * recipeOS.level; 
+                            potionCreated.Potency += appliedPotency;
                             potionCreated.ChargeTime += ing.ChargeTime;
                         }
+                        Debug.Log($"¡Mejora encontrada! Creaste: {recetaMejorada.name}\n" +
+                                  $"Potency: {potionCreated?.Potency}\n" +
+                                  $"Level: {recipeOS?.level}");
                         return potionCreated;
-                    }
+                    } 
                 }
-                else
-                {
-                    /*
-                    if (recipeOS.ingredientsByID == null || recipeOS.ingredientsByID.Count == 0)
-                    {
-                        Debug.LogError("ERROR: Receta " + recipeOS.name + " no tiene ingredientes PorId configurados.");
-                                   continue;
-                    }
-                    
-                    Debug.Log("Ingredientes esperados por ID:");
-                    foreach (var ing in recipeOS.ingredientsByID)
-                    {
-                        Debug.Log("- " + ing.name + " (ID: " + ing.Id + ")");
-                    }
-                           
-                    if (CompareByID(recipeOS.ingredientsByID, stackIngredients)) 
-                    { 
-                        Debug.Log("¡Receta encontrada! Creaste: " + recipeOS.name); 
-                        return recipeOS.result;
-                    }
-                    */
-                } 
             }
-                
         }
         Debug.Log("No se encontró ninguna receta.");
         return null;

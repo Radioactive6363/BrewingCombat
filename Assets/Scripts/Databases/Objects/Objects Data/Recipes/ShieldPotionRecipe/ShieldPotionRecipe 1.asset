@@ -10,11 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ab68a40dee533643a18e832afc1f1da, type: 3}
-  m_Name: ShieldPotionRecipe
+  m_Name: ShieldPotionRecipe 1
   m_EditorClassIdentifier: 
   name: Shield Potion
-  level: 4
+  level: 8
   potionEffectType: 6
   result: {fileID: 11400000, guid: 735e77e81c6f78341a10d798ff340141, type: 2}
-  ingredientsByID: []
+  ingredientsByID:
+  - {fileID: 11400000, guid: 07be393b322f44e4f8fe669e96667c30, type: 2}
+  - {fileID: 11400000, guid: 35e3463b2bcead04da42ebc5b7750a47, type: 2}
+  - {fileID: 11400000, guid: 8722978323c242c4c8dfecc9f8fe9f39, type: 2}
   ingredientsByType: 030000000200000004000000
