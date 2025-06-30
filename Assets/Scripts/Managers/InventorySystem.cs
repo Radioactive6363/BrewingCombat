@@ -139,7 +139,7 @@ public class InventorySystem : MonoBehaviour
 
     // QUICKSORT IMPLEMENTATION
     
-    // Public method to sort the inventory by count using Quicksort algorithm
+    // This public method is the one used for the Quicksort algorithm, and is called every time a change is made to the inventory.
     private void SortInventoryByCount(bool ascending = true)
     {
         if (Inventory.Count <= 1) return;
@@ -147,7 +147,7 @@ public class InventorySystem : MonoBehaviour
         QuickSortByCount(Inventory, 0, Inventory.Count - 1, ascending);
     }
     
-    // Recursive Quicksort implementation for sorting IObjects by their Count property
+    // This is a recursive Quicksort implementation for sorting IObjects by their Count
     private void QuickSortByCount(List<IObject> items, int low, int high, bool ascending)
     {
         if (low < high)
@@ -161,7 +161,7 @@ public class InventorySystem : MonoBehaviour
         }
     }
     
-    // Partition method for Quicksort - rearranges items around pivot based on count
+    // This is a partition method for Quicksort which rearranges items around pivot based on count
     private int PartitionByCount(List<IObject> items, int low, int high, bool ascending)
     {
         int pivotCount = items[high].Count;
@@ -186,7 +186,7 @@ public class InventorySystem : MonoBehaviour
         return i + 1;
     }
     
-    // Helper method to swap two items in the list
+    // Basic item swapping
     private void SwapItems(List<IObject> items, int i, int j)
     {
         IObject temp = items[i];
