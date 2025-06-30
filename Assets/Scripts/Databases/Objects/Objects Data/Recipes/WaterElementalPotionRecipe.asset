@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WaterElementalPotionRecipe
   m_EditorClassIdentifier: 
   name: Water Elemental Potion
-  level: 1
+  level: 8
   potionEffectType: 4
   result: {fileID: 11400000, guid: 46e5216738843f241bffcf4d7d1fc315, type: 2}
   ingredientsByID: []

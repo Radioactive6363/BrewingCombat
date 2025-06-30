@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ShieldPotionRecipe
   m_EditorClassIdentifier: 
   name: Shield Potion
-  level: 1
+  level: 4
   potionEffectType: 6
   result: {fileID: 11400000, guid: 735e77e81c6f78341a10d798ff340141, type: 2}
   ingredientsByID: []

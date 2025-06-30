@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: FireElementalPotionRecipe
   m_EditorClassIdentifier: 
   name: Fire Elemental Potion
-  level: 1
+  level: 3
   potionEffectType: 5
   result: {fileID: 11400000, guid: a5a2733f57c5e3c45987ed13b495a2de, type: 2}
   ingredientsByID: []

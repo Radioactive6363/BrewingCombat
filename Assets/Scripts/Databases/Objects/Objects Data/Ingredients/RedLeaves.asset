@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: RedLeaves
   m_EditorClassIdentifier: 
   sprite: {fileID: 88032956, guid: 765b5de7a33c2ea40b96f20c3c454dec, type: 3}
-  IngredientName: Red Leaves
+  ingredientName: Red Leaves
   type: 0
   potency: 5
   chargeTime: 1
-  _count: 5
+  count: 5

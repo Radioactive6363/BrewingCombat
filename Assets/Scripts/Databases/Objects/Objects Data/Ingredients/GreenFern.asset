@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: GreenFern
   m_EditorClassIdentifier: 
   sprite: {fileID: 1602527728, guid: 714f28a37410a154fa79182c7de34dad, type: 3}
-  IngredientName: Green Fern
+  ingredientName: Green Fern
   type: 2
   potency: 5
   chargeTime: 1.2
-  _count: 5
+  count: 5
