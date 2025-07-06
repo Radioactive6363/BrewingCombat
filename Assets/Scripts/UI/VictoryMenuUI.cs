@@ -6,7 +6,6 @@ public class VictoryMenuUI : MonoBehaviour
     {
         if (GameManager.Instance != null)
         {
-            GameRestarted();
             GameManager.Instance.LoadScene("MapSelection");
         }
     }
@@ -15,6 +14,7 @@ public class VictoryMenuUI : MonoBehaviour
     {
         if (GameManager.Instance != null)
         {
+            GameRestarted();
             GameManager.Instance.LoadScene("MainMenu");
         }
     }

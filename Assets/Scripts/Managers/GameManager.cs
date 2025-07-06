@@ -27,27 +27,12 @@ public class GameManager: MonoBehaviour
     {
         Debug.Log("Loading Scene: " + sceneName);
         SceneManager.LoadScene(sceneName);
-        FindFirstObjectByType<InventorySystem>().OnChangedScene();
     }
 
     // Cambiar a una escena por su índice
     public void LoadScene(int sceneIndex)
     {
         SceneManager.LoadScene(sceneIndex);
-    }
-
-    // Cargar la siguiente escena 
-    public void LoadNextScene()
-    {
-        int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-        if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
-        {
-            SceneManager.LoadScene(nextSceneIndex);
-        }
-        else
-        {
-            Debug.LogWarning("No hay más escenas para cargar.");
-        }
     }
 
     // Cerrar el juego

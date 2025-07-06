@@ -12,7 +12,7 @@ public class InventorySystem : MonoBehaviour
     public static InventorySystem InstanceInventorySystem; // Singleton
     public List<IObject> Inventory;
     public UnityEvent<IObject> onInventoryChanged;
-    public UnityEvent<List<IObject>> inventoryInitialized;
+    public UnityEvent inventoryInitialized;
 
     private void Awake()
     {
@@ -20,7 +20,6 @@ public class InventorySystem : MonoBehaviour
         {
             GameManager.Instance.onGameRestart.AddListener(DestroyInventorySystem);
         }
-        
         if (InstanceInventorySystem == null)
         {
             InstanceInventorySystem = this;
@@ -75,7 +74,7 @@ public class InventorySystem : MonoBehaviour
     {
         // Sort inventory when scene changes
         SortInventoryByCount(sortAscending);
-        inventoryInitialized.Invoke(Inventory);
+        inventoryInitialized.Invoke();
         foreach (var item in Inventory)
         {
             Debug.Log(item.Name + item.Count);
@@ -89,15 +88,18 @@ public class InventorySystem : MonoBehaviour
         
         if (Inventory.Contains(item))
         {
-            item.Count++;
+            Inventory.Find(x => x.Name == item.Name).Count++;
         }
         else
         {
-            Inventory.Add(item.Clone());
-            item.Count++;
+            Inventory.Find(x => x.Name == item.Name).Count++;
+            item.Clone().Count++;
         }
-        
-        // Sort inventory after adding item
+
+        foreach (IObject obj in Inventory)
+        {
+            Debug.Log(obj.Name + obj.Count + "INVENTORY SYSTEM");
+        }
         SortInventoryByCount(sortAscending);
         onInventoryChanged.Invoke(item);
     }

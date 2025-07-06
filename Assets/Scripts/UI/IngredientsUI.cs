@@ -20,15 +20,11 @@ public class IngredientsUI : MonoBehaviour
         _inventoryManager = InventorySystem.InstanceInventorySystem;
         _inventoryManager.inventoryInitialized.AddListener(InitializeUI);
         _inventoryManager.onInventoryChanged.AddListener(UpdateInventory);
-        foreach (var item in _inventoryManager.Inventory)
-        {
-            Debug.Log(_inventoryManager);
-        }
+
     }
 
-    private void InitializeUI(List<IObject> objects)
+    private void InitializeUI()
     {
-        _managerOnStartInventory = objects;
         RefreshCompleteUI();
         UpdateLastKnownOrder();
     }
@@ -40,7 +36,10 @@ public class IngredientsUI : MonoBehaviour
         
         // Use the current inventory state, not just the initial inventory
         List<IObject> currentInventory = _inventoryManager.Inventory;
-        
+        foreach (var item in _inventoryManager.Inventory)
+        {
+            Debug.Log(_inventoryManager);
+        }
         // Recreate UI elements in the correct sorted order
         foreach (IObject obj in currentInventory)
         {

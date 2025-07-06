@@ -105,18 +105,18 @@ public class EnemyClass : MonoBehaviour, IAbilityQueue
         if (!CheckEmptyQueue())  // If the queue is not empty
         {
             var ability = _abilityQueueHandler.DequeueAbility();
-            Debug.Log($"Dequeued Ability: {ability.name}");
+            //Debug.Log($"Dequeued Ability: {ability.name}");
 
             // Refill the empty spot of the queue
             AbilityStruct chosenAbility = GetRandomAbility();
             QueueAbility(chosenAbility);
-            Debug.Log("Queued Ability: " + chosenAbility.name);
+            //Debug.Log("Queued Ability: " + chosenAbility.name);
 
             return ability;
         }
         else
         {
-            Debug.LogWarning("Attempted to unstack from an empty queue!");
+            //Debug.LogWarning("Attempted to unstack from an empty queue!");
             return default;
         }
     }

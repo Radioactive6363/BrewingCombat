@@ -9,7 +9,8 @@ public class MapPlayerClass : MonoBehaviour
 {
     public bool canMove = true;
     [SerializeField] private ObjectDatabaseSo dropItemSo;
-    
+    [SerializeField] private GameObject textAddItem;
+    private InventorySystem _inventoryManager;
     private Dictionary<Vector3, BlockType> _blockCoordinateSystem = new Dictionary<Vector3, BlockType>();
     private Vector3 _playerSpawnOffset = Vector3.zero;
     private Vector3 _currentBlock = Vector3.zero;
@@ -24,7 +25,7 @@ public class MapPlayerClass : MonoBehaviour
     private void Start()
     {
         _playerAnimator = GetComponentInChildren<Animator>();
-
+        _inventoryManager = InventorySystem.InstanceInventorySystem;
         if (_playerAnimator == null)
         {
             Debug.LogWarning("Couldn't get player animator!");
@@ -82,10 +83,8 @@ public class MapPlayerClass : MonoBehaviour
 
         foreach (var step in movementSteps)
         {
-            GetRandomObject();
-            
             _movementXZ = step;
-            
+            GetRandomObject();
             if (_blockCoordinateSystem != null && _dirtSeparationAmount != 0f && _currentBlock != null)
             {
                 Vector3 movementDirection = _movementXZ * _dirtSeparationAmount + transform.position - _playerSpawnOffset;
@@ -130,10 +129,8 @@ public class MapPlayerClass : MonoBehaviour
                     }
                 }
             }
-
             yield return new WaitForSeconds(.4f);
         }
-
         _movementXZ = Vector3.zero;
         _playerMoving = false;
     }
@@ -144,12 +141,10 @@ public class MapPlayerClass : MonoBehaviour
 
         if (gotRandomItem == 0)
         {
-            var randomIndex = (int)Random.Range(0f, dropItemSo.objects.Length - 1);
-            
-            InventorySystem.InstanceInventorySystem.AddItem((IObject)dropItemSo.objects[randomIndex]);
-            
-            Debug.Log("Got item: " + dropItemSo.objects[randomIndex]);
+            var randomIndex = (int)Random.Range(0f, dropItemSo.objects.Length);
+            _inventoryManager.AddItem((IObject)dropItemSo.objects[randomIndex]);
         }
+        
     }
 
     public void PlayAnimation(string animationName)
