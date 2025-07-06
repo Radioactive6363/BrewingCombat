@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20a6db383ab804d469ce7fce6097f78a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canMove: 1
+  dropItemSo: {fileID: 11400000, guid: 6b561b06c2b82a74aa2c2c4edc34b6ca, type: 2}
 --- !u!1001 &5954283341513462623
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -85,6 +85,8 @@ public class InventorySystem : MonoBehaviour
     // Adds item to inventory, item is an IObject
     public void AddItem(IObject item)
     {
+        Debug.Log("Received: " + item.Name);
+        
         if (Inventory.Contains(item))
         {
             item.Count++;

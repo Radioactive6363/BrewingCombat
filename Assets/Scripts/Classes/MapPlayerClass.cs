@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using static Unity.Collections.AllocatorManager;
 
 public class MapPlayerClass : MonoBehaviour
 {
     public bool canMove = true;
-
+    [SerializeField] private ObjectDatabaseSo dropItemSo;
+    
     private Dictionary<Vector3, BlockType> _blockCoordinateSystem = new Dictionary<Vector3, BlockType>();
     private Vector3 _playerSpawnOffset = Vector3.zero;
     private Vector3 _currentBlock = Vector3.zero;
@@ -18,7 +20,7 @@ public class MapPlayerClass : MonoBehaviour
     private bool _playerMoving = false;
 
     private Animator _playerAnimator;
-
+    
     private void Start()
     {
         _playerAnimator = GetComponentInChildren<Animator>();
@@ -80,6 +82,8 @@ public class MapPlayerClass : MonoBehaviour
 
         foreach (var step in movementSteps)
         {
+            GetRandomObject();
+            
             _movementXZ = step;
             
             if (_blockCoordinateSystem != null && _dirtSeparationAmount != 0f && _currentBlock != null)
@@ -132,6 +136,20 @@ public class MapPlayerClass : MonoBehaviour
 
         _movementXZ = Vector3.zero;
         _playerMoving = false;
+    }
+
+    private void GetRandomObject()
+    {
+        var gotRandomItem = (int)Random.Range(0f, 3f);
+
+        if (gotRandomItem == 0)
+        {
+            var randomIndex = (int)Random.Range(0f, dropItemSo.objects.Length - 1);
+            
+            InventorySystem.InstanceInventorySystem.AddItem((IObject)dropItemSo.objects[randomIndex]);
+            
+            Debug.Log("Got item: " + dropItemSo.objects[randomIndex]);
+        }
     }
 
     public void PlayAnimation(string animationName)
