@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -142,7 +143,16 @@ public class MapPlayerClass : MonoBehaviour
         if (gotRandomItem == 0)
         {
             var randomIndex = (int)Random.Range(0f, dropItemSo.objects.Length);
+            
             _inventoryManager.AddItem((IObject)dropItemSo.objects[randomIndex]);
+
+            var notifPrefab = Instantiate(textAddItem, transform.position, Quaternion.identity);
+
+            var tmp = notifPrefab.GetComponentInChildren<TextMeshProUGUI>();
+            var rect = notifPrefab.transform.Find("Text").GetComponent<RectTransform>();
+            
+            tmp.text = "+1 " + dropItemSo.objects[randomIndex].name;
+            rect.position = Camera.main.WorldToScreenPoint(this.transform.position);
         }
         
     }

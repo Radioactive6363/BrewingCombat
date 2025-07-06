@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canMove: 1
   dropItemSo: {fileID: 11400000, guid: 6b561b06c2b82a74aa2c2c4edc34b6ca, type: 2}
+  textAddItem: {fileID: 2021418486231484284, guid: c6d89212627a4264a8d7b95188db9b64, type: 3}
 --- !u!1001 &5954283341513462623
 PrefabInstance:
   m_ObjectHideFlags: 0
