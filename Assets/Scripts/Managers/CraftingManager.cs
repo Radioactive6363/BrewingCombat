@@ -26,7 +26,7 @@ public class CraftingManager : MonoBehaviour
                 arbol.AgregarElem(recetaSo);
             }
         }
-        MostrarRecetasOrdenadas(); //Debugging
+        //MostrarRecetasOrdenadas(); //Debugging
     }
     
     public void MostrarRecetasOrdenadas()

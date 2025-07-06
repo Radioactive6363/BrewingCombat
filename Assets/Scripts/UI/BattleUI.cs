@@ -14,21 +14,6 @@ public class BattleUI : MonoBehaviour
             Debug.LogError("Couldn't get leftSidePanelAnimator!");
         }
     }
-
-    public void CreatePotion()
-    {
-
-    }
-
-    public void UsePotion()
-    {
-
-    }
-
-    public void Attack()
-    {
-
-    }
     
     // Shows the CRAFT inventory + CRAFT UI
     public void ShowCraftingPanel()

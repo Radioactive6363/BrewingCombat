@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class BlockSpawnManager : MonoBehaviour
 {
+    //Implementar Obtencio de Ingredientes por Bloque. --Final--
     public static BlockSpawnManager Instance { get; private set; }
 
     public readonly Dictionary<Vector3, BlockType> BlockCoordinateSystem = new Dictionary<Vector3, BlockType>();

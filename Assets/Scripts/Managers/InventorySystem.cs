@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -32,8 +31,29 @@ public class InventorySystem : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (Inventory == null)
+        {
+            InitializeInventory();
+        }
+        else
+        {
+            OnChangedScene();
+        }
+    }
     
-    private void Start()
+    private void InitializeInventory()
     {
         Inventory = new List<IObject>();
         foreach (var item in objectDatabaseStart.objects)
@@ -43,15 +63,12 @@ public class InventorySystem : MonoBehaviour
                 Inventory.Add(obj.Clone());
             }
         }
-        
-        // Sort inventory on initial load
-        SortInventoryByCount(sortAscending);
-        inventoryInitialized.Invoke(Inventory);
+        OnChangedScene();
     }
 
     private void DestroyInventorySystem()
     {
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
 
     public void OnChangedScene()
@@ -59,6 +76,10 @@ public class InventorySystem : MonoBehaviour
         // Sort inventory when scene changes
         SortInventoryByCount(sortAscending);
         inventoryInitialized.Invoke(Inventory);
+        foreach (var item in Inventory)
+        {
+            Debug.Log(item.Name + item.Count);
+        }
     }
 
     // Adds item to inventory, item is an IObject

@@ -17,9 +17,13 @@ public class IngredientsUI : MonoBehaviour
     {
         _gameObjectInventory = new Dictionary<IObject, GameObject>();
         _lastKnownOrder = new List<IObject>();
-        _inventoryManager = FindFirstObjectByType<InventorySystem>();
+        _inventoryManager = InventorySystem.InstanceInventorySystem;
         _inventoryManager.inventoryInitialized.AddListener(InitializeUI);
         _inventoryManager.onInventoryChanged.AddListener(UpdateInventory);
+        foreach (var item in _inventoryManager.Inventory)
+        {
+            Debug.Log(_inventoryManager);
+        }
     }
 
     private void InitializeUI(List<IObject> objects)
