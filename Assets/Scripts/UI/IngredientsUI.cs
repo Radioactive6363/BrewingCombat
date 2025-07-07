@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class IngredientsUI : MonoBehaviour
 {
-    private InventorySystem _inventoryManager;
     private List<IObject> _managerOnStartInventory;
     private Dictionary<IObject, GameObject> _gameObjectInventory;
     [SerializeField] private GameObject objectUIPrefab;
@@ -17,9 +16,8 @@ public class IngredientsUI : MonoBehaviour
     {
         _gameObjectInventory = new Dictionary<IObject, GameObject>();
         _lastKnownOrder = new List<IObject>();
-        _inventoryManager = InventorySystem.InstanceInventorySystem;
-        _inventoryManager.inventoryInitialized.AddListener(InitializeUI);
-        _inventoryManager.onInventoryChanged.AddListener(UpdateInventory);
+        InventorySystem.InstanceInventorySystem?.inventoryInitialized.AddListener(InitializeUI);
+        InventorySystem.InstanceInventorySystem?.onInventoryChanged.AddListener(UpdateInventory);
 
     }
 
@@ -33,21 +31,23 @@ public class IngredientsUI : MonoBehaviour
     {
         // Clear existing UI elements
         ClearAllUIElements();
-        
-        // Use the current inventory state, not just the initial inventory
-        List<IObject> currentInventory = _inventoryManager.Inventory;
-        foreach (var item in _inventoryManager.Inventory)
+
+        var _inventoryManager = InventorySystem.InstanceInventorySystem;
+
+        if (_inventoryManager)
         {
-            Debug.Log(_inventoryManager);
-        }
-        // Recreate UI elements in the correct sorted order
-        foreach (IObject obj in currentInventory)
-        {
-            if (obj.Count > 0)
+            // Use the current inventory state, not just the initial inventory
+            List<IObject> currentInventory = _inventoryManager.Inventory;
+            
+            // Recreate UI elements in the correct sorted order
+            foreach (IObject obj in currentInventory)
             {
-                GameObject item = Instantiate(objectUIPrefab, transform);
-                item.GetComponent<ObjectUIScript>().ObjectContained = obj;
-                _gameObjectInventory.Add(obj, item);
+                if (obj.Count > 0)
+                {
+                    GameObject item = Instantiate(objectUIPrefab, transform);
+                    item.GetComponent<ObjectUIScript>().ObjectContained = obj;
+                    _gameObjectInventory.Add(obj, item);
+                }
             }
         }
     }
@@ -103,7 +103,7 @@ public class IngredientsUI : MonoBehaviour
     private bool HasOrderChanged()
     {
         // Get current visible items (items with count > 0)
-        var currentVisibleItems = _inventoryManager.Inventory.Where(item => item.Count > 0).ToList();
+        var currentVisibleItems = InventorySystem.InstanceInventorySystem?.Inventory.Where(item => item.Count > 0).ToList();
         var lastVisibleItems = _lastKnownOrder.Where(item => item.Count > 0).ToList();
         
         // Check if the order or items have changed
@@ -122,6 +122,6 @@ public class IngredientsUI : MonoBehaviour
     private void UpdateLastKnownOrder()
     {
         _lastKnownOrder.Clear();
-        _lastKnownOrder.AddRange(_inventoryManager.Inventory);
+        _lastKnownOrder.AddRange(InventorySystem.InstanceInventorySystem?.Inventory);
     }
 }

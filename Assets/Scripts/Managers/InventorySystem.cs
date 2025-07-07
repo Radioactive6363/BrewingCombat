@@ -98,10 +98,6 @@ public class InventorySystem : MonoBehaviour
             Inventory.Add(newItem);
         }
 
-        foreach (IObject obj in Inventory)
-        {
-            Debug.Log(obj.Name + obj.Count + "INVENTORY SYSTEM");
-        }
         SortInventoryByCount(sortAscending);
         onInventoryChanged.Invoke(item);
     }

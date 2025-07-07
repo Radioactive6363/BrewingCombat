@@ -67,7 +67,7 @@ public class CraftingManager : MonoBehaviour
 
         if (potionCrafted != null)
         {
-            FindFirstObjectByType<InventorySystem>().AddItem(potionCrafted);
+            InventorySystem.InstanceInventorySystem.AddItem(potionCrafted);
             return true;
         }
 
