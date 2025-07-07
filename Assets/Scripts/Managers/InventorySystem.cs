@@ -85,15 +85,17 @@ public class InventorySystem : MonoBehaviour
     public void AddItem(IObject item)
     {
         Debug.Log("Received: " + item.Name);
-        
+    
         if (Inventory.Contains(item))
         {
             Inventory.Find(x => x.Name == item.Name).Count++;
         }
         else
         {
-            Inventory.Find(x => x.Name == item.Name).Count++;
-            item.Clone().Count++;
+            // Create a clone of the item and add it to inventory
+            IObject newItem = item.Clone();
+            newItem.Count = 1; // Set initial count to 1
+            Inventory.Add(newItem);
         }
 
         foreach (IObject obj in Inventory)

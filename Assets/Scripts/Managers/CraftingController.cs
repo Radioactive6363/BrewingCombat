@@ -34,7 +34,7 @@ public class CraftingController : MonoBehaviour
         }
         else
         {
-            FindFirstObjectByType<InventorySystem>().AddItem(ingredient);
+            InventorySystem.InstanceInventorySystem?.AddItem(ingredient);
         }
         
     }
@@ -44,7 +44,7 @@ public class CraftingController : MonoBehaviour
         if (!_ingredientStack.CheckEmptyStack())
         {
             ingredientsGameObjects[_ingredientStack.ObtainQuantity()-1].SetActive(false);
-            FindFirstObjectByType<InventorySystem>().AddItem(_ingredientStack.UnstackIngredients()); 
+            InventorySystem.InstanceInventorySystem?.AddItem(_ingredientStack.UnstackIngredients()); 
             if (craftingPanel.activeSelf && _ingredientStack.CheckEmptyStack())
             {
                 craftingPanel.SetActive(false);
